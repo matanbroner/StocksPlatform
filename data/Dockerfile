@@ -4,12 +4,12 @@ FROM python:3.6
 WORKDIR /app
 
 # Install app dependencies
-COPY src/requirements.txt ./
+COPY ./requirements.txt ./
 
 RUN pip install -r requirements.txt
 
 # Bundle app source
-COPY src /app
+COPY . /app
 
 EXPOSE 5000
 CMD [ "python", "main.py" ]

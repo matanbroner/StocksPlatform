@@ -42,7 +42,7 @@ services:
     depends_on:
       - users
 
-  postgresql:
+  postgres:
     image: postgres
     container_name: postgres
     ports:
@@ -52,7 +52,6 @@ services:
       - POSTGRES_PASSWORD=stocks_admin
     volumes:
       - pg-data:/var/lib/postgresql/data
-    command: postgres -c config_file=/etc/postgresql/postgresql.conf
     restart: always
 
   nginx:
