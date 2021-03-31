@@ -1,0 +1,72 @@
+
+version: '3.7'
+
+services:
+  data:
+    build:
+      context: ./data
+      dockerfile: Dockerfile
+    volumes:
+      - './data:/app'
+    ports:
+      - '5000:5000'
+    depends_on: 
+      - postgres
+
+  users:
+    build:
+      context: ./users
+      dockerfile: Dockerfile
+    volumes:
+      - './users:/app'
+      - '/app/node_modules'
+    ports: 
+      - '5001:5001'
+    depends_on:
+      - postgres
+
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+      args:
+        env: 'DEV'
+    ports:
+      - '3000:3000'
+    environment:
+      - NODE_ENV=development
+      - REACT_APP_BUILD=development
+    volumes:
+      - './client:/app'
+      - '/app/node_modules'
+    depends_on:
+      - users
+
+  postgresql:
+    image: postgres
+    container_name: postgres
+    ports:
+      - '5432:5432'
+    environment:
+      - POSTGRES_USER=stocks_admin
+      - POSTGRES_PASSWORD=stocks_admin
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+    command: postgres -c config_file=/etc/postgresql/postgresql.conf
+    restart: always
+
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    ports:
+      - '80:80'
+      - '443:443'
+    command: [nginx-debug, '-g', 'daemon off;']
+    depends_on:
+      - client
+      - users
+      - data
+volumes:
+  pg-data:
+    driver: local
