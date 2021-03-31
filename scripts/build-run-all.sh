@@ -1,10 +1,11 @@
 #!/bin/bash
 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
-cd "$(dirname "$SCRIPT_DIR")"
-
 PROD=0
 VERBOSE=0
+
+# got to project root
+cd "$(dirname "$SCRIPT_DIR")"
 
 usage(){
   echo "build-run-all.sh [-p] [-v LEVEL]"
