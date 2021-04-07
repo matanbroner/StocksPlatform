@@ -64,12 +64,14 @@ class FinancialModelingPrepApi:
         route = f"profile/{ticker}"
         return self._api_request(route=route)
 
-    def get_statement_by_type(self, ticker: str, statement_type: str, period: str = "quarter", limit: int = None,
+    def get_statement_by_type(self, ticker: str, statement_type: str, growth: bool = False, period: str = "quarter",
+                              limit: int = None,
                               datatype: str = None):
         """
         Fetch company income statement on quarter or yearly increments
         @param ticker: ex. "TSLA"
         @param statement_type: one of ["income", "cash-flow", "balance-sheet"]
+        @param growth: get growth statement instead of base statement
         @param period: one of ["quarter", "annual"]
         @param limit
         @param datatype: use "csv" for downloadable file
@@ -78,8 +80,53 @@ class FinancialModelingPrepApi:
         """
         if statement_type not in ["income", "cash-flow", "balance-sheet"]:
             self._raise_error(f"Statement type '{statement_type}' is not valid")
+        statement_type += "-statement"
+        if growth:
+            statement_type += "-growth"
         if not limit: limit = self.query_limit
-        route = f"{statement_type}-statement/{ticker}?period={period}&limit={limit}"
+        route = f"{statement_type}/{ticker}?period={period}&limit={limit}"
         if datatype:
             route += f"&datatype={datatype}"
+        return self._api_request(route=route)
+
+    def get_all_statements(self, ticker: str, growth: bool = False, period: str = "quarter", limit: int = None,
+                           datatype: str = None):
+        """
+        Collect income, balance sheet, and cash flow statements for a company all at once
+        Is atomic, if one of three calls fail, entire method fails.
+        @param ticker: ex. "TSLA"
+        @param growth: get growth statements instead of base statements
+        @param period: one of ["quarter", "annual"]
+        @param limit
+        @param datatype: use "csv" for downloadable file
+        @return: JSON
+        """
+        if not limit: limit = self.query_limit
+        statement_types = ["income", "cash-flow", "balance-sheet"]
+        statements = {}
+        try:
+            for type in statement_types:
+                statements[type] = self.get_statement_by_type(ticker=ticker, growth=growth, statement_type=type,
+                                                              period=period,
+                                                              limit=limit, datatype=datatype)
+            return statements
+        except RuntimeError as e:
+            # relay error back to user
+            raise e
+
+    def get_ratios(self, ticker: str, ttm: bool = False, period: str = "quarter", limit: int = None):
+        """
+        Get company financial ratios either TTM or on a periodic basis
+        @param ticker: ex. "TSLA"
+        @param ttm: get TTM ratios rather than periodic
+        @param period: one of ["quarter", "annual"], cannot be used with TTM
+        @param limit:cannot be used with TTM
+        @return: JSON
+        """
+        route = "ratios"
+        if ttm:
+            route += f"-ttm/{ticker}"
+        else:
+            if not limit: limit = self.query_limit
+            route += f"/{ticker}?period={period}&limit={limit}"
         return self._api_request(route=route)

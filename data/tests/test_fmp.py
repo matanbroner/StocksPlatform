@@ -32,6 +32,26 @@ class TestFinancialModelingPrepApi(unittest.TestCase):
         # check is three month difference
         assert (int(qtr_1) - int(qtr_2) == 3)
 
+    def test_get_all_statements(self):
+        search_appl = self.api.get_all_statements(ticker="APPL")
+        self.assertIsInstance(search_appl, object)
+        self.assertEquals(len(search_appl.keys()), 3)
+        for key in ["income", "cash-flow", "balance-sheet"]:
+            self.assertIn(key, search_appl)
+
+    def test_get_ratios(self):
+        # test periodic first
+        search_appl_qtr = self.api.get_ratios(ticker="AAPL", period="quarter")
+        self.assertIsInstance(search_appl_qtr, list)
+        self.assertTrue(len(search_appl_qtr) > 1)
+        self.assertIsInstance(search_appl_qtr[0], object)
+
+        # test ttm, should only return one item in the list
+        search_appl_ttm = self.api.get_ratios(ticker="AAPL", ttm=True)
+        self.assertIsInstance(search_appl_ttm, list)
+        self.assertTrue(len(search_appl_ttm) == 1)
+        self.assertIsInstance(search_appl_ttm[0], object)
+
 
 if __name__ == '__main__':
     unittest.main()
