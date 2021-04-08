@@ -52,6 +52,33 @@ class TestFinancialModelingPrepApi(unittest.TestCase):
         self.assertTrue(len(search_appl_ttm) == 1)
         self.assertIsInstance(search_appl_ttm[0], object)
 
+    def test_get_enterprise_value(self):
+        search_appl = self.api.get_enterprise_value(ticker="AAPL", period="quarter")
+        self.assertIsInstance(search_appl, list)
+        self.assertIsInstance(search_appl[0], object)
+        self.assertTrue(search_appl[0]["symbol"] == "AAPL")
+
+    def test_get_company_growth(self):
+        search_appl = self.api.get_company_growth(ticker="AAPL", period="quarter")
+        self.assertIsInstance(search_appl, list)
+        self.assertIsInstance(search_appl[0], object)
+        self.assertTrue(search_appl[0]["symbol"] == "AAPL")
+
+    def test_get_rating(self):
+        # test immediate rating
+        search_appl = self.api.get_rating(ticker="AAPL")
+        self.assertIsInstance(search_appl, list)
+        self.assertTrue(len(search_appl) == 1)
+        self.assertIsInstance(search_appl[0], object)
+        self.assertTrue(search_appl[0]["symbol"] == "AAPL")
+        self.assertIn("ratingRecommendation", search_appl[0])
+
+        # test historical
+        search_appl = self.api.get_rating(ticker="AAPL", historical=True)
+        self.assertIsInstance(search_appl, list)
+        self.assertTrue(len(search_appl) > 1)
+        self.assertIsInstance(search_appl[0], object)
+
 
 if __name__ == '__main__':
     unittest.main()

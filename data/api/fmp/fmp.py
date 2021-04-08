@@ -35,7 +35,7 @@ class FinancialModelingPrepApi:
         @param data
         @param headers
         @param api_v: generally one of ["v3", "v4"]
-        @return: json object or raise RuntimeError
+        @return: JSON or raise RuntimeError
         """
         url = f"https://financialmodelingprep.com/api/{api_v}/{route}"
         if '?' in url:
@@ -120,8 +120,9 @@ class FinancialModelingPrepApi:
         @param ticker: ex. "TSLA"
         @param ttm: get TTM ratios rather than periodic
         @param period: one of ["quarter", "annual"], cannot be used with TTM
-        @param limit:cannot be used with TTM
+        @param limit: cannot be used with TTM
         @return: JSON
+        ref: https://financialmodelingprep.com/developer/docs/#Company-Financial-Ratios
         """
         route = "ratios"
         if ttm:
@@ -129,4 +130,61 @@ class FinancialModelingPrepApi:
         else:
             if not limit: limit = self.query_limit
             route += f"/{ticker}?period={period}&limit={limit}"
+        return self._api_request(route=route)
+
+    def get_enterprise_value(self, ticker: str, period: str = "quarter", limit: int = None):
+        """
+        Get enterprise value for a company
+        @param ticker: ex. "TSLA"
+        @param period: one of ["quarter", "annual"]
+        @param limit
+        @return: JSON
+        ref: https://financialmodelingprep.com/developer/docs/#Company-Enterprise-Value
+        """
+        if not limit: limit = self.query_limit
+        route = f"enterprise-values/{ticker}?period={period}&limit={limit}"
+        return self._api_request(route=route)
+
+    def get_company_growth(self, ticker: str, period: str = "quarter", limit: int = None):
+        """
+        Get growth financial statement for a company
+        @param ticker: ex. "TSLA"
+        @param period: one of ["quarter", "annual"]
+        @param limit
+        @return: JSON
+        ref: https://financialmodelingprep.com/developer/docs/#Company-Financial-Growth
+        """
+        if not limit: limit = self.query_limit
+        route = f"financial-growth/{ticker}?period={period}&limit={limit}"
+        return self._api_request(route=route)
+
+    def get_rating(self, ticker: str, historical: bool = False, limit: int = None):
+        """
+        Get rating for company, either immediate or historical
+        @param ticker: ex. "TSLA"
+        @param historical: get historical ratings
+        @param limit
+        @return: JSON
+        ref: https://financialmodelingprep.com/developer/docs/companies-rating-free-api
+        """
+        route = "historical-rating" if historical else "rating"
+        route += f"/{ticker}"
+        if historical:
+            if not limit: limit = self.query_limit
+            route += f"?limit={limit}"
+        return self._api_request(route=route)
+
+    def get_dcf(self, ticker: str, historical: bool = False, period: str = "quarter", limit: int = None):
+        """
+        Get discounted cash flow for a company
+        @param ticker: ex. "TSLA"
+        @param historical: get historical DCF
+        @param limit
+        @return: JSON
+        ref: https://financialmodelingprep.com/developer/docs/#Company-Discounted-cash-flow-value
+        """
+        route = f"discounted-cash-flow/{ticker}"
+        if historical:
+            if not limit: limit = self.query_limit
+            route = f"historical-{route}?period={period}&limit={limit}"
         return self._api_request(route=route)
