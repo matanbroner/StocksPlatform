@@ -4,22 +4,26 @@ const database = require('../db/database');
 const Users = database.define('Users', {
     userName: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: false,
+        primaryKey: true,
     },
     email: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: false,
+        unique: true
     },
     password: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: false,
+        unique: true
     }
 });
 
 const Stocks = database.define('Stocks', {
     stockName: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: false,
+        primaryKey: true,
     },
     price: {
         type: Sequelize.DECIMAL,
@@ -28,13 +32,21 @@ const Stocks = database.define('Stocks', {
 });
 
 const UserStocks = database.define('UserStocks', {
+    userName: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        references: {
+            model: Users,
+            key: 'userName'
+        },
+    },
     stockName: {
         type: Sequelize.STRING,
-        allowNull: false
-    },
-    price: {
-        type: Sequelize.DECIMAL,
-        allowNull: false
+        allowNull: false,
+        references: {
+            model: Stocks,
+            key: 'stockName'
+        },
     }
 });
 
