@@ -11,11 +11,13 @@ Treat these limits as maximums and don’t generate unnecessary load.
 
 """
 
+DEFAULT_QUERY_LIMIT = 50
+
 
 class FinancialModelingPrepApi:
-    def __init__(self, api_key: str = None):
+    def __init__(self, api_key: str = None, query_limit: int=None):
         self.api_key = api_key or os.environ['FMP_API_KEY']
-        self.query_limit = 50
+        self.query_limit = query_limit or DEFAULT_QUERY_LIMIT
         if not self.api_key:
             self._raise_error("No valid FinancialModelingPrep API key provided")
 
@@ -188,3 +190,49 @@ class FinancialModelingPrepApi:
             if not limit: limit = self.query_limit
             route = f"historical-{route}?period={period}&limit={limit}"
         return self._api_request(route=route)
+
+    def get_batch_price(self, tickers: list):
+        """
+        Batch request prices for multiple companies
+        @param tickers: ex. ["TSLA", "AAPL"]
+        @return: JSON
+        ref: https://financialmodelingprep.com/developer/docs/companies-batch-request-free-api/
+        """
+        for ticker in tickers:
+            if not isinstance(ticker, str):
+                self._raise_error(f"Invalid ticker symbol {ticker} in batch price request")
+        str_tickers = ",".join(tickers)
+        route = f"quote/{str_tickers}"
+        return self._api_request(route=route)
+
+    def get_news(self, tickers: list=None, limit: int=None):
+        """
+        Get news for multiple companies or most recent news in general
+        @param tickers: ex. ["TSLA", "AAPL"]
+        @param limit
+        @return: JSON
+        ref: https://financialmodelingprep.com/developer/docs/#Stock-News
+        """
+        if not limit: limit = self.query_limit
+        route = f"stock_news?limit={limit}"
+        if tickers:
+            for ticker in tickers:
+                if not isinstance(ticker, str):
+                    self._raise_error(f"Invalid ticker symbol {ticker} in news request")
+            str_tickers = ",".join(tickers)
+            route += f"&tickers={str_tickers}"
+        return self._api_request(route=route)
+
+    def get_earnings_surprises(self, ticker: str):
+        """
+        Get earning surprises (ie. actual > estimate) for a company
+        @param ticker: ex. "TSLA"
+        @return: JSON
+        ref: https://financialmodelingprep.com/developer/docs/#Earnings-Surprises
+        """
+        route = f"earnings_surprises/{ticker}"
+        return self._api_request(route=route)
+
+
+
+
