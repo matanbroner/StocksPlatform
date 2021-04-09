@@ -18,7 +18,7 @@ const Users = database.define('Users', {
         unique: true
     }
 });
-
+/*
 const Stocks = database.define('Stocks', {
     stockName: {
         type: Sequelize.STRING,
@@ -30,10 +30,8 @@ const Stocks = database.define('Stocks', {
         allowNull: false
     }
 });
+*/
 
-
-module.exports = {
-    Users: Users,
-    Stocks: Stocks,
-    UserStocks: UserStocks,
-}
+module.exports = Users;
+    //Stocks: Stocks,
+    //UserStocks: UserStocks,

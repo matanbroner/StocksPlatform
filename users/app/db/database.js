@@ -5,7 +5,6 @@ const sequelize = new Sequelize(
     process.env.PGUSER,
     process.env.PGPASSWORD,
     {
-        //host: process.env.PGHOST,
         host: 'pgsql_db',
         port: 5432,
         dialect: 'postgres',
@@ -14,5 +13,4 @@ const sequelize = new Sequelize(
     });
 
 
-//const sequelize = new Sequelize('postgres://admin:123456@pgsql_db:5432/StockPlatform');
 module.exports = sequelize;

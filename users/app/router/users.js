@@ -1,5 +1,5 @@
 const express = require('express');
-import { Users } from '../models/schemas'
+import { Users } from '../models/Users'
 
 const userRouter = express.Router();
 
