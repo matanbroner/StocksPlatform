@@ -1,5 +1,9 @@
 import os
-import sqlalchemy as db
+from sqlalchemy import create_engine, MetaData
+
+# init in init_db_connection
+db = None
+meta = None
 
 
 def generate_db_uri(
@@ -32,3 +36,10 @@ def generate_db_uri(
             raise RuntimeError(f"Incomplete DB URI component given: '{uri_key}'")
 
     return f"{driver}://{user}:{password}@{host}:{port}/{db}"
+
+
+def init_db_connection():
+    global db, meta
+    uri = generate_db_uri()
+    db = create_engine(uri)
+    meta = Met
