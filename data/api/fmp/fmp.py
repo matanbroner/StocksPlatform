@@ -233,6 +233,69 @@ class FinancialModelingPrepApi:
         route = f"earnings_surprises/{ticker}"
         return self._api_request(route=route)
 
+    def get_real_time_price(self, ticker: str):
+        """
+        Get real time price for a company's stock
+        @param ticker: ex. "TSLA"
+        @return: JSON
+        """
+        route = f"quote-short/{ticker}"
+        return self._api_request(route=route)
 
+    def get_historical_price(self, ticker: str, interval: str):
+        """
+        Get historical price data for a company's stock
+        @param ticker: ex. "TSLA"
+        @param interval: one of ["1m", "5m", "15m", "30m", "1h", "4h", "all"]
+        @return: JSON
+        """
+        if interval not in ["1m", "5m", "15m", "30m", "1h", "4h", "all"]:
+            self._raise_error(f"Interval {interval} is not valid in price request")
 
+        if interval[-1] == 'm':
+            interval = f"{interval}in"
+        elif interval[-1] == 'h':
+            interval = f"{interval}our"
 
+        if interval == "all":
+            route = f"historical-price-full/{ticker}"
+        else:
+            route = f"historical-chart/{interval}/{ticker}"
+
+        return self._api_request(route=route)
+
+    def get_most_active_stocks(self):
+        """
+        Get most active stocks
+        @return: JSON
+        """
+        route = "actives"
+        return self._api_request(route=route)
+
+    def get_most_gainer_stocks(self):
+        """
+        Get most gainer stocks
+        @return: JSON
+        """
+        route = "gainers"
+        return self._api_request(route=route)
+
+    def get_most_loser_stocks(self):
+        """
+        Get most loser stocks
+        @return: JSON
+        """
+        route = "losers"
+        return self._api_request(route=route)
+
+    def get_key_stocks(self):
+        """
+        Returns most active, gainer, and loser stocks in one call
+        Is atomic, if one call fail entire method raises an error
+        @return: JSON
+        """
+        stocks = {}
+        stocks["active"] = self.get_most_active_stocks()
+        stocks["gainers"] = self.get_most_gainer_stocks()
+        stocks["losers"] = self.get_most_loser_stocks()
+        return stocks
