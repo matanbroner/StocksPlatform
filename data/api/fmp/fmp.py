@@ -238,6 +238,7 @@ class FinancialModelingPrepApi:
         Get real time price for a company's stock
         @param ticker: ex. "TSLA"
         @return: JSON
+        ref: https://financialmodelingprep.com/developer/docs/#Stock-Price
         """
         route = f"quote-short/{ticker}"
         return self._api_request(route=route)
@@ -248,6 +249,7 @@ class FinancialModelingPrepApi:
         @param ticker: ex. "TSLA"
         @param interval: one of ["1m", "5m", "15m", "30m", "1h", "4h", "all"]
         @return: JSON
+        ref: https://financialmodelingprep.com/developer/docs/historical-stock-data-free-api
         """
         if interval not in ["1m", "5m", "15m", "30m", "1h", "4h", "all"]:
             self._raise_error(f"Interval {interval} is not valid in price request")
@@ -268,6 +270,7 @@ class FinancialModelingPrepApi:
         """
         Get most active stocks
         @return: JSON
+        ref: https://financialmodelingprep.com/developer/docs/#Most-Active-Stock-Companies
         """
         route = "actives"
         return self._api_request(route=route)
@@ -276,6 +279,7 @@ class FinancialModelingPrepApi:
         """
         Get most gainer stocks
         @return: JSON
+        ref: https://financialmodelingprep.com/developer/docs/#Most-Gainer-Stock-Companies
         """
         route = "gainers"
         return self._api_request(route=route)
@@ -284,6 +288,7 @@ class FinancialModelingPrepApi:
         """
         Get most loser stocks
         @return: JSON
+        ref: https://financialmodelingprep.com/developer/docs/#Most-Loser-Stock-Companies
         """
         route = "losers"
         return self._api_request(route=route)
