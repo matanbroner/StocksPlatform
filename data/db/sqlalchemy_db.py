@@ -1,18 +1,19 @@
 import os
-from sqlalchemy import create_engine, MetaData
+from sqlalchemy import create_engine
+from sqlalchemy.ext.declarative import declarative_base
 
 # init in init_db_connection
-db = None
-meta = None
+engine = None
+Base = None
 
 
 def generate_db_uri(
-        driver: str = "postgres",
-        user: str = None,
-        password: str = None,
-        host: str = None,
-        port: int = 5432,
-        db: str = None
+    driver: str = "postgres",
+    user: str = None,
+    password: str = None,
+    host: str = None,
+    port: int = 5432,
+    db: str = None,
 ):
     """
     Generate a database URI string with optional overrides for any env variable
@@ -22,7 +23,7 @@ def generate_db_uri(
     @param host
     @param port: default 5432
     @param db
-    @return:
+    @return: string URI
     """
     driver = os.getenv("DB_DRIVER") or driver
     user = os.getenv("DB_USER") or user
@@ -31,7 +32,12 @@ def generate_db_uri(
     port = os.getenv("DB_PORT") or port
     db = os.getenv("DB_NAME") or db
 
-    for uri_key, uri_val in [("user", user), ("password", password), ("host", host), ("db", db)]:
+    for uri_key, uri_val in [
+        ("user", user),
+        ("password", password),
+        ("host", host),
+        ("db", db),
+    ]:
         if uri_val == None:
             raise RuntimeError(f"Incomplete DB URI component given: '{uri_key}'")
 
@@ -39,7 +45,28 @@ def generate_db_uri(
 
 
 def init_db_connection():
-    global db, meta
+    """
+    Instantiates a singleton DB engine
+    """
+    global engine, Base
+    if engine != None:
+        return
     uri = generate_db_uri()
-    db = create_engine(uri)
-    meta = Met
+    engine = create_engine(uri)
+    Base = declarative_base()
+
+
+def create_table(table):
+    """
+    Generate table from declarative base definition
+    @param table: table which inherits from Base
+    """
+    global engine
+    if engine == None:
+        raise RuntimeError(
+            """
+        DB engine is None. 
+        Please run init_db_connection() before defining tables
+        """
+        )
+    table.__table__.create(bind=engine, checkfirst=True)
