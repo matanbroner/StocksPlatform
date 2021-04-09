@@ -31,24 +31,6 @@ const Stocks = database.define('Stocks', {
     }
 });
 
-const UserStocks = database.define('UserStocks', {
-    userName: {
-        type: Sequelize.STRING,
-        allowNull: false,
-        references: {
-            model: Users,
-            key: 'userName'
-        },
-    },
-    stockName: {
-        type: Sequelize.STRING,
-        allowNull: false,
-        references: {
-            model: Stocks,
-            key: 'stockName'
-        },
-    }
-});
 
 module.exports = {
     Users: Users,
