@@ -54,6 +54,7 @@ def init_db_connection():
     uri = generate_db_uri()
     engine = create_engine(uri)
     Base = declarative_base()
+    engine.connect()
 
 
 def create_table(table):

@@ -1,4 +1,4 @@
-from db.sqlalchemy_db import Base
+from db.sqlalchemy_db import Base, create_table
 from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
 from sqlalchemy.dialects.postgresql import UUID
 import uuid
@@ -23,3 +23,11 @@ class Stock(Base):
     ticker = Column(String)
     created_at = Column(DateTime, default=get_datettime)
     updated_at = Column(DateTime, default=get_datettime, onupdate=get_datettime)
+
+def instantiate_tables():
+    """
+    Define all tables, should be called only once
+    """
+    for table in [Stock]:
+        create_table(table)
+
