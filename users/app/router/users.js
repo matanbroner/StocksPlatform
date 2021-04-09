@@ -6,7 +6,7 @@ const userRouter = express.Router();
 app.use(express.json());
 
 //-------------------------
-userRouter.route('/login')               //Appending after the dishes/
+userRouter.route('/login')
 .get((req,res,next) => {
     res.end('Not Implemented');
 })
@@ -18,12 +18,6 @@ userRouter.route('/login')               //Appending after the dishes/
 			password: req.body.password,
 		}
 	
-		try {
-			const user = await Users.create(USER_MODEL);
-			return res.status(201).json(user);
-		} catch (error) {
-			return res.status(500).json(error);
-		}
 	} catch (error) {
 		return res.status(400).json("Bad Request");
 	}
