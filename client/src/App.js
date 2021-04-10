@@ -1,56 +1,24 @@
 import React, { Component } from 'react';
-import { Header, Button, Image } from 'semantic-ui-react';
 import 'semantic-ui-css/semantic.min.css';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import './App.css';
+import Home from './Home';
+import Login from './Login';
+import Signup from './Signup';
+import Dashboard from './Dashboard';
 
-function Logo() {
-  return (
-    <div className="Logo">
-      Stocked (Logo)
-    </div>
-  )
-}
-
-function Message() {
-  return (
-    <Header size="large">
-      <div className="HomeMessage">
-        Welcome to the Site. Come check out our stuff!
-      </div>
-    </Header>
-  )
-}
-
-function SignUpButton() {
-  return (
-    <div className="Signup">
-      <Button basic inverted color="green">Sign Up</Button>
-    </div>
-  )
-}
-
-function LogInButton() {
-  return (
-    <div className="Login">
-      <Button basic inverted color="green">Log In</Button>
-    </div>
-  )
-}
-
-
+/* Central app file which holds our app router allowing us to switch between files */
 const App = () => {
   return (
     <div className="App">
-      <div className="HomeBackground">
-        <Header className="Header" as='h2'>
-          <Logo />
-          <Message />
-          <div className="Buttons">
-            <SignUpButton />
-            <LogInButton />
-          </div>
-        </Header>
-      </div>
+      <Router>
+        <Switch>
+          <Route path='/' exact component={Home} />
+          <Route path='/signup' component={Signup} />
+          <Route path='/login' component={Login} />
+          <Route path='/dashboard' component={Dashboard} />
+        </Switch>
+      </Router>
     </div>
   );
 }

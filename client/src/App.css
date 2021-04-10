@@ -1,3 +1,4 @@
+/* Home Styles */
 .Header {
   display: flex;
   justify-content: space-between;
@@ -28,6 +29,30 @@
   color: white;
   padding-top: 400px;
   text-align: center;
+}
+
+/* Login Styles */
+body {
+  background-color: #232931;
+}
+
+.login-form {
+}
+
+.LoginTitle {
+  text-align: center;
+}
+
+.login-email {
+  width: 300px;
+}
+
+.login-password {
+  width: 300px;
+}
+
+.login-button {
+  width: 300px;
 }
 
 /* @keyframes App-logo-spin {
