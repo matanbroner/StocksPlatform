@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
 import 'semantic-ui-css/semantic.min.css';
-import { Form, Button , Message, Header, Grid} from 'semantic-ui-react';
+import { Form, Button , Header, Grid} from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 
 function Login() {

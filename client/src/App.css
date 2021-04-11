@@ -74,6 +74,10 @@ body {
   font-size: 30px;
 }
 
+.project-buttons {
+  padding-top: 30px;
+}
+
 /* StockSearch Styles */
 .stock-body {
   padding-top: 25px;
