@@ -4,18 +4,18 @@ import 'semantic-ui-css/semantic.min.css';
 import { Link } from 'react-router-dom';
 import Navbar from './Navbar';
 
-function Dashboard() {
+function Settings() {
     return (
         <div>
             <Navbar />
 
-            <div className='dash-body'>
-                <div className='dash-title'>
-                    Welcome Back, [Name]!
+            <div className='settings-body'>
+                <div className='settings-title'>
+                    Settings
                 </div>
             </div>
         </div>
     )
 }
 
-export default Dashboard;
+export default Settings;

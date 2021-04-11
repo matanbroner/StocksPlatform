@@ -18,7 +18,7 @@ function Login() {
                         <Form.Input className='login-email' placeholder='E-mail Address' />
                         <Form.Input className='login-password' placeholder='Password' />
                         
-                        <Link to='/dashboard'>
+                        <Link to='/dashboard/home'>
                             <Button className='login-button'>Login</Button>
                         </Link>
                     </Form>

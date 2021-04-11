@@ -4,18 +4,18 @@ import 'semantic-ui-css/semantic.min.css';
 import { Link } from 'react-router-dom';
 import Navbar from './Navbar';
 
-function Dashboard() {
+function StockSearch() {
     return (
         <div>
             <Navbar />
 
-            <div className='dash-body'>
-                <div className='dash-title'>
-                    Welcome Back, [Name]!
+            <div className='stock-body'>
+                <div className='stock-title'>
+                    Stock Search
                 </div>
             </div>
         </div>
     )
 }
 
-export default Dashboard;
+export default StockSearch;

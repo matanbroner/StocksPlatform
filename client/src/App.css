@@ -36,12 +36,6 @@ body {
   background-color: #232931;
 }
 
-.LoginPage {
-}
-
-.LoginTitle {
-}
-
 .LoginMessage {
   text-align: center;
 }
@@ -56,6 +50,50 @@ body {
 
 .login-button {
   width: 300px;
+}
+
+/* Dashboard Styles */
+.dash-body {
+  padding-top: 25px;
+  padding-left: 175px;
+}
+
+.dash-title {
+  color: #eeeeee;
+  font-size: 30px;
+}
+
+/* Project Styles */
+.project-body {
+  padding-top: 25px;
+  padding-left: 175px;
+}
+
+.project-title {
+  color: #eeeeee;
+  font-size: 30px;
+}
+
+/* StockSearch Styles */
+.stock-body {
+  padding-top: 25px;
+  padding-left: 175px;
+}
+
+.stock-title {
+  color: #eeeeee;
+  font-size: 30px;
+}
+
+/* Settings Styles */
+.settings-body {
+  padding-top: 25px;
+  padding-left: 175px;
+}
+
+.settings-title {
+  color: #eeeeee;
+  font-size: 30px;
 }
 
 /* @keyframes App-logo-spin {
