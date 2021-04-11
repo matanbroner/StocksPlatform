@@ -36,10 +36,13 @@ body {
   background-color: #232931;
 }
 
-.login-form {
+.LoginPage {
 }
 
 .LoginTitle {
+}
+
+.LoginMessage {
   text-align: center;
 }
 

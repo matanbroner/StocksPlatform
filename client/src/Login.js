@@ -7,8 +7,9 @@ import { Link } from 'react-router-dom';
 function Login() {
     return (
         <body>
-                <div className='LoginPage'>
-                    <Header size='large' color='white' className='LoginTitle'>
+            <Grid columns={2}>
+                <Grid.Column width={5}>
+                    <Header size='large' className='LoginTitle'>
                         Log in to Stocked
                     </Header>
 
@@ -21,8 +22,13 @@ function Login() {
                             <Button className='login-button'>Login</Button>
                         </Link>
                     </Form>
-                </div>
-
+                </Grid.Column>
+                <Grid.Column width={10}>
+                    <Header size='huge' className='LoginMessage'>
+                        Welcome back!
+                    </Header>
+                </Grid.Column>
+            </Grid>
         </body>
     )
 }
