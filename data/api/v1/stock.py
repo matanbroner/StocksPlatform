@@ -5,8 +5,8 @@ from api import json_response
 
 router = Blueprint('stock_router', __name__)
 
-@stock_router.route('/', defaults={'stock_id': None}, methods=["GET"])
-@stock_router.route('/<stock_id>', methods=["GET"])
+@router.route('/', defaults={'stock_id': None}, methods=["GET"])
+@router.route('/<stock_id>', methods=["GET"])
 def get_stock(stock_id):
     session = create_session()
     try:
