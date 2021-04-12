@@ -46,8 +46,26 @@ class MediaStackApi:
         else:
             return body
 
-    def get_live_news(self):
+    def get_news(self, keywords: list = None, sources: list = None, categories: list = None, countries: list = None,
+                 sort: str = None, offset: int = 0, date: str = None):
         """
-        Get most recent news about a topic
-        @return:
+        Generic news fetching method, allows for live or historical news fetching
+        @param sources: ex. ["cnn", "-bbc"] (- excludes a source)
+        @param categories: ex. ["business", "-sports"] (- excludes a category)
+        @param countries: ex. ["au", "-us"] (- excludes a country)
+        @param date: ex. "2020-01-01" use YYYY-MM-DD
+        @param sort: one of ["published_desc" (default), "published_asc", "popularity"]
+        @param offset: ex. 100
+        @return: JSON
         """
+        query = {}
+        if keywords: query["keywords"] = keywords
+        if sources: query["sources"] = sources
+        if categories: query["categories"] = categories
+        if countries: query["countries"] = countries
+        if sort: query["sort"] = sort
+        if offset: query["offset"] = offset
+
+        # Note: using "date" causes historical news to be fetched!
+        if date: query["date"] = date
+        return self._api_request(query)
