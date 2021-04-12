@@ -32,8 +32,9 @@ userRouter.route('/sign-up')
 			}
 		});
 
+		//Could probably do userExists.username == newUsername to clarify
 		if(userExists.length > 0) {
-			res.status(401).json({"result":"failed"});
+			res.status(401).json({"result":"User with the username or email exists"});
 		}
 		else {
 
@@ -43,13 +44,13 @@ userRouter.route('/sign-up')
 				password: newPassword,
 			}
 
-			Users.create(newUser).then((result) => {	// result will essentially be the user fields
+			Users.create(newUser).then((result) => {
 				res.status(200).json({"result":"success"});
 			}).catch((err) => console.log(err));
 		}
 	
 	} catch (error) {
-		return res.status(400).json({"result":"failed"});
+		return res.status(400).json({"result":"Request has failed"});
 	}
 })
 .all((req,res,next) => {
@@ -80,7 +81,7 @@ userRouter.route('/login')
 		});
 
 		if(user.length == 0) {
-			res.status(401).json({"result":"failed"});
+			res.status(401).json({"result":"User does not exist"});
 		}
 		else{
 			if(await PasswordModule.compare(password, user[0].password)) {
@@ -93,12 +94,12 @@ userRouter.route('/login')
 				res.status(200).json({"result":"success", token: jwtToken});
 			}
 			else{
-				res.status(401).json({"result":"failed"});
+				res.status(401).json({"result":"Password is incorrect"});
 			}
 		}
 	
 	} catch (error) {
-		return res.status(400).json({"result":"failed somewhere during process"});
+		return res.status(400).json({"result":"Request has failed"});
 	}
 })
 .all(async(req,res,next) => {
