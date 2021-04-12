@@ -12,7 +12,7 @@ app.use(cors());
 app.use('/users', userRouter);
 
 app.get("/", (req, res) => {
-  res.send("OK");
+  res.send("Backend is working");
 });
 
 (async () => {
@@ -20,5 +20,3 @@ app.get("/", (req, res) => {
 })();
 
 app.listen(5001);
-
-
