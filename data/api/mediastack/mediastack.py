@@ -13,9 +13,11 @@ DEFAULT_QUERY_LIMIT = 50
 
 
 class MediaStackApi:
-    def __init__(self, api_key: str = None, query_limit: int = None):
+    def __init__(self, api_key: str = None, query_limit: int = None, use_https: bool = True):
         self.api_key = api_key or os.environ['MS_API_KEY']
         self.query_limit = query_limit or DEFAULT_QUERY_LIMIT
+        # free subscription does not allow for HTTPS
+        self.protocol = "https" if use_https else "http"
         if not self.api_key:
             self._raise_error("No valid MediaStack API key provided")
 
@@ -35,7 +37,7 @@ class MediaStackApi:
         @return: JSON or raise RuntimeError
         """
         query_string = f"access_key={self.api_key}&" + urlencode(query)
-        url = f"https://api.mediastack.com/v1/news?{query_string}"
+        url = f"{self.protocol}://api.mediastack.com/v1/news?{query_string}"
         response = requests.request(
             "GET",
             url=url
