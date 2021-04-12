@@ -29,11 +29,10 @@ class Thread(threading.Thread):
         """
         Called when thread is started.
         """
-        print("Searching " + self.src + "...")
 
         while True:
             source, date, content = self.src.retrieve_data()
-            print
+            print(source, date, content)
             #nlp = NLPUnit(source, date, context)
             thread_lock.acquire()
 

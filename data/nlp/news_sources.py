@@ -2,12 +2,13 @@ from datetime import datetime
 
 import json
 
-from api.fmp.fmp import FinancialModelingPrepApi as FMPApi  # this import doesn't work
+#from api.fmp.fmp import FinancialModelingPrepApi as FMPApi  # this import doesn't work
 from praw import Reddit
 
 class GeneralNewsData:
     def __init__(self):
-        self.api = FMPApi("key")
+        pass
+        #self.api = FMPApi("key")
 
     def retrieve_data(self):
         """
@@ -15,16 +16,16 @@ class GeneralNewsData:
         @return: src, date, content
         """
 
-        print(json.loads(self.api.get_news("AAPL")))
+        #print(json.loads(self.api.get_news("AAPL")))
 
         return 'source', 'date', 'content'
 
 class RedditData:
     def __init__(self, subreddit):
         self.api = Reddit(
-            client_id='',
-            client_secret='',
-            user_agent=''
+            client_id='ZCAs6e7Bd1-0xg',
+            client_secret='fKjfebDe3dWj3RZMNCCgTgfa7e5i5g',
+            user_agent='stocksplatform:update_id_later:v0'
         )
 
         self.subreddit = self.api.subreddit(subreddit)
