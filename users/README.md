@@ -42,7 +42,7 @@ docker ps
 
 To connect to the service
 ```
-docker exec -it pgsql_db psql -U admin postgres
+docker exec -it postgres psql -U stocks_admin postgres
 ```
 
 Connect to the database as the user "admin" and showcase schemas

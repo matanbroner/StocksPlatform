@@ -16,4 +16,4 @@ RUN npm install --silent
 COPY . ./
 
 # start app
-CMD ["node", "app/main.js"]
+CMD ["node", "main.js"]

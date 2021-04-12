@@ -1,8 +1,14 @@
+/*
+ * This is our Users table.
+ * We define key attributes of a user: username, password, email.
+ * We also define each constraint for each attribute.
+*/
+
 const Sequelize = require('sequelize');
 const database = require('../db/database');
 
 const Users = database.define('Users', {
-    userName: {
+    username: {
         type: Sequelize.STRING,
         allowNull: false,
         primaryKey: true,
@@ -15,23 +21,7 @@ const Users = database.define('Users', {
     password: {
         type: Sequelize.STRING,
         allowNull: false,
-        unique: true
     }
 });
-/*
-const Stocks = database.define('Stocks', {
-    stockName: {
-        type: Sequelize.STRING,
-        allowNull: false,
-        primaryKey: true,
-    },
-    price: {
-        type: Sequelize.DECIMAL,
-        allowNull: false
-    }
-});
-*/
 
 module.exports = Users;
-    //Stocks: Stocks,
-    //UserStocks: UserStocks,
