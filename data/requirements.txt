@@ -1,5 +1,6 @@
 flask
 pytest
+praw
 requests
 sqlalchemy
 uuid
