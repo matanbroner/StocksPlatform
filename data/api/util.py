@@ -17,6 +17,6 @@ def json_response(status_code: int, data=None, error=None):
         # best to not include None in response for UI's sake
         response["error"] = error or "" 
     else:
-        response["data"] = data
+        response["data"] = data or {}
     
     return status_code, response

@@ -1,7 +1,7 @@
 import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-
+from contextlib import contextmanager
 
 # init in init_db_connection
 engine = None
@@ -57,6 +57,8 @@ def init_db_connection():
     engine.connect()
     Session = sessionmaker(bind=engine)
 
+
+@contextmanager
 def create_session():
     global Session
     if Session == None:
@@ -66,8 +68,14 @@ def create_session():
         Please run init_db_connection() before defining tables
         """
         )
-    return Session()
-
+    session = Session()
+    try:
+        yield session
+        session.commit()
+    except:
+        session.rollback()
+    finally:
+        session.close()
 
 def create_table(table):
     """

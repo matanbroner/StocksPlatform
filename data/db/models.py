@@ -2,6 +2,7 @@ from db.sqlalchemy_db import create_table
 from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import validates
 import uuid
 import datetime
 
@@ -26,9 +27,13 @@ class Stock(Base):
     __tablename__ = "stock"
 
     id = p_key_column()
-    ticker = Column(String)
+    ticker = Column(String, unique=True, index=True, nullable=False)
     created_at = Column(DateTime, default=get_datettime)
     updated_at = Column(DateTime, default=get_datettime, onupdate=get_datettime)
+
+    @validates('ticker')
+    def convert_upper(self, key, value):
+        return value.upper()
 
 
 def instantiate_tables():
