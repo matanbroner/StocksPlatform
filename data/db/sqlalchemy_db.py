@@ -1,12 +1,10 @@
 import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy.ext.declarative import declarative_base
 
 
 # init in init_db_connection
 engine = None
-Base = None
 Session = None
 
 
@@ -51,13 +49,12 @@ def init_db_connection():
     """
     Instantiates a singleton DB engine
     """
-    global engine, Base, Session
+    global engine, Session
     if engine != None:
         return
     uri = generate_db_uri()
     engine = create_engine(uri)
     engine.connect()
-    Base = declarative_base()
     Session = sessionmaker(bind=engine)
 
 def create_session():

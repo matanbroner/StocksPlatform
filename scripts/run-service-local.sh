@@ -3,6 +3,13 @@
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 SERVICE=$1
 
+export DB_DRIVER=postgresql
+export DB_USER=stocks_admin
+export DB_PASSWORD=stocks_admin
+export DB_HOST=localhost
+export DB_PORT=5432
+export DB_NAME=stocks_db
+
 ALL_SERVICES=("client" "data" "users")
 
 usage(){
