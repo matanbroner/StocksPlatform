@@ -59,3 +59,15 @@ def create_stock(ticker: str):
             return get_stock_by_ticker(ticker=ticker)
         except Exception as e:
             raise e
+
+def delete_stock_by_id(id: str):
+    """
+    Delete a stock using a primary key ID
+    @param id: primary key
+    """
+    with create_session() as session:
+        stock = get_stock_by_id(id=id)
+        if not stock:
+            raise RuntimeError(f"Cannot delete nonexistent stock with ID {id}")
+        stock.delete()
+        session.commit()

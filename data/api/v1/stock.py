@@ -4,7 +4,8 @@ from db.handlers.stock_handler import (
     get_all_stocks,
     get_stock_by_id,
     get_stock_by_ticker,
-    create_stock
+    create_stock,
+    delete_stock_by_id
 )
 from api import json_response
 
@@ -61,6 +62,27 @@ def post_stock():
         return json_response(
             status_code=201,
             data=stock
+        )
+    except Exception as e:
+        return json_response(
+            status_code=400,
+            error=str(e)
+        )
+
+
+@router.route("/<stock_id>", methods=["DELETE"])
+def delete_stock(stock_id: str):
+    """
+    DELETE request to delete a stock by a primary key ID
+    @param stock_id: primary key
+
+    ex.
+        - DELETE http://localhost:5000/12
+    """
+    try:
+        delete_stock_by_id(id=stock_id)
+        return json_response(
+            status_code=200
         )
     except Exception as e:
         return json_response(
