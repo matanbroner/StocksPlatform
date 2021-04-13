@@ -33,7 +33,21 @@ class Stock(Base):
 
     @validates('ticker')
     def convert_upper(self, key, value):
+        # ensures that all tickers are inserted as uppercase (ex. "tsla" => "TSLA")
         return value.upper()
+
+    @property
+    def serialize(self):
+        """
+        Return JSOn serialized version of Stock instance
+        @return: JSON
+        """
+        return {
+            'id': self.id,
+            'ticker': self.ticker,
+            'created_at': self.created_at,
+            'updated_at': self.updated_at
+        }
 
 
 def instantiate_tables():

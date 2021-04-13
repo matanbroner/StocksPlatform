@@ -1,4 +1,4 @@
-from flask import Blueprint
+from flask import request, Blueprint
 from db import create_session
 from db.handlers.stock_handler import (
     get_all_stocks,
@@ -21,12 +21,14 @@ def get_stock(stock_id):
     @return: JSON
 
     ex.
-        - http://localhost:5000/stock       => returns all stocks
-        - http://localhost:5000/stock/12    => return single stock with ID 12 or None
+        - GET http://localhost:5000/stock       => returns all stocks
+        - GET http://localhost:5000/stock/12    => return single stock with ID 12 or None
     """
     try:
         if stock_id:
             data = get_stock_by_id(id=stock_id)
+            if not data:
+                raise RuntimeError(f"No stock exists with ID {stock_id}")
         else:
             data = get_all_stocks()
         return json_response(
@@ -36,10 +38,35 @@ def get_stock(stock_id):
 
     except Exception as e:
         return json_response(
-            status_code=500,
+            status_code=404,
             error=str(e)
         )
 
+
+@router.route("/", methods=["POST"])
+def post_stock():
+    """
+    POST request for creation of a new ticker associated stock
+    @return: JSON
+
+    ex.
+        - POST http://localhost:5000/stock
+    """
+    body = request.json
+    try:
+        ticker = body.get("ticker")
+        if not ticker:
+            raise RuntimeError("Must provide a ticker to create a new stock")
+        stock = create_stock(ticker=ticker)
+        return json_response(
+            status_code=201,
+            data=stock
+        )
+    except Exception as e:
+        return json_response(
+            status_code=400,
+            error=str(e)
+        )
 
 @router.route('/ticker/<ticker>', methods=["GET"])
 def get_stock_ticker(ticker: str):
@@ -50,10 +77,13 @@ def get_stock_ticker(ticker: str):
     @return: JSON
 
     ex.
-        - http://localhost:5000/ticker/TSLA
+        - GET http://localhost:5000/ticker/TSLA
     """
     try:
+        ticker = ticker.upper()
         data = get_stock_by_ticker(ticker=ticker)
+        if not data:
+            raise RuntimeError(f"No stock exists with ticker {ticker}")
         return json_response(
             status_code=200,
             data=data
@@ -61,6 +91,6 @@ def get_stock_ticker(ticker: str):
 
     except Exception as e:
         return json_response(
-            status_code=500,
+            status_code=404,
             error=str(e)
         )

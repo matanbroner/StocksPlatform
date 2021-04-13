@@ -72,8 +72,9 @@ def create_session():
     try:
         yield session
         session.commit()
-    except:
+    except Exception as e:
         session.rollback()
+        raise e
     finally:
         session.close()
 

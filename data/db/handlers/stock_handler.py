@@ -1,6 +1,6 @@
 from db import create_session
 from db.models import Stock
-
+from flask import jsonify
 
 def get_stock_by_id(id: str):
     """
@@ -10,7 +10,7 @@ def get_stock_by_id(id: str):
     """
     with create_session() as session:
         stock = session.get(Stock, id)
-        return stock
+        return stock.serialize if stock else None
 
 
 def get_stock_by_ticker(ticker: str):
@@ -22,10 +22,12 @@ def get_stock_by_ticker(ticker: str):
     ticker = ticker.upper()
     with create_session() as session:
         try:
-            stock = session.query(Stock).filter(ticker=ticker).one()
-            return stock
+            stock = session.query(Stock).filter(Stock.ticker == ticker).one()
+            return stock.serialize
         except Exception:
-            raise RuntimeError(f"No stock found with associated ticker {ticker}")
+            # no rows found, SA throws NoResultFound
+            # Note: .one() may throw MultipleResultsFound, but "ticker" is a unqiue column
+            return None
 
 
 def get_all_stocks():
@@ -35,7 +37,7 @@ def get_all_stocks():
     """
     with create_session() as session:
         stocks = session.query(Stock).all()
-        return stocks
+        return [stock.serialize for stock in stocks]
 
 
 def create_stock(ticker: str):
@@ -50,7 +52,10 @@ def create_stock(ticker: str):
             exists = get_stock_by_ticker(ticker=ticker)
             if exists:
                 raise RuntimeError(f"Stock with associated ticker {ticker} already exists")
-        except Exception:
             stock = Stock(ticker=ticker)
             session.add(stock)
-            return stock
+            # must commit before new stock can be fetched from DB table
+            session.commit()
+            return get_stock_by_ticker(ticker=ticker)
+        except Exception as e:
+            raise e
