@@ -7,7 +7,8 @@ from news_sources import GeneralNewsData, RedditData
 from nlp import NLPUnit
 
 NEWS_SOURCES = [GeneralNewsData(), RedditData("stocks")]
-SEARCH_RATES = [1/60, 1/60]
+SEARCH_RATES = [1 / 60, 1 / 60]
+
 
 class Thread(threading.Thread):
     """
@@ -33,12 +34,13 @@ class Thread(threading.Thread):
         while True:
             source, date, content = self.src.retrieve_data()
             print(source, date, content)
-            #nlp = NLPUnit(source, date, context)
+            # nlp = NLPUnit(source, date, context)
             thread_lock.acquire()
 
             thread_lock.release()
 
             time.sleep(60 / self.freq)
+
 
 thread_lock = threading.Lock()
 threads = []
@@ -55,5 +57,5 @@ for t in threads:
 for t in threads:
     t.join()
 
-#print(sentiment_data)
+# print(sentiment_data)
 print("Exiting Main Thread")

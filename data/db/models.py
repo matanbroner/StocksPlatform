@@ -1,5 +1,13 @@
 from db.sqlalchemy_db import create_table
-from sqlalchemy import Column, Integer, Boolean, String, DateTime, ForeignKey
+from sqlalchemy import (
+    Column,
+    Integer,
+    Boolean,
+    String,
+    DateTime,
+    ForeignKey,
+    UniqueConstraint,
+)
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import validates
@@ -16,8 +24,13 @@ def p_key_column(use_int: bool = False):
         return Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
 
 
-def f_key_column(column_attribute: str, use_int: bool = False, on_delete: str = "CASCADE", on_update: str = "CASCADE",
-                 nullable: bool = False):
+def f_key_column(
+        column_attribute: str,
+        use_int: bool = False,
+        on_delete: str = "CASCADE",
+        on_update: str = "CASCADE",
+        nullable: bool = False,
+):
     if use_int:
         type = Integer
     else:
@@ -25,7 +38,7 @@ def f_key_column(column_attribute: str, use_int: bool = False, on_delete: str = 
     return Column(
         type,
         ForeignKey(column_attribute, ondelete=on_delete, onupdate=on_update),
-        nullable=nullable
+        nullable=nullable,
     )
 
 
@@ -37,6 +50,7 @@ class Stock(Base):
     """
     Base stock table, used as an identifier in other tables
     """
+
     __tablename__ = "stock"
 
     id = p_key_column()
@@ -44,7 +58,7 @@ class Stock(Base):
     created_at = Column(DateTime, default=get_datettime)
     updated_at = Column(DateTime, default=get_datettime, onupdate=get_datettime)
 
-    @validates('ticker')
+    @validates("ticker")
     def convert_upper(self, key, value):
         # ensures that all tickers are inserted as uppercase (ex. "tsla" => "TSLA")
         return value.upper()
@@ -56,10 +70,10 @@ class Stock(Base):
         @return: JSON
         """
         return {
-            'id': self.id,
-            'ticker': self.ticker,
-            'created_at': self.created_at,
-            'updated_at': self.updated_at
+            "id": self.id,
+            "ticker": self.ticker,
+            "created_at": self.created_at,
+            "updated_at": self.updated_at,
         }
 
 
@@ -67,7 +81,9 @@ class Project(Base):
     """
     Base project table, used as identifier in other tables and allows activating/deactivating a project
     """
+
     __tablename__ = "project"
+    __table_args__ = UniqueConstraint("user_id", "project_name")
 
     id = p_key_column()
     project_name = Column(String)
@@ -77,6 +93,8 @@ class Project(Base):
 
     # TODO: uncomment this and update table definition once Ronald's changes are in
     # user_id = f_key_column(column_attribute="Users.id")
+    # dummy column for feature testing
+    user_id = Column(String)
 
     @property
     def serialize(self):
@@ -84,13 +102,12 @@ class Project(Base):
         Return JSON serialized version of Project instance
         @return: JSON
         """
-        # TODO: add user_id column once column is added to table
         return {
-            'id': self.id,
-            'project_name': self.project_name,
-            'is_active': self.is_active,
-            'created_at': self.created_at,
-            'updated_at': self.updated_at
+            "id": self.id,
+            "project_name": self.project_name,
+            "is_active": self.is_active,
+            "created_at": self.created_at,
+            "updated_at": self.updated_at,
         }
 
 
@@ -98,6 +115,7 @@ class ProjectStock(Base):
     """
     Relationship table allowing stocks to be linked to a project
     """
+
     __tablename__ = "project_stock"
 
     id = p_key_column()
@@ -112,9 +130,5 @@ def instantiate_tables():
     """
     Define all tables, should be called only once
     """
-    for table in [
-        Stock,
-        Project,
-        ProjectStock
-    ]:
+    for table in [Stock, Project, ProjectStock]:
         create_table(table)

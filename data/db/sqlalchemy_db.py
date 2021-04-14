@@ -78,6 +78,7 @@ def create_session():
     finally:
         session.close()
 
+
 def create_table(table):
     """
     Generate table from declarative base definition

@@ -6,6 +6,7 @@
 
 # for development purposes only, do not use in production
 FMP_API_KEY=e2d9d13e5b7ac7976216133f32d7f775
+PORT=5000
 
 python3 -m venv env
 source ./env/bin/activate

@@ -1,3 +1,4 @@
+black
 flask
 psycopg2
 pytest
