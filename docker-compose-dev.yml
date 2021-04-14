@@ -48,6 +48,7 @@ services:
     ports:
       - '5432:5432'
     environment:
+      - POSTGRES_DB=stocks_db
       - POSTGRES_USER=stocks_admin
       - POSTGRES_PASSWORD=stocks_admin
     volumes:
