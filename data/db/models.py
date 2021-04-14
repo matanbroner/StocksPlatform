@@ -1,5 +1,5 @@
 from db.sqlalchemy_db import create_table
-from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
+from sqlalchemy import Column, Integer, Boolean, String, DateTime, ForeignKey
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import validates
@@ -14,6 +14,19 @@ def p_key_column(use_int: bool = False):
         return Column(Integer, primary_key=True)
     else:
         return Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+
+
+def f_key_column(column_attribute: str, use_int: bool = False, on_delete: str = "CASCADE", on_update: str = "CASCADE",
+                 nullable: bool = False):
+    if use_int:
+        type = Integer
+    else:
+        type = UUID(as_uuid=True)
+    return Column(
+        type,
+        ForeignKey(column_attribute, ondelete=on_delete, onupdate=on_update),
+        nullable=nullable
+    )
 
 
 def get_datettime():
@@ -39,7 +52,7 @@ class Stock(Base):
     @property
     def serialize(self):
         """
-        Return JSOn serialized version of Stock instance
+        Return JSON serialized version of Stock instance
         @return: JSON
         """
         return {
@@ -50,9 +63,58 @@ class Stock(Base):
         }
 
 
+class Project(Base):
+    """
+    Base project table, used as identifier in other tables and allows activating/deactivating a project
+    """
+    __tablename__ = "project"
+
+    id = p_key_column()
+    project_name = Column(String)
+    is_active = Column(Boolean, default=True)
+    created_at = Column(DateTime, default=get_datettime)
+    updated_at = Column(DateTime, default=get_datettime, onupdate=get_datettime)
+
+    # TODO: uncomment this and update table definition once Ronald's changes are in
+    # user_id = f_key_column(column_attribute="Users.id")
+
+    @property
+    def serialize(self):
+        """
+        Return JSON serialized version of Project instance
+        @return: JSON
+        """
+        # TODO: add user_id column once column is added to table
+        return {
+            'id': self.id,
+            'project_name': self.project_name,
+            'is_active': self.is_active,
+            'created_at': self.created_at,
+            'updated_at': self.updated_at
+        }
+
+
+class ProjectStock(Base):
+    """
+    Relationship table allowing stocks to be linked to a project
+    """
+    __tablename__ = "project_stock"
+
+    id = p_key_column()
+    created_at = Column(DateTime, default=get_datettime)
+    updated_at = Column(DateTime, default=get_datettime, onupdate=get_datettime)
+
+    project_id = f_key_column(column_attribute="project.id")
+    stock_id = f_key_column(column_attribute="stock.id")
+
+
 def instantiate_tables():
     """
     Define all tables, should be called only once
     """
-    for table in [Stock]:
+    for table in [
+        Stock,
+        Project,
+        ProjectStock
+    ]:
         create_table(table)
