@@ -1,5 +1,4 @@
 from flask import request, Blueprint
-from db import create_session
 from db.handlers.stock_handler import (
     get_all_stocks,
     get_stock_by_id,
@@ -7,6 +6,7 @@ from db.handlers.stock_handler import (
     create_stock,
     delete_stock_by_id
 )
+from api.fmp import FinancialModelingPrepApi
 from api import json_response
 
 router = Blueprint('stock_router', __name__)
@@ -114,5 +114,33 @@ def get_stock_ticker(ticker: str):
     except Exception as e:
         return json_response(
             status_code=404,
+            error=str(e)
+        )
+
+
+@router.route("/search", methods=["GET"])
+def get_search_stock():
+    """
+    Search for a stock ticker using a query string using "keyword" argument
+    Can search using company name or ticker name
+    @return: JSON
+
+    ex.
+        - GET http://localhost:5000/stock/search?keyword=tesla
+        - GET http://localhost:5000/stock/search?keyword=aapl
+    """
+    try:
+        keyword = request.args.get("keyword")
+        if not keyword:
+            raise RuntimeError("Must include a 'keyword' query-string arg to search for companies/tickers")
+        api = FinancialModelingPrepApi()
+        data = api.search_query(keyword=keyword)
+        return json_response(
+            status_code=200,
+            data=data
+        )
+    except Exception as e:
+        return json_response(
+            status_code=400,
             error=str(e)
         )

@@ -15,7 +15,7 @@ DEFAULT_QUERY_LIMIT = 50
 
 
 class FinancialModelingPrepApi:
-    def __init__(self, api_key: str = None, query_limit: int=None):
+    def __init__(self, api_key: str = None, query_limit: int = None):
         self.api_key = api_key or os.environ['FMP_API_KEY']
         self.query_limit = query_limit or DEFAULT_QUERY_LIMIT
         if not self.api_key:
@@ -55,6 +55,17 @@ class FinancialModelingPrepApi:
             self._raise_error(body["Error Message"])
         else:
             return body
+
+    def search_query(self, keyword: str, limit: int):
+        """
+        Search for a ticker based on a keyword (can be a company name or ticker)
+        @param keyword: ex. "TSLA" or "General Motors"
+        @return: JSON
+        ref: https://financialmodelingprep.com/developer/docs/stock-ticker-symbol-lookup-api
+        """
+        if not limit: limit = self.query_limit
+        route = f"/search?query={keyword}&limit={limit}"
+        return self._api_request(route=route)
 
     def company_profile(self, ticker: str):
         """
@@ -205,7 +216,7 @@ class FinancialModelingPrepApi:
         route = f"quote/{str_tickers}"
         return self._api_request(route=route)
 
-    def get_news(self, tickers: list=None, limit: int=None):
+    def get_news(self, tickers: list = None, limit: int = None):
         """
         Get news for multiple companies or most recent news in general
         @param tickers: ex. ["TSLA", "AAPL"]
