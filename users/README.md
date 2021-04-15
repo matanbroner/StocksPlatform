@@ -1,8 +1,8 @@
+# User Service
 
-## Running an Image
-
+To specifically run the user service with a docker-compose.yml
 ```
-docker run -p 3001:3001 <the image name>
+docker-compose up -d --build users postgres
 ```
 
 ## Utilities
@@ -11,13 +11,13 @@ Verify that the containers/images have been built by using this command
 docker ps 
 ```
 
-To connect to the service
+View the database
 ```
 docker exec -it postgres psql -U stocks_admin postgres
 ```
 
-Connect to the database as the user "admin" and showcase schemas
+Change databases and showcase schema/tables
 ```
-\c StockPlatform
+\c postgres
 \dt
 ```
