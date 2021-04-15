@@ -1,5 +1,5 @@
-import React from 'react';
-import './App.css';
+import React, { Component } from 'react';
+import '../App.css';
 import 'semantic-ui-css/semantic.min.css';
 import { Header, Button } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
@@ -38,26 +38,28 @@ function Logo() {
     )
   }
 
-function Home() {
-    return (
-        <div className="HomeBackground">
-            <Header className="Header" as='h2'>
-                <Logo />
-                <Message />
+class Home extends Component {
+    render() {
+      return (
+          <div className="HomeBackground">
+              <Header className="Header" as='h2'>
+                  <Logo />
+                  <Message />
 
-                <div className="Buttons">
-                    <Link to='/signup'>
-                        <SignUpButton />
-                    </Link>
-                    
-                    <Link to='/login'>
-                        <LogInButton />
-                    </Link>
-                </div>
-            </Header>
-        </div>
+                  <div className="Buttons">
+                      <Link to='/signup'>
+                          <SignUpButton />
+                      </Link>
+                      
+                      <Link to='/login'>
+                          <LogInButton />
+                      </Link>
+                  </div>
+              </Header>
+          </div>
 
-    )
+      )
+    }
 }
 
 export default Home;
