@@ -2,12 +2,14 @@
 import threading
 import time
 
-from api.news_sources import GeneralNewsData, RedditData
+import pandas as pd
 
-from nlp import NLPUnit
+from nlp.news_sources import GeneralNewsData, RedditData
 
-NEWS_SOURCES = [GeneralNewsData(), RedditData("stocks")]
-SEARCH_RATES = [1/60, 1/60]
+from nlp.nlp import NLPUnit
+
+thread_lock = threading.Lock()
+threads = []
 
 class Thread(threading.Thread):
     """
@@ -31,31 +33,30 @@ class Thread(threading.Thread):
         """
 
         while True:
-            source, date, content = self.src.retrieve_data()
-            print(source, date, content)
-            #nlp = NLPUnit(source, date, context)
+            response_df = self.src.retrieve_data()
+
+            nlp = NLPUnit(self.src.get_stock(), response_df)
+            
             thread_lock.acquire()
 
             thread_lock.release()
 
             time.sleep(60 / self.freq)
 
+def main(fmp_key):
+    NEWS_SOURCES = [GeneralNewsData(fmp_key, "AAPL"), GeneralNewsData(fmp_key, "GME"),GeneralNewsData(fmp_key, "TSLA")]
 
-print("hello")
-thread_lock = threading.Lock()
-threads = []
+    # create new threads
+    for i in range(len(NEWS_SOURCES)):
+        threads.append(Thread(i + 1, NEWS_SOURCES[i], 1 / 60))
 
-# create new threads
-for i in range(len(NEWS_SOURCES)):
-    threads.append(Thread(i + 1, NEWS_SOURCES[i], SEARCH_RATES[i]))
+    # start new threads
+    for t in threads:
+        t.start()
 
-# start new threads
-for t in threads:
-    t.start()
+    # wait for all threads to complete
+    for t in threads:
+        t.join()
 
-# wait for all threads to complete
-for t in threads:
-    t.join()
-
-#print(sentiment_data)
-print("Exiting Main Thread")
+    #print(sentiment_data)
+    print("Exiting Main Thread")

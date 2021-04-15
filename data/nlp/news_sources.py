@@ -1,31 +1,48 @@
 from datetime import datetime
 
-import json
+import pandas as pd
 
-from fmp.fmp import FinancialModelingPrepApi as FMPApi
+from api.fmp.fmp import FinancialModelingPrepApi as FMPApi
 from praw import Reddit
 
 class GeneralNewsData:
-    def __init__(self):
-        pass
-        #self.api = FMPApi("key")
+    """
+    Grabs data about general news using the FMP api.
+    @param api: FMP api object
+    @param search_rate = searches per hour
+    """
+    def __init__(self, key, stock_ticker):
+        """
+        @param key: FMP api key
+        @param stock_ticker: stock ticker to search news about ex. TSLA
+        """
+        self.api = FMPApi(key)
+        self.stock = stock_ticker
+
+    def get_stock(self):
+        return self.stock
 
     def retrieve_data(self):
         """
         Retrieves data using FMPApi
-        @return: src, date, content
+        @return: DataFrame with columns source, date, content
         """
 
-        #print(json.loads(self.api.get_news("AAPL")))
+        json_response = self.api.get_news([self.stock])
 
-        return 'source', 'date', 'content'
+        # convert json response to DataFrame with appropriately named columns
+        df = pd.DataFrame(json_response, columns=['site', 'publishedDate', 'text'])
+        df['publishedDate'] = pd.to_datetime(df['publishedDate'], infer_datetime_format=True).dt.date
+        df = df.rename(columns={"site": "source", "publishedDate": "date", 'text': 'content'})
+        
+        return df
 
 class RedditData:
     def __init__(self, subreddit):
         self.api = Reddit(
-            client_id='ZCAs6e7Bd1-0xg',
-            client_secret='fKjfebDe3dWj3RZMNCCgTgfa7e5i5g',
-            user_agent='stocksplatform:update_id_later:v0'
+            client_id='',
+            client_secret='',
+            user_agent=''
         )
 
         self.subreddit = self.api.subreddit(subreddit)
@@ -33,7 +50,7 @@ class RedditData:
     def _unix_time_to_date(self, unix_time):
         """
         Converts UTC Unix time to YYYY-MM-DD format.
-        @param: unix_tie
+        @param unix_time
         @return: date
         """
         return datetime.fromtimestamp(unix_time).date()

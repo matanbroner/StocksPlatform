@@ -1,7 +1,19 @@
 import pandas as pd
 
 class NLPUnit:
-    def __init__(self):
+    """
+    Processes data retrieved from news sources.
+    @param df: DataFrame containing the following columns:
+        source
+        date
+        content
+        stock
+    """
+    def __init__(self, stock, data):
+        self.df = data
+        self.df['stock'] = stock
+        
+
         # seb
         self.stock = None
         self.source = None
