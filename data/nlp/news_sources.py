@@ -2,7 +2,7 @@ from datetime import datetime
 
 import json
 
-#from api.fmp.fmp import FinancialModelingPrepApi as FMPApi  # this import doesn't work
+from fmp.fmp import FinancialModelingPrepApi as FMPApi
 from praw import Reddit
 
 class GeneralNewsData:

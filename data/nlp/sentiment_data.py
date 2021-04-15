@@ -2,7 +2,7 @@
 import threading
 import time
 
-from news_sources import GeneralNewsData, RedditData
+from api.news_sources import GeneralNewsData, RedditData
 
 from nlp import NLPUnit
 
@@ -40,6 +40,8 @@ class Thread(threading.Thread):
 
             time.sleep(60 / self.freq)
 
+
+print("hello")
 thread_lock = threading.Lock()
 threads = []
 

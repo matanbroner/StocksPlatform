@@ -15,11 +15,12 @@ DEFAULT_QUERY_LIMIT = 50
 
 
 class FinancialModelingPrepApi:
-    def __init__(self, api_key: str = None, query_limit: int=None):
+    def __init__(self, api_key: str = None, query_limit: int = None):
         self.api_key = api_key or os.environ['FMP_API_KEY']
         self.query_limit = query_limit or DEFAULT_QUERY_LIMIT
         if not self.api_key:
-            self._raise_error("No valid FinancialModelingPrep API key provided")
+            self._raise_error(
+                "No valid FinancialModelingPrep API key provided")
 
     def _raise_error(self, msg: str):
         """
@@ -81,11 +82,13 @@ class FinancialModelingPrepApi:
         ref: https://financialmodelingprep.com/developer/docs/financial-statement-free-api#Income-Statement
         """
         if statement_type not in ["income", "cash-flow", "balance-sheet"]:
-            self._raise_error(f"Statement type '{statement_type}' is not valid")
+            self._raise_error(
+                f"Statement type '{statement_type}' is not valid")
         statement_type += "-statement"
         if growth:
             statement_type += "-growth"
-        if not limit: limit = self.query_limit
+        if not limit:
+            limit = self.query_limit
         route = f"{statement_type}/{ticker}?period={period}&limit={limit}"
         if datatype:
             route += f"&datatype={datatype}"
@@ -103,7 +106,8 @@ class FinancialModelingPrepApi:
         @param datatype: use "csv" for downloadable file
         @return: JSON
         """
-        if not limit: limit = self.query_limit
+        if not limit:
+            limit = self.query_limit
         statement_types = ["income", "cash-flow", "balance-sheet"]
         statements = {}
         try:
@@ -130,7 +134,8 @@ class FinancialModelingPrepApi:
         if ttm:
             route += f"-ttm/{ticker}"
         else:
-            if not limit: limit = self.query_limit
+            if not limit:
+                limit = self.query_limit
             route += f"/{ticker}?period={period}&limit={limit}"
         return self._api_request(route=route)
 
@@ -143,7 +148,8 @@ class FinancialModelingPrepApi:
         @return: JSON
         ref: https://financialmodelingprep.com/developer/docs/#Company-Enterprise-Value
         """
-        if not limit: limit = self.query_limit
+        if not limit:
+            limit = self.query_limit
         route = f"enterprise-values/{ticker}?period={period}&limit={limit}"
         return self._api_request(route=route)
 
@@ -156,7 +162,8 @@ class FinancialModelingPrepApi:
         @return: JSON
         ref: https://financialmodelingprep.com/developer/docs/#Company-Financial-Growth
         """
-        if not limit: limit = self.query_limit
+        if not limit:
+            limit = self.query_limit
         route = f"financial-growth/{ticker}?period={period}&limit={limit}"
         return self._api_request(route=route)
 
@@ -172,7 +179,8 @@ class FinancialModelingPrepApi:
         route = "historical-rating" if historical else "rating"
         route += f"/{ticker}"
         if historical:
-            if not limit: limit = self.query_limit
+            if not limit:
+                limit = self.query_limit
             route += f"?limit={limit}"
         return self._api_request(route=route)
 
@@ -187,7 +195,8 @@ class FinancialModelingPrepApi:
         """
         route = f"discounted-cash-flow/{ticker}"
         if historical:
-            if not limit: limit = self.query_limit
+            if not limit:
+                limit = self.query_limit
             route = f"historical-{route}?period={period}&limit={limit}"
         return self._api_request(route=route)
 
@@ -200,12 +209,13 @@ class FinancialModelingPrepApi:
         """
         for ticker in tickers:
             if not isinstance(ticker, str):
-                self._raise_error(f"Invalid ticker symbol {ticker} in batch price request")
+                self._raise_error(
+                    f"Invalid ticker symbol {ticker} in batch price request")
         str_tickers = ",".join(tickers)
         route = f"quote/{str_tickers}"
         return self._api_request(route=route)
 
-    def get_news(self, tickers: list=None, limit: int=None):
+    def get_news(self, tickers: list = None, limit: int = None):
         """
         Get news for multiple companies or most recent news in general
         @param tickers: ex. ["TSLA", "AAPL"]
@@ -213,12 +223,14 @@ class FinancialModelingPrepApi:
         @return: JSON
         ref: https://financialmodelingprep.com/developer/docs/#Stock-News
         """
-        if not limit: limit = self.query_limit
+        if not limit:
+            limit = self.query_limit
         route = f"stock_news?limit={limit}"
         if tickers:
             for ticker in tickers:
                 if not isinstance(ticker, str):
-                    self._raise_error(f"Invalid ticker symbol {ticker} in news request")
+                    self._raise_error(
+                        f"Invalid ticker symbol {ticker} in news request")
             str_tickers = ",".join(tickers)
             route += f"&tickers={str_tickers}"
         return self._api_request(route=route)
@@ -252,7 +264,8 @@ class FinancialModelingPrepApi:
         ref: https://financialmodelingprep.com/developer/docs/historical-stock-data-free-api
         """
         if interval not in ["1m", "5m", "15m", "30m", "1h", "4h", "all"]:
-            self._raise_error(f"Interval {interval} is not valid in price request")
+            self._raise_error(
+                f"Interval {interval} is not valid in price request")
 
         if interval[-1] == 'm':
             interval = f"{interval}in"
