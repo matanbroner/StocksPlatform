@@ -13,7 +13,6 @@ class NLPUnit:
         self.df = data
         self.df['stock'] = stock
         
-
         # seb
         self.stock = None
         self.source = None
@@ -27,9 +26,6 @@ class NLPUnit:
 
         # seb
         self.sentiment = None
-
-
-    "Apple being sued for workplace discrimination."
 
     def determine_category(self, text):
         """
