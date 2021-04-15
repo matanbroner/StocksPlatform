@@ -12,7 +12,7 @@ class NLPUnit:
     def __init__(self, stock, data):
         self.df = data
         self.df['stock'] = stock
-        
+
         # seb
         self.stock = None
         self.source = None

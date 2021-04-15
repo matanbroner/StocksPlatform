@@ -36,19 +36,21 @@ class Thread(threading.Thread):
             response_df = self.src.retrieve_data()
 
             nlp = NLPUnit(self.src.get_stock(), response_df)
-            
+
             thread_lock.acquire()
 
             thread_lock.release()
 
             time.sleep(60 / self.freq)
 
-def main(fmp_key):
-    NEWS_SOURCES = [GeneralNewsData(fmp_key, "AAPL"), GeneralNewsData(fmp_key, "GME"),GeneralNewsData(fmp_key, "TSLA")]
+def main(fmp_key, news_sources):
+    sources = []
+    for source in news_sources:
+        sources.append(GeneralNewsData(fmp_key, source))
 
     # create new threads
-    for i in range(len(NEWS_SOURCES)):
-        threads.append(Thread(i + 1, NEWS_SOURCES[i], 1 / 60))
+    for i in range(len(sources)):
+        threads.append(Thread(i + 1, sources[i], 1 / 60))
 
     # start new threads
     for t in threads:
