@@ -21,13 +21,8 @@ def get_stock_by_ticker(ticker: str):
     """
     ticker = ticker.upper()
     with create_session() as session:
-        try:
-            stock = session.query(Stock).filter(Stock.ticker == ticker).one()
-            return stock.serialize
-        except Exception:
-            # no rows found, SA throws NoResultFound
-            # Note: .one() may throw MultipleResultsFound, but "ticker" is a unqiue column
-            return None
+        stock = session.query(Stock).filter(Stock.ticker == ticker).first()
+        return stock.serialize if stock else None
 
 
 def get_all_stocks():

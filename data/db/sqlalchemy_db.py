@@ -60,6 +60,13 @@ def init_db_connection():
 
 @contextmanager
 def create_session():
+    """
+    Creates and returns a session
+    Uses contextlib's contextmanager decorator to allow for generator syntax:
+    with create_session() as session:
+        ...etc.
+    @return: active session
+    """
     global Session
     if Session == None:
         raise RuntimeError(
