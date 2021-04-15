@@ -1,10 +1,11 @@
 import os
 from sqlalchemy import create_engine
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker
+from contextlib import contextmanager
 
 # init in init_db_connection
 engine = None
-Base = None
+Session = None
 
 
 def generate_db_uri(
@@ -48,14 +49,34 @@ def init_db_connection():
     """
     Instantiates a singleton DB engine
     """
-    global engine, Base
+    global engine, Session
     if engine != None:
         return
     uri = generate_db_uri()
     engine = create_engine(uri)
-    Base = declarative_base()
     engine.connect()
+    Session = sessionmaker(bind=engine)
 
+
+@contextmanager
+def create_session():
+    global Session
+    if Session == None:
+        raise RuntimeError(
+            """
+        Session Maker is None. 
+        Please run init_db_connection() before defining tables
+        """
+        )
+    session = Session()
+    try:
+        yield session
+        session.commit()
+    except Exception as e:
+        session.rollback()
+        raise e
+    finally:
+        session.close()
 
 def create_table(table):
     """
