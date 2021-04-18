@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import '../App.css';
 import 'semantic-ui-css/semantic.min.css';
 import { Button } from 'semantic-ui-react';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 import Navbar from './Navbar';
 
 class Project extends Component {

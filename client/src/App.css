@@ -31,6 +31,31 @@
   text-align: center;
 }
 
+/* SignUp Styles */
+.signup {
+  padding-top: 200px;
+}
+
+.SignupTitle {
+  text-align: center;
+}
+
+.signup-user {
+  width: 375px;
+}
+
+.signup-email {
+  width: 375px;
+}
+
+.signup-password {
+  width: 375px;
+}
+
+.signup-button {
+  width: 375px;
+}
+
 /* Login Styles */
 body {
   background-color: #232931;

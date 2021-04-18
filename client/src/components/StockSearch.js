@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import '../App.css';
 import 'semantic-ui-css/semantic.min.css';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 import Navbar from './Navbar';
 
 class StockSearch extends Component {

@@ -4,8 +4,26 @@ import 'semantic-ui-css/semantic.min.css';
 import { Link } from 'react-router-dom';
 import { Menu, Button, Input, Icon } from 'semantic-ui-react';
 import Navbar from './Navbar';
+import axios from 'axios';
 
 class Dashboard extends Component {
+    componentDidMount() {
+        const config = {
+            headers: {
+                Authorization: 'Bearer ' + localStorage.getItem('token')
+            }
+        }
+
+        axios.get('user', config).then(
+            res => {
+                console.log(res);
+            },
+            err => {
+                console.log(err);
+            }
+        )
+    }
+
     render() {
         return (
             <div>
