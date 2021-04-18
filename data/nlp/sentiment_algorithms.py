@@ -1,7 +1,5 @@
 from nltk.sentiment import SentimentIntensityAnalyzer
 import nltk
-from textblob import TextBlob
-from nltk.tokenize import TabTokenizer
 from nltk.tag import pos_tag
 from nltk.stem.wordnet import WordNetLemmatizer
 from nltk.corpus import stopwords
@@ -14,31 +12,6 @@ from statistics import mean
 class SentimentAlgorithms:
     def __init__(self):
         pass
-
-
-
-    def most_common_words(txt:str) -> {}:
-        """
-        Returns a dictionary of the top 3 most common words
-        @params str (article)
-        @return dict(str,int)
-        """
-        words: list[str] = nltk.word_tokenize(txt)
-        fd = nltk.FreqDist(w.lower() for w in words)
-        return fd.most_common(3)
-
-    def most_common_trigrams(txt:str)->[]:
-        """
-        Return the most common trigrams, which are frequent three-word combinations
-        @params: str
-        @return list of dictionaries
-        """
-        words = [w for w in nltk.word_tokenize(txt) if w.isalpha()]
-        finder = nltk.collocations.TrigramCollocationFinder.from_words(words)
-        return finder.ngram_fd.most_common(2)
-    
-
-
     """
     fucntion that normalizes the words of article for better analisys
     for example being is turn to be and did turn to do
