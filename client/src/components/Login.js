@@ -14,7 +14,7 @@ class Login extends Component {
             errorMessage: '',
             successMessage: ''
         }
-    }
+    };
 
     changeEmail(e) {
         this.setState({ email: e.target.value })
@@ -29,11 +29,13 @@ class Login extends Component {
             this.setState({
                 errorMessage: 'Missing Email or Password'
             })
+            console.log('Invalid Email or Password');
         }
         else {
             this.setState({
                 successMessage: 'Welcome username!'
             })
+            console.log('Welcome!');
         }
         console.log(this.state.email);
         console.log(this.state.password);
@@ -76,14 +78,14 @@ class Login extends Component {
                             <Form.Button 
                             className="login-button" 
                             content="Login" 
-                            onClick={() => this.login()}/>
+                            onClick={()=>this.login()}/>
                         </Link>
                     </Form>
                 </Grid.Column>
 
                 <Grid.Column width={10}>
                     <Header size='huge' className='LoginMessage'>
-                        Welcome back!
+                        Stock Trading Simplified
                     </Header>
                 </Grid.Column>
             </Grid>
