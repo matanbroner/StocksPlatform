@@ -14,8 +14,7 @@ class Signup extends Component {
             username: '',
             email: '',
             password: '',
-            errorMessage: '',
-            successMessage: ''
+            check: ''
         }
     };
 
@@ -47,6 +46,10 @@ class Signup extends Component {
         this.setState({ password: e.target.value })
     }
 
+    handleCheck(e) {
+        this.setState({ check: e.target.value })
+    }
+
     submit(e) {
         if(this.state.email === undefined || this.state.email === '' || this.state.password === undefined || this.state.password === "") {
             this.setState({
@@ -75,71 +78,84 @@ class Signup extends Component {
 
     render() {
         return (
-            <Container>
                 <div className="signup">
-                    <Grid className="center aligned">
+                    <Grid className="centered middle">
 
-                        <Form onSubmit={ this.handleSubmit } className='signup-form' >
-                            <Header size='huge' className='SignupTitle'>
-                                Sign Up
-                            </Header>
+                        <Container className="signup-container">
+                            <Form onSubmit={ this.handleSubmit } className='signup-form' >
+                                <div className='SignupTitle'>
+                                    Sign Up
+                                </div>
 
-                            <Form.Group>
-                                <Form.Field>
-                                    <label>First Name</label>
-                                    <input 
-                                    placeholder='First Name'
-                                    value={this.state.firstname}
-                                    onChange={(e)=>this.handleFirstName(e)}
-                                    />
-                                </Form.Field>
-                                <Form.Field>
-                                    <label>Last Name</label>
-                                    <input 
-                                    placeholder='Last Name' 
-                                    value={this.state.lastname}
-                                    onChange={(e)=>this.handleLastName(e)}
-                                    />
-                                </Form.Field>
-                            </Form.Group>
+                                <Form.Group className="signup-form">
+                                    <Form.Field>
+                                        <label>First Name</label>
+                                        <input 
+                                        placeholder='First Name'
+                                        value={this.state.firstname}
+                                        onChange={(e)=>this.handleFirstName(e)}
+                                        />
+                                    </Form.Field>
+                                    <Form.Field>
+                                        <label>Last Name</label>
+                                        <input 
+                                        placeholder='Last Name' 
+                                        value={this.state.lastname}
+                                        onChange={(e)=>this.handleLastName(e)}
+                                        />
+                                    </Form.Field>
+                                </Form.Group>
 
-                            {/* Add error messages later to check for invalid requests */}
-                            <Form.Input 
-                            label='Username' 
-                            className='signup-user' 
-                            placeholder='Username' 
-                            value={this.state.username}
-                            onChange={(e)=>this.handleUserName(e)}
-                            />
-                            <Form.Input 
-                            label='Email' 
-                            className='signup-email' 
-                            placeholder='E-mail Address'
-                            value={this.state.email}
-                            onChange={(e)=>this.handleEmail(e)}
-                            />
-                            <Form.Input 
-                            label='Password' 
-                            className='signup-password' 
-                            placeholder='Password' 
-                            value={this.state.password}
-                            onChange={(e)=>this.handlePassword(e)}
-                            />
-                            <Form.Field>
-                                <Checkbox label='I agree to the Terms and Conditions'></Checkbox>
-                            </Form.Field>
-                            
-                            <Link to='/dashboard/home'>
-                                <Form.Button 
-                                className="signup-button" 
-                                content="Create Account" 
-                                onClick={()=>this.submit()}
+                                {/* Add error messages later to check for invalid requests */}
+                                <Form.Input 
+                                label='Username' 
+                                className='signup-user' 
+                                placeholder='Username' 
+                                value={this.state.username}
+                                onChange={(e)=>this.handleUserName(e)}
                                 />
-                            </Link>
-                        </Form>
+                                <Form.Input 
+                                label='Email' 
+                                className='signup-email' 
+                                placeholder='E-mail Address'
+                                value={this.state.email}
+                                onChange={(e)=>this.handleEmail(e)}
+                                />
+                                <Form.Input 
+                                label='Password' 
+                                className='signup-password' 
+                                placeholder='Password' 
+                                value={this.state.password}
+                                onChange={(e)=>this.handlePassword(e)}
+                                />
+                                <Form.Field>
+                                    <Checkbox 
+                                    label='I agree to the Terms and Conditions' 
+                                    value={this.state.check}
+                                    onChange={(e)=>this.handleCheck(e)}>
+                                    </Checkbox>
+                                </Form.Field>
+                                
+                                <Link to='/dashboard/home'>
+                                    <Form.Button
+                                    color="teal" 
+                                    className="signup-button" 
+                                    content="Create Account"
+                                    size="large" 
+                                    onClick={()=>this.submit()}
+                                    disabled={(!this.state.firstname 
+                                        || !this.state.lastname 
+                                        || !this.state.email
+                                        || !this.state.username
+                                        || !this.state.password)
+                                        || this.state.check
+                                    }
+                                    />
+                                </Link>
+                            </Form>
+                        </Container>
                     </Grid>
                 </div>
-            </Container>
         )
     }
 }

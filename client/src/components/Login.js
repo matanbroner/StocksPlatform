@@ -78,7 +78,11 @@ class Login extends Component {
                             <Form.Button 
                             className="login-button" 
                             content="Login" 
-                            onClick={()=>this.login()}/>
+                            onClick={()=>this.login()}
+                            disabled={!this.state.email
+                                || !this.state.password
+                            }
+                            />
                         </Link>
                     </Form>
                 </Grid.Column>

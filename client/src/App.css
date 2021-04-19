@@ -32,12 +32,28 @@
 }
 
 /* SignUp Styles */
+.signup-container {
+  background-color: white;
+  border-radius: 15px;
+  padding-bottom: 40px;
+  width: 200px;
+}
+
 .signup {
-  padding-top: 200px;
+  padding-top: 170px;
 }
 
 .SignupTitle {
   text-align: center;
+  padding-top: 40px;
+  font-size: 37px;
+  padding-bottom: 40px;
+  font-weight: 600;
+}
+
+.signup-form {
+  display: inline-block;
+  text-align: left;
 }
 
 .signup-user {
@@ -53,7 +69,8 @@
 }
 
 .signup-button {
-  width: 375px;
+  padding-top: 20px;
+  text-align: center;
 }
 
 /* Login Styles */
