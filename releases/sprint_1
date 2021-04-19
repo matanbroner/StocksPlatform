@@ -1,0 +1,73 @@
+Sprint 1 Plan
+
+Product Name: Stocks Platform
+Team Name: BananaStocks
+Sprint Completion Date: April 20, 2021 (Wednesday)
+Revision Number: #1
+Revision Date: April 19, 2021
+
+Goal: The goal for this sprint is to have a usable UI that can allow users to login in and access the landing page; to also have research new API’s to get relevant stock data for our ML models.
+
+Task Listing (Organized by user stories): 
+
+Story points
+User story
+Time Estimate
+1
+As a customer, I should be able to type in the correct username and password to access my account through the login interface
+~2 hours
+1
+As a developer, I should have a UI that can be used by the customer to input their login info
+~2 hours
+1
+As a developer, I should have criteria for data about my news sources
+~1 hour
+1
+As a developer, I should be able to fetch news data
+~3 hours
+1
+As a developer, I should store user login information into a table
+~1 hour
+1
+As a developer, I should find a user’s login information from a table.
+~1 hour
+1
+As a customer, I should be able to create an account and input my information
+~1 hour
+
+
+
+Team Roles:
+Matan: Product Owner
+Sebastian: Backend Developer
+Ronald: Backend Developer
+AJ: Backend Developer
+Nathaniel: Frontend Developer
+
+Initial Task Assignment:
+Matan: 
+“As a developer, I should create an initial version of API for training data models to track stock prices/”
+Sebastian:
+“As a developer, I should make a centralized place for testing news headlines.”
+Ronald:
+“As a developer, I should store user login information into a table.”
+“As a developer, I should find a user’s login information from a table.”
+AJ:
+“As a developer, I should have criteria for data about my news sources.”
+“As a developer, I should be able to fetch news data.”
+Nathaniel: 
+“As a developer, I should have a UI that can be used by the customer to input their login info.”
+“As a customer, I should be able to create an account and input my information.”
+Initial Task: Create login Page & Landing Page
+
+Initial Burnup Chart:
+
+
+
+Initial Scrum Board:
+https://trello.com/b/L4nsGiS1/cse115a-project
+
+Scrum Times:
+Monday: 12:00pm-12:30pm
+Wednesday: 1:00pm-1:30pm
+Friday: 11pm-11:30pm
