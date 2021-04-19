@@ -1,14 +1,14 @@
-import React, { Component } from 'react';
+import React from 'react';
 import 'semantic-ui-css/semantic.min.css';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import './App.css';
-import Home from './Home';
-import Login from './Login';
-import Signup from './Signup';
-import Dashboard from './Dashboard';
-import Project from './Project';
-import StockSearch from './StockSearch';
-import Settings from './Settings';
+import Home from './components/Home';
+import Login from './components/Login';
+import Signup from './components/Signup';
+import Dashboard from './components/Dashboard';
+import Project from './components/Project';
+import StockSearch from './components/StockSearch';
+import Settings from './components/Settings';
 
 /* Central app file which holds our app router allowing us to switch between files */
 const App = () => {
