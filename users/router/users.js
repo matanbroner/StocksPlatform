@@ -84,11 +84,11 @@ userRouter.route('/login')
 			if(await PasswordModule.compare(password, user.password)) {
 				// Send JWT
 				var jwtToken = jwt.sign({
-					username: username,
-					email: email
+					user
 				}, process.env.tokenSecret, { expiresIn: process.env.tokenExpiration });
 
-				res.status(200).json({"data":"success", token: jwtToken});
+				res.setHeader('Authorization', jwtToken);
+				res.status(200).json({"data":"success"});
 			}
 			else{
 				res.status(401).json({"error":"Password is incorrect"});
