@@ -16,8 +16,9 @@ jwtRouter.route('/verify')
             res.status(403).json({"error":"Password is incorrect"});
         }
         else {
+            res.setHeader('Authorization', token); 
             res.status(200).json({
-                "data": 'success', token: decodedToken
+                "data": 'success'
             });
         }
 
