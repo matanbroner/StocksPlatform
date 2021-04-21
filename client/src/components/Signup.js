@@ -15,6 +15,7 @@ class Signup extends Component {
             email: '',
             password: '',
             confirm_password: '',
+            check: false,
             firstNameError: false,
             lastNameError: false,
             emailError: false,
@@ -52,8 +53,16 @@ class Signup extends Component {
         this.setState({ confirm_password: e.target.value })
     }
 
+    // need to fix check
     handleCheck(e) {
-        this.setState({ check: e.target.value })
+        if (this.state.check === false) {
+            this.setState({ check: true })
+            console.log("false");
+        }
+        else {
+            this.setState({ check: false })
+            console.log("true");
+        }
     }
 
     submit(e) {
@@ -178,7 +187,6 @@ class Signup extends Component {
                                 <Form.Field>
                                     <Checkbox 
                                     label='I agree to the Terms and Conditions' 
-                                    id='agree'
                                     onChange={(e)=>this.handleCheck(e)}>
                                     </Checkbox>
                                 </Form.Field>
@@ -204,6 +212,7 @@ class Signup extends Component {
                                         || !this.state.username
                                         || !this.state.password
                                         || !this.state.confirm_password
+                                        || !this.state.check
                                     }
                                     />
                                 {/* </Link> */}
