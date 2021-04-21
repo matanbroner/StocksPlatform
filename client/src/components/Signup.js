@@ -1,7 +1,7 @@
-import React, { Component, setState, useState } from 'react';
+import React, { Component } from 'react';
 import '../App.css';
 import 'semantic-ui-css/semantic.min.css';
-import { Form, Header, Checkbox, Grid, Container } from 'semantic-ui-react';
+import { Form, Checkbox, Grid, Container, Message } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
@@ -15,24 +15,21 @@ class Signup extends Component {
             email: '',
             password: '',
             confirm_password: '',
+            firstNameError: false,
+            lastNameError: false,
             emailError: false,
             passwordError: false,
             confirmPasswordError: false,
             formError: false,
-            createUserError: false
+            usernameError: false,
+            createUserError: false,
+            signUpSuccess: false
         }
     };
 
-    // handleInputChange(e) {
-    //     const target = e.target;
-    //     const name = target.name;
-    //     this.setState({
-    //         [name]: e.target.value
-    //     });
-    // };
-
     handleFirstName(e) {
         this.setState({ firstname: e.target.value })
+        // console.log(this.state.firstname);
     }
     
     handleLastName(e) {
@@ -52,7 +49,7 @@ class Signup extends Component {
     }
 
     handleConfirmPassword(e) {
-        this.setState({ password: e.target.value })
+        this.setState({ confirm_password: e.target.value })
     }
 
     handleCheck(e) {
@@ -60,39 +57,70 @@ class Signup extends Component {
     }
 
     submit(e) {
-        e.preventDefault();
-        let error = false;
-
-        if(this.state.email === undefined || this.state.email === '' || this.state.password === undefined || this.state.password === "") {
+        // Form Validation on submit
+        if(this.state.firstname === undefined || this.state.firstname === '') {
             this.setState({
-                errorMessage: 'Missing Email or Password'
+                firstNameError: true
             })
-            console.log('Invalid Email or Password');
+            console.log('Please put your first name');
         }
-        else {
+        if(this.state.lastname === undefined || this.state.lastname === '') {
             this.setState({
-                successMessage: 'Welcome username!'
+                lastNameError: true
             })
-            console.log('Welcome!');
+            console.log('Please put your last name');
         }
+        if(this.state.username === undefined 
+            || this.state.username === ""
+            || this.state.username.length < 3
+            || this.state.username.length > 15) {
+            this.setState({
+                usernameError: true,
+            })
+            console.log('Username must be 3 to 15 characters');
+        }
+        if(this.state.email === undefined 
+            || this.state.email === ""
+            || this.state.email.length < 3) {
+            this.setState({
+                emailError: true
+            })
+            console.log('Invalid Email');
+        }
+        if(this.state.password === undefined 
+            || this.state.password === ""
+            || this.state.password.length < 3
+            || this.state.password.length > 15) {
+            this.setState({
+                passwordError: true,
+            })
+            console.log('Password must be 3 to 15 characters');
+        }
+        if(this.state.password !== this.state.confirm_password) {
+            this.setState({
+                confirmPasswordError: true
+            })
+            console.log('Passwords do not match');
+        }
+        if(this.state.firstNameError === false 
+            && this.state.lastNameError === false 
+            && this.state.emailError === false
+            && this.state.passwordError === false
+            && this.state.confirmPasswordError === false
+            && this.state.formError === false
+            && this.state.usernameError === false
+            && this.state.createUserError === false) 
+            {
+                this.setState({
+                    signUpSuccess: true
+                })
+            }
     }
-    // handleSubmit = () => {
-    //     axios.post('/signup', data).then(
-    //         res => {
-    //             console.log(res);
-    //         }
-    //     ).catch(
-    //         err => {
-    //             console.log(err);
-    //         }
-    //     )
-    // };
 
     render() {
         return (
                 <div className="signup">
                     <Grid className="centered middle">
-
                         <Container className="signup-container">
                             <Form className='signup-form' >
                                 <div className='SignupTitle'>
@@ -107,6 +135,7 @@ class Signup extends Component {
                                         value={this.state.firstname}
                                         onChange={(e)=>this.handleFirstName(e)}
                                         />
+                                    
                                     </Form.Field>
                                     <Form.Field>
                                         <label>Last Name</label>
@@ -118,7 +147,6 @@ class Signup extends Component {
                                     </Form.Field>
                                 </Form.Group>
 
-                                {/* Add error messages later to check for invalid requests */}
                                 <Form.Input 
                                 label='Username' 
                                 className='signup-user' 
@@ -155,13 +183,21 @@ class Signup extends Component {
                                     </Checkbox>
                                 </Form.Field>
                                 
-                                <Link to='/dashboard/home'>
+                                {/* If registration is valid, route to Dashboard.js.
+                                Else, display errors. */}
+                                {/* <Link to='/dashboard/home'> */}
                                     <Form.Button
                                     color="teal" 
                                     className="signup-button" 
                                     content="Create Account"
-                                    size="large" 
+                                    size="large"
                                     onClick={()=>this.submit()}
+                                    error={this.state.firstNameError 
+                                        || this.state.lastNameError
+                                        || this.state.emailError
+                                        || this.state.passwordError
+                                        || this.state.confirmPasswordError
+                                        || this.state.usernameError}
                                     disabled={!this.state.firstname 
                                         || !this.state.lastname 
                                         || !this.state.email
@@ -170,8 +206,63 @@ class Signup extends Component {
                                         || !this.state.confirm_password
                                     }
                                     />
-                                </Link>
+                                {/* </Link> */}
                             </Form>
+                            
+                            {/* error toasters */}
+                            {this.state.emailError === true
+                                ?
+                                    <Message
+                                    className="email-error"
+                                    error
+                                    header="Invalid Email Address"
+                                    list={[
+                                        "Please enter a valid email address."
+                                    ]}
+                                    />
+                                :
+                                null
+                            } 
+                            {this.state.passwordError === true
+                                ?
+                                    <Message
+                                    className="password-error"
+                                    error
+                                    header="Invalid Password"
+                                    list={[
+                                        "Password must be 3 to 15 characters."
+                                    ]}
+                                    />
+                                :
+                                null
+                            } 
+                            {this.state.confirmPasswordError === true
+                                ?
+                                    <Message
+                                    className="confirm-password-error"
+                                    error
+                                    header="Passwords Don't Match"
+                                    list={[
+                                        "Passwords did not match. Please try again."
+                                    ]}
+                                    />
+                                :
+                                null
+                            } 
+                            {this.state.usernameError === true
+                                ?
+                                    <Message
+                                    className="username-error"
+                                    error
+                                    header="Invalid Username"
+                                    list={[
+                                        "Username must be 3 to 15 characters.",
+                                        "Username is taken"
+                                    ]}
+                                    />
+                                :
+                                null
+                            } 
                         </Container>
                     </Grid>
                 </div>

@@ -1,7 +1,7 @@
-import React, { Component, useState,} from 'react';
+import React, { Component, } from 'react';
 import '../App.css';
 import 'semantic-ui-css/semantic.min.css';
-import { Form, Button , Header, Grid} from 'semantic-ui-react';
+import { Form, Grid, Message} from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
@@ -11,8 +11,8 @@ class Login extends Component {
         this.state = {
             email: '',
             password: '',
-            errorMessage: '',
-            successMessage: ''
+            errorMessage: false,
+            successMessage: false
         }
     };
 
@@ -25,9 +25,13 @@ class Login extends Component {
     }
 
     login(e) {
-        if(this.state.email === undefined || this.state.email === '' || this.state.password === undefined || this.state.password === "") {
+        if(this.state.email === undefined 
+            || this.state.email === '' 
+            || this.state.password === undefined 
+            || this.state.password === ""
+            || this.state.password.length < 3) {
             this.setState({
-                errorMessage: 'Missing Email or Password'
+                errorMessage: true
             })
             console.log('Invalid Email or Password');
         }
@@ -88,19 +92,34 @@ class Login extends Component {
                                 </div>
                             </div>
                             
-                            <Link to='/dashboard/home'>
+                            {/* <Link to='/dashboard/home'> */}
                                 <Form.Button 
                                 size="large"
                                 className="login-button" 
                                 content="Login" 
                                 color="teal"
                                 onClick={()=>this.login()}
+                                error={this.state.errorMessage}
                                 disabled={!this.state.email
                                     || !this.state.password
                                 }
                                 />
-                            </Link>
+                            {/* </Link> */}
                         </Form>
+
+                        {this.state.errorMessage === true
+                            ?
+                                <Message
+                                className="login-error"
+                                error
+                                header="Invalid Email or Password"
+                                list={[
+                                    "Please put the correct email and password."
+                                ]}
+                                />
+                            :
+                            null
+                        } 
                     </div>
                 </Grid.Column>
 

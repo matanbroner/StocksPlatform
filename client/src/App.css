@@ -114,14 +114,16 @@
 
 .LoginMessage {
   color: #eeeeee;
-  font-size: 100px;
+  font-size: 60px;
   padding-top: 200px;
+  padding-right: 375px;
 }
 
 .LoginMessage2 {
   color: black;
-  font-size: 60px;
+  font-size: 45px;
   padding-top: 200px;
+  padding-left: 200px;
 }
 
 .login-column-1 {
