@@ -54,43 +54,64 @@ class Login extends Component {
 
     render() {
         return (
-            <Grid columns={2}>
-                <Grid.Column width={5}>
-                    <Header size='large' className='LoginTitle'>
-                        Log in to Stocked
-                    </Header>
+            <Grid columns={2} style={{height: '110vh'}}>
+                <Grid.Column style={{ height: "100%"}} width={4} className="login-column-1">
+                    <div className="first-column">
+                        <div className="login-logo">
+                            Logo
+                        </div>
 
-                    <Form onSubmit={ this.handleSubmit } className='login-form'>
-                        {/* Add error messages later to check for invalid requests */}
-                        <Form.Input 
-                        className='login-email' 
-                        placeholder='E-mail Address' 
-                        value={this.state.email}
-                        onChange={(e)=>this.changeEmail(e)}/>
+                        <div className='LoginTitle'>
+                            Log in
+                        </div>
 
-                        <Form.Input 
-                        className='login-password' 
-                        placeholder='Password'
-                        value={this.state.password} 
-                        onChange={(e)=>this.changePassword(e)}/>
-                        
-                        <Link to='/dashboard/home'>
-                            <Form.Button 
-                            className="login-button" 
-                            content="Login" 
-                            onClick={()=>this.login()}
-                            disabled={!this.state.email
-                                || !this.state.password
-                            }
-                            />
-                        </Link>
-                    </Form>
+                        <Form className='login-form'>
+                            {/* Add error messages later to check for invalid requests */}
+                            <Form.Input 
+                            size="large"
+                            className='login-email' 
+                            placeholder='E-mail Address' 
+                            value={this.state.email}
+                            onChange={(e)=>this.changeEmail(e)}/>
+
+                            <Form.Input 
+                            size="large"
+                            className='login-password' 
+                            placeholder='Password'
+                            value={this.state.password} 
+                            onChange={(e)=>this.changePassword(e)}/>
+
+                            <div className="no-account">
+                                Don't have an account?    
+                                <div className="go-to-sign">
+                                    Sign up!
+                                </div>
+                            </div>
+                            
+                            <Link to='/dashboard/home'>
+                                <Form.Button 
+                                size="large"
+                                className="login-button" 
+                                content="Login" 
+                                color="teal"
+                                onClick={()=>this.login()}
+                                disabled={!this.state.email
+                                    || !this.state.password
+                                }
+                                />
+                            </Link>
+                        </Form>
+                    </div>
                 </Grid.Column>
 
-                <Grid.Column width={10}>
-                    <Header size='huge' className='LoginMessage'>
+                <Grid.Column width={12} style={{ height: "100%"}} className="login-column-2">
+                    <div className='LoginMessage'>
                         Stock Trading Simplified
-                    </Header>
+                    </div>
+                    <div className="LoginMessage2">
+                        We help you get the best data on all your 
+                        stock needs.
+                    </div>
                 </Grid.Column>
             </Grid>
         )

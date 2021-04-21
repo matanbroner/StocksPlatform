@@ -14,7 +14,12 @@ class Signup extends Component {
             username: '',
             email: '',
             password: '',
-            check: ''
+            confirm_password: '',
+            emailError: false,
+            passwordError: false,
+            confirmPasswordError: false,
+            formError: false,
+            createUserError: false
         }
     };
 
@@ -46,11 +51,18 @@ class Signup extends Component {
         this.setState({ password: e.target.value })
     }
 
+    handleConfirmPassword(e) {
+        this.setState({ password: e.target.value })
+    }
+
     handleCheck(e) {
         this.setState({ check: e.target.value })
     }
 
     submit(e) {
+        e.preventDefault();
+        let error = false;
+
         if(this.state.email === undefined || this.state.email === '' || this.state.password === undefined || this.state.password === "") {
             this.setState({
                 errorMessage: 'Missing Email or Password'
@@ -82,7 +94,7 @@ class Signup extends Component {
                     <Grid className="centered middle">
 
                         <Container className="signup-container">
-                            <Form onSubmit={ this.handleSubmit } className='signup-form' >
+                            <Form className='signup-form' >
                                 <div className='SignupTitle'>
                                     Sign Up
                                 </div>
@@ -128,10 +140,17 @@ class Signup extends Component {
                                 value={this.state.password}
                                 onChange={(e)=>this.handlePassword(e)}
                                 />
+                                <Form.Input 
+                                label='Confirm Password' 
+                                className='signup-password-confirm' 
+                                placeholder='Confirm Password' 
+                                value={this.state.confirm_password}
+                                onChange={(e)=>this.handleConfirmPassword(e)}
+                                />
                                 <Form.Field>
                                     <Checkbox 
                                     label='I agree to the Terms and Conditions' 
-                                    value={this.state.check}
+                                    id='agree'
                                     onChange={(e)=>this.handleCheck(e)}>
                                     </Checkbox>
                                 </Form.Field>
@@ -143,12 +162,12 @@ class Signup extends Component {
                                     content="Create Account"
                                     size="large" 
                                     onClick={()=>this.submit()}
-                                    disabled={(!this.state.firstname 
+                                    disabled={!this.state.firstname 
                                         || !this.state.lastname 
                                         || !this.state.email
                                         || !this.state.username
-                                        || !this.state.password)
-                                        || this.state.check
+                                        || !this.state.password
+                                        || !this.state.confirm_password
                                     }
                                     />
                                 </Link>

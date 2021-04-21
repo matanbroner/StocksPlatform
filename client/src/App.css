@@ -36,7 +36,6 @@
   background-color: white;
   border-radius: 15px;
   padding-bottom: 40px;
-  width: 200px;
 }
 
 .signup {
@@ -74,12 +73,18 @@
 }
 
 /* Login Styles */
-body {
-  background-color: #232931;
+.login-logo {
+  color: teal;
+  font-size: 70px;
+  padding-top: 70px;
+  padding-bottom: 200px;
 }
-
 .LoginMessage {
   text-align: center;
+}
+
+.first-column {
+  padding-left: 30px;
 }
 
 .login-email {
@@ -88,10 +93,59 @@ body {
 
 .login-password {
   width: 300px;
+  padding-bottom: 5px;
+}
+
+.login-email {
+  width: 400px;
+  padding-bottom: 5px;
+}
+
+.login-password {
+  width: 400px;
+}
+
+.LoginTitle {
+  color: #eeeeee;
+  font-size: 35px;
+  padding-top: 40px;
+  padding-bottom: 25px;
+}
+
+.LoginMessage {
+  color: #eeeeee;
+  font-size: 100px;
+  padding-top: 200px;
+}
+
+.LoginMessage2 {
+  color: black;
+  font-size: 60px;
+  padding-top: 200px;
+}
+
+.login-column-1 {
+  background-color: #232931;
+}
+
+.login-column-2 {
+  background-color: teal;
 }
 
 .login-button {
-  width: 300px;
+  padding-top: 10px;
+  width: 100px;
+}
+
+.no-account {
+  display: flex;
+  justify-content: left;
+  color: #eeeeee;
+}
+
+.go-to-sign {
+  color: teal;
+  padding-left: 4px;
 }
 
 /* Dashboard Styles */
