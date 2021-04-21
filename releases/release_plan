@@ -1,10 +1,11 @@
 Release Plan
-Product Name: Stocks Project (to be updated later)
+
+Product Name: BananaStocks
 Team Name: Banana Stocks
-Release Name: 
-Release Date: 
-Revision Number: 0
-Revision Date: Apr 5, 2021
+Release Name: First Release
+Release Date: June 1st, 2021
+Revision Number: #0
+Revision Date: Apr 21th, 2021
 
 High level goals (listed in priority order)
 Have a login page for customers (i.e. username, password, sign-in button, title)
@@ -17,19 +18,18 @@ User stories
 Sprint 1 
 Story points
 User story
-1
+5
 As a customer, I should be able to type in the correct username and password to access my account through the login interface
-1
+2
 As a developer, I should have a UI that can be used by the customer to input their login info
-1
+2
 As a developer, I should have criteria for data about my news sources
-1
+5
 As a customer, I should be able to look at various news sources
-1
+3
 As a developer, I should store user login information into a table
-1
+8
 As a customer, I should be able to create an account and input my information
-
 
 
 Sprint 2
@@ -37,47 +37,52 @@ Story points
 User story
 2
 As a developer, I should develop an API endpoint to service a request from  a user to return their relevant stock information.
-2
+8
 As a customer, I should be able to interact with the landing page and see relevant stock data.
-1
+5
 As a developer, I should authenticate user requested stocks as valid through an API call
-1
+5
 As a developer, I should store the necessary data to analyze and present to the user
 
 
 Sprint 3
 Story points
 User story
-1
+5
 As a developer, I should organize our training data (articles, prices, etc) of stocks into datasets.
 3
 As a developer, I should train our NLP model.
-2
+3
 As a developer, I should implement several Open Authentication methods
-
-
-...
 
 
 Sprint 4
 Story points
 User story
-1
+3
 As a developer, I should be able to send a projected value of a stock when requested by the frontend
 3
 As a customer, I should be able to view the current projected price of a stock at some point into the future
 
 
-...
-
-
-
-
-
 Product Backlog
-Adding unit tests for storing login information endpoint
+
+Priority
+BananaStocks Backlog Items
+Story Point Estimate
+
+1
 Ensure proper validation for each user account, e.g. checking the username or email is not in the database.
+3
+
+2
 Begin devising table/schema for news items, including some basic algorithm for grouping sentiment to topic
+5
+
+3
+Adding unit tests for storing login information endpoint
+5
+
 
 
 Project presentation
