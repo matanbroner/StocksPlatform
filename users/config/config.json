@@ -1,0 +1,23 @@
+{
+  "development": {
+    "username": "stocks_admin",
+    "password": "stocks_admin",
+    "database": "postgres",
+    "host": "postgres",
+    "dialect": "postgres"
+  },
+  "test": {
+    "username": "stocks_admin",
+    "password": "stocks_admin",
+    "database": "postgres",
+    "host": "postgres",
+    "dialect": "postgres"
+  },
+  "production": {
+    "username": "stocks_admin",
+    "password": "stocks_admin",
+    "database": "postgres",
+    "host": "postgres",
+    "dialect": "postgres"
+  }
+}
