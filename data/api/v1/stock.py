@@ -14,7 +14,7 @@ router = Blueprint("stock_router", __name__)
 
 @router.route("/", defaults={"stock_id": None}, methods=["GET"])
 @router.route("/<stock_id>", methods=["GET"])
-def get_stock(stock_id):
+def get_stock(stock_id: str=None):
     """
     GET request for stocks
     Returns all stocks if no ID given in URL, or one stock by ID

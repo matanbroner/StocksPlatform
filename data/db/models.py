@@ -83,7 +83,7 @@ class Project(Base):
     """
 
     __tablename__ = "project"
-    __table_args__ = UniqueConstraint("user_id", "project_name")
+    __table_args__ = (UniqueConstraint("user_id", "project_name"), )
 
     id = p_key_column()
     project_name = Column(String)
