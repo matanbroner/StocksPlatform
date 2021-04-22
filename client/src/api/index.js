@@ -5,7 +5,7 @@ class ApiHandler {
     constructor(authToken = null) {
         // if mock explicitly set or null api token, mock all responses
         // this means we should never pass null if not mocking
-        if (process.env.REACT_ENV_API_MOCK === true || authToken === null) {
+        if (process.env.REACT_ENV_API_MOCK === true) {
             this.mock = true;
         } else {
             this.authToken = authToken;
@@ -62,5 +62,7 @@ class ApiHandler {
         return activeMethod(method, route.slice(routeIndex), data);
     }
 }
+
+let api = ApiHandler("123")
 
 export default ApiHandler
