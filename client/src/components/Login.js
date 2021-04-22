@@ -92,6 +92,8 @@ class Login extends Component {
                                 </div>
                             </div>
                             
+                             {/* If login is valid, route to Dashboard.js.
+                                Else, display errors. */}
                             {/* <Link to='/dashboard/home'> */}
                                 <Form.Button 
                                 size="large"
@@ -107,7 +109,7 @@ class Login extends Component {
                             {/* </Link> */}
                         </Form>
 
-                        {this.state.errorMessage === true
+                        {this.state.errorMessage
                             ?
                                 <Message
                                 className="login-error"

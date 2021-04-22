@@ -83,27 +83,27 @@ class Signup extends Component {
             || this.state.username === ""
             || this.state.username.length < 3
             || this.state.username.length > 15) {
-            this.setState({
-                usernameError: true,
-            })
-            console.log('Username must be 3 to 15 characters');
+                this.setState({
+                    usernameError: true,
+                })
+                console.log('Username must be 3 to 15 characters');
         }
         if(this.state.email === undefined 
             || this.state.email === ""
             || this.state.email.length < 3) {
-            this.setState({
-                emailError: true
-            })
-            console.log('Invalid Email');
+                this.setState({
+                    emailError: true
+                })
+                console.log('Invalid Email');
         }
         if(this.state.password === undefined 
             || this.state.password === ""
             || this.state.password.length < 3
             || this.state.password.length > 15) {
-            this.setState({
-                passwordError: true,
-            })
-            console.log('Password must be 3 to 15 characters');
+                this.setState({
+                    passwordError: true,
+                })
+                console.log('Password must be 3 to 15 characters');
         }
         if(this.state.password !== this.state.confirm_password) {
             this.setState({
@@ -116,15 +116,18 @@ class Signup extends Component {
             && this.state.emailError === false
             && this.state.passwordError === false
             && this.state.confirmPasswordError === false
-            && this.state.formError === false
-            && this.state.usernameError === false
-            && this.state.createUserError === false) 
+
+            && this.state.usernameError === false) 
             {
                 this.setState({
                     signUpSuccess: true
                 })
+                console.log("stuck in here");
             }
-    }
+        else {
+            console.log("doesn't work");
+        }
+    } 
 
     render() {
         return (
@@ -219,7 +222,7 @@ class Signup extends Component {
                             </Form>
                             
                             {/* error toasters */}
-                            {this.state.emailError === true
+                            {this.state.emailError
                                 ?
                                     <Message
                                     className="email-error"
@@ -230,9 +233,9 @@ class Signup extends Component {
                                     ]}
                                     />
                                 :
-                                null
+                                <Message hidden></Message>
                             } 
-                            {this.state.passwordError === true
+                            {this.state.passwordError
                                 ?
                                     <Message
                                     className="password-error"
@@ -243,9 +246,9 @@ class Signup extends Component {
                                     ]}
                                     />
                                 :
-                                null
+                                <Message hidden></Message>
                             } 
-                            {this.state.confirmPasswordError === true
+                            {this.state.confirmPasswordError
                                 ?
                                     <Message
                                     className="confirm-password-error"
@@ -256,9 +259,9 @@ class Signup extends Component {
                                     ]}
                                     />
                                 :
-                                null
+                                <Message hidden></Message>
                             } 
-                            {this.state.usernameError === true
+                            {this.state.usernameError
                                 ?
                                     <Message
                                     className="username-error"
@@ -270,7 +273,7 @@ class Signup extends Component {
                                     ]}
                                     />
                                 :
-                                null
+                                <Message hidden></Message>
                             } 
                         </Container>
                     </Grid>
