@@ -44,7 +44,8 @@ userRouter.route('/sign-up')
 			}
 
 			Models.Users.create(newUser).then((result) => {
-				res.status(200).json({"data":"success"});
+				delete newUser.password;
+				res.status(200).json({"data":newUser});
 			}).catch((err) => console.log(err));
 		}
 	
