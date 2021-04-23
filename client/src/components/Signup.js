@@ -102,8 +102,7 @@ class Signup extends Component {
           email,
           password
       } = this.state.form
-      let api = new ApiHandler()
-      api.post('users', 'users/sign-up', {}, {
+      ApiHandler.post('users', 'users/sign-up', {}, {
         username,
         email,
         password
@@ -126,7 +125,7 @@ class Signup extends Component {
           <Container className="signup-container">
             {this.state.error ? (
               <Message negative>
-                <Message.Header>Form Error</Message.Header>
+                <Message.Header>Signup Error</Message.Header>
                 <p>{this.state.error}</p>
               </Message>
             ) : null}
@@ -138,7 +137,7 @@ class Signup extends Component {
                   <label>First Name</label>
                   <input
                     placeholder="First Name"
-                    value={this.state.firstname}
+                    value={this.state.form.firstName}
                     onChange={(e) => this.updateForm("firstName", e)}
                   />
                 </Form.Field>
@@ -146,7 +145,7 @@ class Signup extends Component {
                   <label>Last Name</label>
                   <input
                     placeholder="Last Name"
-                    value={this.state.lastname}
+                    value={this.state.form.lastName}
                     onChange={(e) => this.updateForm("lastName", e)}
                   />
                 </Form.Field>
@@ -156,28 +155,28 @@ class Signup extends Component {
                 label="Username"
                 className="signup-user"
                 placeholder="Username"
-                value={this.state.username}
+                value={this.state.form.username}
                 onChange={(e) => this.updateForm("username", e)}
               />
               <Form.Input
                 label="Email"
                 className="signup-email"
                 placeholder="E-mail Address"
-                value={this.state.email}
+                value={this.state.form.email}
                 onChange={(e) => this.updateForm("email", e)}
               />
               <Form.Input
                 label="Password"
                 className="signup-password"
                 placeholder="Password"
-                value={this.state.password}
+                value={this.state.form.password}
                 onChange={(e) => this.updateForm("password", e)}
               />
               <Form.Input
                 label="Confirm Password"
                 className="signup-password-confirm"
                 placeholder="Confirm Password"
-                value={this.state.confirm_password}
+                value={this.state.form.confirmPassword}
                 onChange={(e) => this.updateForm("confirmPassword", e)}
               />
               <Form.Field>

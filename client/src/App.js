@@ -10,6 +10,8 @@ import Project from "./components/Project";
 import StockSearch from "./components/StockSearch";
 import Settings from "./components/Settings";
 
+import ApiHandler from './api'
+
 /* Central app file which holds our app router allowing us to switch between files */
 class App extends React.PureComponent {
   constructor(props) {
@@ -37,11 +39,15 @@ class App extends React.PureComponent {
             <Route path="/signup" component={Signup} />
             <Route
               path="/login"
-              component={
+              component={(props) => (
                 <Login
-                  setUser={(user) => this._updateGlobalState("user", user)}
+                  {...props}
+                  setUser={(user) => {
+                    this._updateGlobalState("user", user)
+                    ApiHandler.setToken(this.state.user.accessKey)
+                  }}
                 />
-              }
+              )}
             />
             <Route path="/dashboard/home" component={Dashboard} />
             <Route path="/dashboard/projects" component={Project} />

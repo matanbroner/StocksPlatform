@@ -148,6 +148,7 @@
 .go-to-sign {
   color: teal;
   padding-left: 4px;
+  cursor: pointer;
 }
 
 /* Dashboard Styles */

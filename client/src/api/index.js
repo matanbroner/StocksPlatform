@@ -2,13 +2,11 @@ import axios from "axios";
 import mockRoutes from "./mockRoutes";
 
 class ApiHandler {
-  constructor(authToken = null) {
+  constructor() {
     // if mock explicitly set or null api token, mock all responses
     // this means we should never pass null if not mocking
     if (process.env.REACT_ENV_API_MOCK === true) {
       this.mock = true;
-    } else {
-      this.authToken = authToken;
     }
     if (process.env.NODE_ENV === "production") {
       this.urlBase = `https://${process.env.REACT_ENV_DOMAIN}/api`;
@@ -16,6 +14,14 @@ class ApiHandler {
       this.urlBase = "http://localhost/api";
     }
   }
+
+  setToken(authToken){
+      this.authToken = authToken
+  }
+
+  revokeToken(){
+    this.authToken = null
+}
 
   get(service, route, headers = {}, data = {}) {
     return this._request("GET", service, route, headers, data);
@@ -76,4 +82,4 @@ class ApiHandler {
   }
 }
 
-export default ApiHandler;
+export default new ApiHandler();
