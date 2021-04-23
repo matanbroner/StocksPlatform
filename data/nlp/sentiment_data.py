@@ -31,17 +31,14 @@ class Thread(threading.Thread):
         """
         Called when thread is started.
         """
+        response_df = self.src.retrieve_data()
 
-        while True:
-            response_df = self.src.retrieve_data()
+        nlp = NLPUnit(self.src.get_stock(), response_df)
 
-            nlp = NLPUnit(self.src.get_stock(), response_df)
+        thread_lock.acquire()
+        # save data to db
+        thread_lock.release()
 
-            thread_lock.acquire()
-
-            thread_lock.release()
-
-            time.sleep(60 / self.freq)
 
 def main(fmp_key, news_sources):
     sources = []
@@ -60,5 +57,5 @@ def main(fmp_key, news_sources):
     for t in threads:
         t.join()
 
-    #print(sentiment_data)
     print("Exiting Main Thread")
+    return 1
