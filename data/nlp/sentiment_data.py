@@ -5,11 +5,11 @@ import time
 import pandas as pd
 
 from nlp.news_sources import GeneralNewsData, RedditData
-
 from nlp.nlp import NLPUnit
 
 thread_lock = threading.Lock()
 threads = []
+word_clouds = {}
 
 class Thread(threading.Thread):
     """
@@ -34,20 +34,17 @@ class Thread(threading.Thread):
         response_df = self.src.retrieve_data()
 
         nlp = NLPUnit(self.src.get_stock(), response_df)
-
-        thread_lock.acquire()
-        # save data to db
-        thread_lock.release()
+        word_clouds.setdefault(self.src.get_stock(), nlp.get_word_cloud())
 
 
-def main(fmp_key, news_sources):
+def main(fmp_key, stock_list):
     sources = []
-    for source in news_sources:
-        sources.append(GeneralNewsData(fmp_key, source))
+    for stock in stock_list:
+        sources.append(GeneralNewsData(fmp_key, stock))
 
     # create new threads
     for i in range(len(sources)):
-        threads.append(Thread(i + 1, sources[i], 1 / 60))
+        threads.append(Thread(i, sources[i], 1 / 60))
 
     # start new threads
     for t in threads:
@@ -56,6 +53,8 @@ def main(fmp_key, news_sources):
     # wait for all threads to complete
     for t in threads:
         t.join()
+
+    # word_clouds['AAPL'].show()
 
     print("Exiting Main Thread")
     return 1

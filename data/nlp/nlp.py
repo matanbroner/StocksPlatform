@@ -2,8 +2,8 @@ import pandas as pd
 import re
 import numpy as np
 
-import matplotlib.pyplot as plt
-from wordcloud import WordCloud
+import nlp.sentiment_algorithms as algos
+from nlp.word_cloud import NLPWordCloud
 
 class NLPUnit:
     """
@@ -16,7 +16,7 @@ class NLPUnit:
     """
     def __init__(self, stock, data):
         self.df = data
-
+        
         # seb
         self.stock = None
         self.source = None
@@ -31,22 +31,7 @@ class NLPUnit:
         # seb
         self.sentiment = None
 
-    def _print_word_cloud(self, image_url, word_list):
-        """
-        Generates a word cloud to more easily look at common words.
-        @param image_url: image url for shape/visual of word cloud.
-        @param word_list: words to be in word cloud
-        @return: None
-        """
-
-        wc = WordCloud(background_color='black', height=1500, width=4000)
-        wc.generate(word_list)
-
-        plt.figure(figsize=(10, 20))
-        plt.imshow(wc, interpolation='hamming')
-
-        plt.axis('off')
-        plt.show()
+        self._pre_process()
 
     def _remove_pattern(self, text, pattern):
         """
@@ -61,6 +46,17 @@ class NLPUnit:
             text = re.sub(i, '', text)
 
         return text
+
+    def _pre_process(self):
+        """
+        Handles the data pre-processing.
+        @return: None
+        """
+        self.df['clean title'] = np.vectorize(algos.clean_sentence)(self.df['title'])
+    
+    def get_word_cloud(self, image_url=None):
+        all_words_str = ' '.join(text for text in self.df['clean title'])
+        return NLPWordCloud(all_words_str, image_url)
 
     def determine_category(self, text):
         """

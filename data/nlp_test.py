@@ -25,7 +25,11 @@ class TestNewsSources(unittest.TestCase):
        
 class TestNLP(unittest.TestCase):
     def setUp(self):
-        pass
+        self.general_news = news.GeneralNewsData(API_KEY, 'AAPL')
+        self.nlp = nlp.NLPUnit('AAPL', self.general_news.retrieve_data())
+
+    def test_pre_processing(self):
+        self.assertEqual(1, 1)
 
 def run_tests():
     test_classes = [TestSentimentData, TestNewsSources, TestNLP]
