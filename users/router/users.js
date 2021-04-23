@@ -62,7 +62,7 @@ userRouter.route('/sign-up')
 		} catch (error) {
 			return res.status(400).json({
 				status: 400,
-				error: "Request has failed"
+				error: `Server error: ${error.toString()}`
 			});
 		}
 	})

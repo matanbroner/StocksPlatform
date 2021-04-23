@@ -10,6 +10,11 @@ services:
       - './data:/app'
     ports:
       - '5000:5000'
+    environment:
+      - DB_USER=stocks_admin
+      - DB_PASSWORD=stocks_admin
+      - DB_HOST=postgres
+      - DB_NAME=stocks_db
     depends_on: 
       - postgres
 
