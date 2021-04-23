@@ -1,0 +1,42 @@
+Sprint 1 Report
+
+Product Name: BananaStocks
+Team Name: Stocks Team
+Date: April 19th, 2020
+
+Actions to stop doing
+We want to stop having a lack of communication. This is the only real problem we had near the beginning of this sprint. Most of us are adjusting to working on a complex project like this, sometimes members are nervous to share their confusion. Our communication has improved as we have adjusted and become more confident in our product.
+
+Actions to start doing
+We want to start rotating taking notes during each of our team meetings so that we have a better record of what each team member is doing and we can better remember what we have discussed.
+
+Actions to keep doing
+We want to keep meeting for 15 minutes for 3x/week because it helps us keep in constant communication as well as allowing us to stay updated on each other’s progress.
+
+We want to keep trying to initiate a pull request once a week per each team member so that we are always making incremental progress that can be clearly seen and checked up on.
+
+Work completed/not completed
+User Stories Completed
+
+As a customer, I should be able to type in the correct username and password to access my account through the login interface
+As a developer, I should have a UI that can be used by the customer to input their login info
+As a developer, I should have criteria for data about my news sources
+As a customer, I should be able to look at sentiment about stocks from the news.
+As a developer, I should store user login information into a table
+As a customer, I should be able to create an account and input my information
+
+
+
+User Stories Not Completed
+None
+
+Work completion rate
+Total number of user stories completed during the prior sprint: 6 user stories completed
+Total number of estimated ideal work hours completed during the prior sprint: 30 hours
+Total number of days during the prior sprint: 14 days
+For the previous sprint, the user stories/day and ideal work hours/day figures should be reported: 
+1 user story/3 days 
+3 work hours/day
+The final sprint burnup chart for the previous sprint:
+On Google Doc: https://docs.google.com/document/d/13mn5JVv1wPGGdCy4NrysrZgRQ-Vsz9YK2uPxfFvtGXY/edit?usp=sharing
+
