@@ -1,6 +1,8 @@
 flask
 psycopg2
 pytest
+praw
 requests
 sqlalchemy
 uuid
+praw
