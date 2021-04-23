@@ -24,6 +24,7 @@ class GeneralNewsData:
     def _create_dataframe(self, json_data):
         """
         Creates and returns a DataFrame with the following columns:
+            stock
             source
             date
             title
@@ -33,6 +34,7 @@ class GeneralNewsData:
         """
         df = pd.DataFrame(json_data, columns=['site', 'publishedDate', 'title', 'text'])
         df['publishedDate'] = pd.to_datetime(df['publishedDate'], infer_datetime_format=True).dt.date
+        df.insert(0, 'stock', value=self.stock)
         return df.rename(columns={'site': 'source', 'publishedDate': 'date', 'text': 'content'})
 
     def get_stock(self):

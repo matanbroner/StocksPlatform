@@ -9,15 +9,13 @@ class NLPUnit:
     """
     Processes data retrieved from news sources.
     @param df: DataFrame containing the following columns:
+        stock
         source
         date
         content
-        stock
     """
     def __init__(self, stock, data):
         self.df = data
-        self.df['stock'] = stock
-        print(self.df)
 
         # seb
         self.stock = None
