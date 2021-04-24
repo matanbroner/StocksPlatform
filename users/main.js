@@ -4,19 +4,20 @@ const dotenv = require('dotenv');
 
 const userRouter = require("./router/users");
 const tokenRouter = require("./router/tokens");
-var passportConfig = require("./config/passport");
+const passport = require("passport");
 const oauthRouter = require("./router/oauth");
 
-// App
+require("./config/passport")
+
 const app = express();
-dotenv.config();
 
-
+app.use(passport.initialize());
 app.use(cors());
 app.use('/users', userRouter);
 app.use('/tokens', tokenRouter);
 app.use('/oauth', oauthRouter);
-//app.use(passportConfig);
+
+dotenv.config();
 
 app.get("/", (req, res) => {
   res.send("User Service API is running");

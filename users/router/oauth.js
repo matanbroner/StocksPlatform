@@ -16,8 +16,9 @@ oauthRouter.get('/login', passport.authenticate('google', { scope:
     [ 'email', 'profile' ] }
 ));
 
-oauthRouter.get('/login/success', (req, res) => {
+oauthRouter.get('/login/success', passport.authenticate('google'), (req, res) => {
     res.json({'result': 'success'})
+    //res.redirect();
 });
 
 module.exports = oauthRouter;

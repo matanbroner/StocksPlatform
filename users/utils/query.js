@@ -3,6 +3,9 @@ const { Op } = require("sequelize");
 const Models = require('../models');
 const Tokens = Models.Tokens;
 const moment = require('moment');
+const jwt = require('jsonwebtoken');
+
+const FORMAT = 'YYYY-MM-DD HH:mm:ss'
 
 /*
  * Check to see if any invalid tokens added to the Table has reached their expiration date.
@@ -12,7 +15,6 @@ const moment = require('moment');
 const removeTokens = async () => {
 
   const tokenTime = process.env.tokenExpirationTime;
-  const FORMAT = 'YYYY-MM-DD HH:mm:ss'
   const currentTime = moment().format(FORMAT)     // Already UTC?
   const expireTime = moment(currentTime).subtract(tokenTime, 'hours').toDate()
 
@@ -29,7 +31,7 @@ const removeTokens = async () => {
 
 /*
  * Queries the token table to see if a
- * token is been marked as invalid (due to user logout, etc)
+ * token has been marked as invalid (due to user logout, etc)
 */
 const inactiveToken = async (token) => {
 
@@ -46,12 +48,49 @@ Pass the refresh token to client, when their access token expires, they will pas
 The refresh token is essentially useless to the client as all the routes require a jwt.verify(accessToken)
 refresh token will only be used to say the user logged in validly, so we issue them an access token
 */
+const refreshToken = async (refreshToken) => {
+  jwt.verify(refreshToken, process.env.refreshTokenSecret, (error, decodedToken) => {
 
-const refreshToken = async (token) => {
+    if(error) {
+      //JsonWebTokenError, TokenExpiredError
+      console.log('Error validiating refresh token');
+      return "error";
+    }
+    else {
+      
+      var { id, username, email } = decodedToken; // Gets decodedToken.email .username .id
 
+      var accessToken = jwt.sign(
+        {
+          id,
+          username,
+          email,
+        },
+        process.env.tokenSecret,
+        {
+        expiresIn: process.env.tokenExpiration
+        }
+      );
+
+      return accessToken;
+    }
+
+  });
 };
 
 module.exports = {
   removeTokens,
-  inactiveToken
+  inactiveToken,
+  refreshToken
 }
+
+
+/*
+
+Files to be updated:
+
+router/
+Dockerfile
+
+
+*/
