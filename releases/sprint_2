@@ -25,6 +25,9 @@ As a developer, I should authenticate user requested stocks as valid through an 
 5
 As a developer, I should store the necessary data to analyze and present to the user
 ~5 hours
+5
+As a developer, I should implement refresh tokens and Google OAuth
+~5 hours
 
 
 
@@ -33,27 +36,33 @@ Matan: Product Owner
 Sebastian: Backend Developer
 Ronald: Backend Developer
 AJ: Backend Developer
-Nathaniel: Frontend Developer
+Nathaniel: Frontend Developer (Scrum Master)
 
 Initial Task Assignment:
 Matan: 
-“As a developer,”
+“As a developer,  I should be able to pull in stocks data in an automated fashion”
+“As a developer, I should be able to ingest stock metrics through a basic strategy pipeline”
+“As a user, I should be able to create a project”
+“As a user, I should be able to associate a stock with a project”
+“As a developer, I should be able to trigger stock tracking as a user associates a stock with a project”
 Sebastian:
-“As a developer, I should”
+“As a developer, I should be able to identify the main tokens of a headline.”
 Ronald:
 “As a developer, I should verify JWTs requests sent by the Data Service”
 “As a developer, I should invalidate JWTs when a user logs out and monitor when to “expire” them”
 “As a developer, I should refresh active JWTs”
 “As a developer, I should implement the routing used by the Google OA” 
 AJ:
-“As a developer, I should 
+“As a developer, I should develop a thread-safe system for NLP.”
+“As a developer, I should be able to identify the main tokens of a headline.”
 Nathaniel: 
 “As a developer, I should be able to display user projects that they want to create”
-“As a developer, I should have the correct stock to be selected; stocks can also be selected multiple times for different projects.”
+“As a developer, I should allow the user to pick the stock they want; stocks can also be selected multiple times for different projects.”
+“As a user, I should be able to create and delete projects.”
 
 
 Initial Burnup Chart:
-On Google Doc: https://docs.google.com/document/d/1eSWexStmgzgnqGabHD7gYxs8wja4dQBJgWEN4ilNSLk/edit?usp=sharing
+
 
 Initial Scrum Board:
 https://trello.com/b/L4nsGiS1/cse115a-project

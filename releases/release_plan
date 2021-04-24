@@ -43,6 +43,10 @@ As a customer, I should be able to interact with the landing page and see releva
 As a developer, I should authenticate user requested stocks as valid through an API call
 5
 As a developer, I should store the necessary data to analyze and present to the user
+5
+As a developer, I should implement refresh tokens and Google OAuth
+
+
 
 
 Sprint 3
