@@ -12,8 +12,10 @@ COPY package.json ./
 COPY package-lock.json ./
 RUN npm install --silent
 
+RUN npm install --silent --save-dev sequelize-cli
+
 # add app
 COPY . ./
 
 # start app
-CMD ["node", "main.js"]
+CMD ["npm", "run", "start"]

@@ -90,7 +90,7 @@ userRouter
       var { email, password } = req.body;
 
       var user = await Models.Users.findOne({
-        attributes: ["id", "username", "email", "password"],
+        attributes: ["id", "firstName", "lastName", "username", "email", "password"],
         where: {
           email,
         },
@@ -133,12 +133,12 @@ userRouter
             status: 200,
             data: { ...user.toJSON(), accessKey: accessToken, refreshKey: refreshToken },
           });
-			} else {
-        res.status(401).json({
-          status: 401,
-          error: "Password is incorrect",
-        });
-      }
+        } else {
+          res.status(401).json({
+            status: 401,
+            error: "Password is incorrect",
+          });
+        }
 		}
     } catch (error) {
       return res.status(400).json({

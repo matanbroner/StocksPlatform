@@ -15,7 +15,7 @@ tokensRouter.route('/verify')
 
     if(await QueryModule.inactiveToken(token)) {
         console.log('Error validiating token, cannot access resource.');
-        res.status(403).json({"error":"Token is invalid"});
+        res.status(403).json({"error":"Token is invalidated or Inactive"});
     }
 
    else{
@@ -25,22 +25,23 @@ tokensRouter.route('/verify')
             if(error) {
 
                 if(error.name === 'TokenExpiredError') {
-                    var newAcessToken = await QueryModule.refreshToken(req.body.refreshKey);
 
-                    if(newAccessToken === "error") {
-                        res.status(403).json({"error":"Refresh Token Failed, Access token expired"});
-                    }
-
-                    else {
-                        res.status(200).json({
-                            status: 200,
-                            data: {accessKey: newAcessToken}    // Don't need to send back refresh token
-                        });
-                    }
+                    await QueryModule.refreshToken(req.body.refreshKey, (newAccessToken) => {
+                        console.log(newAccessToken);
+                        if(newAccessToken === "error") {
+                            res.status(403).json({"error":"Refresh Token Failed, Access token expired"});
+                        }
+                        else {
+                            res.status(200).json({
+                                status: 200,
+                                data: { accessKey: newAccessToken }    // Don't need to send back refresh token
+                            });
+                        }
+                    });
                 }
                 else{
                     console.log('Error validiating token, cannot access resource.');
-                    res.status(403).json({"error":"Token is incorrect"});
+                    res.status(403).json({"error":"Access Token is incorrect"});
                 }
             }
             else {
@@ -63,6 +64,7 @@ tokensRouter.route('/logout')
 
     try {
 
+        // TO DO change the token -> accessToken
         var token = req.body.token;
 		var tokenExists = await Models.Tokens.findOne({
 			where: { token: token }

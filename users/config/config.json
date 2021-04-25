@@ -7,17 +7,17 @@
     "dialect": "postgres"
   },
   "test": {
-    "username": "stocks_admin",
-    "password": "stocks_admin",
-    "database": "postgres",
-    "host": "postgres",
-    "dialect": "postgres"
+    "username": "",
+    "password": "",
+    "database": "",
+    "host": "",
+    "dialect": ""
   },
   "production": {
-    "username": "stocks_admin",
-    "password": "stocks_admin",
-    "database": "postgres",
-    "host": "postgres",
-    "dialect": "postgres"
+    "username": "",
+    "password": "",
+    "database": "",
+    "host": "",
+    "dialect": ""
   }
 }

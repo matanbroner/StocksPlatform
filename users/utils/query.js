@@ -48,16 +48,18 @@ Pass the refresh token to client, when their access token expires, they will pas
 The refresh token is essentially useless to the client as all the routes require a jwt.verify(accessToken)
 refresh token will only be used to say the user logged in validly, so we issue them an access token
 */
-const refreshToken = async (refreshToken) => {
+const refreshToken = async (refreshToken, callback) => {
   jwt.verify(refreshToken, process.env.refreshTokenSecret, (error, decodedToken) => {
 
     if(error) {
       //JsonWebTokenError, TokenExpiredError
       console.log('Error validiating refresh token');
-      return "error";
+      callback("error");
     }
     else {
       
+      console.log(decodedToken);
+
       var { id, username, email } = decodedToken; // Gets decodedToken.email .username .id
 
       var accessToken = jwt.sign(
@@ -72,7 +74,9 @@ const refreshToken = async (refreshToken) => {
         }
       );
 
-      return accessToken;
+      console.log('New formed access token : ', accessToken)
+
+      callback(accessToken);
     }
 
   });
@@ -83,14 +87,3 @@ module.exports = {
   inactiveToken,
   refreshToken
 }
-
-
-/*
-
-Files to be updated:
-
-router/
-Dockerfile
-
-
-*/
