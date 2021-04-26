@@ -10,9 +10,6 @@ stop_words = stopwords.words('english')
 
 class SentimentAlgorithms:
 
-    def __init__(self):
-        pass
-
     """
     fucntion that normalizes the words of article for better analisys
     for example being is turn to be and did turn to do
@@ -37,12 +34,12 @@ class SentimentAlgorithms:
             lemmatized_sentence.append(lemmatizer.lemmatize(word, pos))
         return TreebankWordDetokenizer().detokenize(lemmatized_sentence)
 
-    def sentiment_value(txt):
+    def sentiment_value(txt: str):
         """
-        Returns true if avarge sentiment by 
-        sentence is positve, otherwise retuns fals
+        Returns mean sentiment score of an specific news headline
+         greater than 0.0 -> positive news , less than or equal to 0 -> negative news
         @params string (news article)
-        @return bool
+        @returns numeric value
         """
         sia = SentimentIntensityAnalyzer()
         scores = []
@@ -50,5 +47,10 @@ class SentimentAlgorithms:
             scores.append(sia.polarity_scores(sentence)["compound"])
         return mean(scores)
 
-    def headline_sentiment(txt) -> bool:
+    def headline_sentiment(txt: str):
+        """
+        returns mean senimtent value and cleans headline sentence for better results
+        @params string (headline)
+        @returns bool
+        """
         return SentimentAlgorithms.sentiment_value(SentimentAlgorithms.clean_sentence(txt))
