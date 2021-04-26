@@ -44,7 +44,7 @@ class SentimentAlgorithms:
         sia = SentimentIntensityAnalyzer()
         scores = []
         for sentence in nltk.sent_tokenize(txt):
-            scores.append(sia.polarity_scores(sentence)["compound"])
+            scores.append(sia.polarity_scores(sentence).get("compound"))
         return mean(scores)
 
     def headline_sentiment(txt: str):
