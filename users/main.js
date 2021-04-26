@@ -24,7 +24,3 @@ app.get("/", (req, res) => {
 });
 
 app.listen(process.env.PORT || 5001);
-
-
-//REDEFINE THE STRUCTURE OF THE TOKEN
-//FIX MIGRATIONS TO NOT USE SYNC
