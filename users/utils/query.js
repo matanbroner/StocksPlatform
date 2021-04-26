@@ -1,4 +1,3 @@
-const { sequelize } = require('../models');
 const { Op } = require("sequelize");
 const Models = require('../models');
 const Tokens = Models.Tokens;

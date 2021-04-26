@@ -34,3 +34,17 @@ describe('Signup', function() {
         }
     });
   });
+
+  describe('Login', function() {
+    it('should successfully retrieve user data and tokens', function(){
+
+        for(var i = 0; i < users.length; i++) {
+            chai.request(server)
+            .post('/users/login')
+            .send(users[i])
+            .end((error, res) => {
+                res.should.have.status(200);
+            });
+        }
+    });
+  });
