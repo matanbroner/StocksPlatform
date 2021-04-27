@@ -49,6 +49,7 @@ Matan:
 “As a developer, I should create an initial version of API for training data models to track stock prices/”
 Sebastian:
 “As a developer, I should make a centralized place for testing news headlines.”
+“As a customer, I should be able to look at sentiment about stocks from the news.”
 Ronald:
 “As a developer, I should store user login information into a table.”
 “As a developer, I should find a user’s login information from a table.”
@@ -61,8 +62,8 @@ Nathaniel:
 Initial Task: Create login Page & Landing Page
 
 Initial Burnup Chart:
-
-
+On Google Doc:
+https://docs.google.com/document/d/1HK8qCzYijCxr08j18wQm6SKQyvSSWtD4wSSZNrM0vk8/edit?usp=sharing
 
 Initial Scrum Board:
 https://trello.com/b/L4nsGiS1/cse115a-project
