@@ -55,6 +55,7 @@ def main(fmp_key, stock_list):
         t.join()
 
     # word_clouds['AAPL'].show()
+    # maybe just collect dataframe information from above and then send the info off to NLPUnit from here
 
     print("Exiting Main Thread")
     return 1
