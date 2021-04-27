@@ -13,7 +13,7 @@ const FORMAT = 'YYYY-MM-DD HH:mm:ss'
 */
 const removeTokens = async () => {
 
-  const tokenTime = process.env.tokenExpirationTime;
+  const tokenTime = process.env.JWT_EXPIRES_HOUR;
   const currentTime = moment().format(FORMAT)     // Already UTC?
   const expireTime = moment(currentTime).subtract(tokenTime, 'hours').toDate()
 
@@ -48,7 +48,7 @@ The refresh token is essentially useless to the client as all the routes require
 refresh token will only be used to say the user logged in validly, so we issue them an access token
 */
 const refreshToken = async (refreshToken, callback) => {
-  jwt.verify(refreshToken, process.env.refreshTokenSecret, (error, decodedToken) => {
+  jwt.verify(refreshToken, process.env.REFRESH_SECRET, (error, decodedToken) => {
 
     if(error) {
       //JsonWebTokenError, TokenExpiredError
@@ -67,9 +67,9 @@ const refreshToken = async (refreshToken, callback) => {
           username,
           email,
         },
-        process.env.tokenSecret,
+        process.env.JWT_KEY,
         {
-        expiresIn: process.env.tokenExpiration
+        expiresIn: process.env.JWT_EXPIRES
         }
       );
 

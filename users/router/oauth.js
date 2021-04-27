@@ -34,9 +34,9 @@ oauthRouter.get('/login/success',
                 email,
                 provider,
             },
-            process.env.tokenSecret,
+            process.env.JWT_KEY,
             {
-                expiresIn: process.env.tokenExpiration
+                expiresIn: process.env.JWT_EXPIRES
             }
             
         );
@@ -47,9 +47,9 @@ oauthRouter.get('/login/success',
                 email,
                 provider,
             },
-            process.env.tokenSecret,
+            process.env.REFRESH_SECRET,
             {
-                expiresIn: process.env.tokenExpiration
+                expiresIn: process.env.REFRESH_EXPIRES
             }
             
         );

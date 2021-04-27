@@ -6,8 +6,8 @@ const OAuths = Models.OAuths;
 const { Op } = require("sequelize");
 
 passport.use(new GoogleStrategy({
-    clientID:     process.env.clientID,
-    clientSecret: process.env.clientSecret,
+    clientID:     process.env.CLIENT_ID,
+    clientSecret: process.env.CLIENT_SECRET,
     callbackURL: "/oauth/login/success",
     passReqToCallback   : true
   },
@@ -22,10 +22,8 @@ passport.use(new GoogleStrategy({
       where: {
         [Op.or]: [
           {
-            id: id,
-          },
-          {
-            email: email,
+            id,
+            email
           },
         ],
       },
@@ -40,10 +38,7 @@ passport.use(new GoogleStrategy({
       lastName: lastName
     };
 
-    if(userExists) {
-      console.log('User already exists in database')
-    }
-    else {
+    if(!userExists) {
       await OAuths.create(newUser)
         .then((result) => {
           console.log('User has been entered in OAuth database');

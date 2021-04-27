@@ -37,7 +37,7 @@ tokensRouter.route('/verify')
 
    else{
     
-        jwt.verify(token, process.env.tokenSecret, async (error, decodedToken) => {
+        jwt.verify(token, process.env.JWT_KEY, async (error, decodedToken) => {
             
             if(error) {
 

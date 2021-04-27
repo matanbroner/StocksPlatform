@@ -110,9 +110,9 @@ userRouter
               username,
               email,
             },
-            process.env.tokenSecret,
+            process.env.JWT_KEY,
             {
-            expiresIn: process.env.tokenExpiration
+            expiresIn: process.env.JWT_EXPIRES
             }
           );
 
@@ -122,9 +122,9 @@ userRouter
               username,
               email,
             },
-              process.env.refreshTokenSecret,
+              process.env.REFRESH_SECRET,
             {
-              expiresIn: process.env.refreshTokenExpiration
+              expiresIn: process.env.REFRESH_EXPIRES
             }
           );
 
