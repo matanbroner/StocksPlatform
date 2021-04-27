@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import '../App.css';
 import 'semantic-ui-css/semantic.min.css';
 import { Link } from 'react-router-dom';
-import { Menu, Button, Input, Icon } from 'semantic-ui-react';
+import { Grid } from 'semantic-ui-react';
 import Navbar from './Navbar';
+import Topbar from './Topbar';
 import axios from 'axios';
 
 class Dashboard extends Component {
@@ -27,32 +28,29 @@ class Dashboard extends Component {
     render() {
         return (
             <div>
-                <Navbar />
-
-                <Menu secondary>
-                    <Menu.Menu position='right'>
-                        <Menu.Item>
-                            <Input icon='search' placeholder='Search...' />
-                        </Menu.Item>
-
-                        <Menu.Item>
-                            [Name] 
-                            <Icon name='user circle' className='profile-icon' />
-                        </Menu.Item>
-
-                        <Link to='../login'>
-                            <Menu.Item>
-                                <Button basic inverted color="green">Log Out</Button>
-                            </Menu.Item>
-                        </Link>
-                    </Menu.Menu>
-                </Menu>
-
-                <div className='dash-body'>
-                    <div className='dash-title'>
-                        Welcome Back, [Name]!
-                    </div>
-                </div>
+                <Grid>
+                    <Grid.Row className="dash-top">
+                        <Grid.Column stretched width={16}>
+                            <Topbar />
+                        </Grid.Column>
+                    </Grid.Row> 
+                    <Grid.Row>
+                        <Grid.Column stretched width={16}>
+                        </Grid.Column>  
+                    </Grid.Row>          
+                    <Grid.Row>
+                        <Grid.Column stretched width={16}>
+                            <Navbar />
+                        </Grid.Column>
+                        <Grid.Column stretched width={16}>
+                            <div className='dash-body'>
+                                <div className='dash-title'>
+                                    Welcome Back, [Name]!
+                                </div>
+                            </div>
+                        </Grid.Column>
+                    </Grid.Row>
+                </Grid>
             </div>
         )
     }

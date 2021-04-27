@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 function Logo() {
     return (
       <div className="Logo">
-        Stocked (Logo)
+        <img src="/images/logo.png" alt="Banana Stocks Logo" className="home-logo"/>
       </div>
     )
   }
@@ -16,7 +16,7 @@ function Logo() {
     return (
       <Header size="large">
         <div className="HomeMessage">
-          Welcome to the Site. Come check out our stuff!
+          Here to support all your stock portfolio needs.
         </div>
       </Header>
     )
@@ -25,7 +25,7 @@ function Logo() {
   function SignUpButton() {
     return (
       <div className="Signup">
-        <Button basic inverted color="green">Sign Up</Button>
+        <Button basic inverted color="green" className="home-sign-up">Sign Up</Button>
       </div>
     )
   }
@@ -33,7 +33,7 @@ function Logo() {
   function LogInButton() {
     return (
       <div className="Login">
-        <Button basic inverted color="green">Log In</Button>
+        <Button basic inverted color="green" className="home-log-in">Log In</Button>
       </div>
     )
   }

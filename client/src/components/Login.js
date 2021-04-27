@@ -88,7 +88,9 @@ class Login extends Component {
           className="login-column-1"
         >
           <div className="first-column">
-            <div className="login-logo">Logo</div>
+            <div>
+                <img src="/images/logo.png" alt="Banana Stocks Logo" className="login-logo"/>
+            </div>
 
             <div className="LoginTitle">Log in</div>
 
