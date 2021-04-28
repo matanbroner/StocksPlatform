@@ -29,8 +29,8 @@ services:
       - '5001:5001'
     environment:
       - JWT_KEY=stocks_jwt
-      - JWT_EXPIRES=5h
-      - JWT_EXPIRES_HOUR=5
+      - JWT_EXPIRES=1h
+      - JWT_EXPIRES_HOUR=1
       - REFRESH_SECRET=stocks_refresh_jwt
       - REFRESH_EXPIRES=30h
       - CLIENT_ID=297422208742-5pt82cje5dvp2701a60ngllvd2cul08g.apps.googleusercontent.com

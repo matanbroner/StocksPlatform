@@ -1,6 +1,7 @@
 const passport = require('passport');
 var GoogleStrategy = require( 'passport-google-oauth2' ).Strategy;
 const sequelize = require('sequelize');
+const jwt = require("jsonwebtoken");
 
 const Models = require("../models");
 const Users = Models.Users;
@@ -29,13 +30,40 @@ passport.use(new GoogleStrategy({
       },
     });
 
-    const newUser = {
+    var newUser = {
       email,
       username,
       firstName,
       lastName,
       local: false,
     };
+
+    var jwtAccessToken = jwt.sign(
+      {
+          firstName,
+          lastName,
+          username,
+          email,
+      },
+      process.env.JWT_KEY,
+      {
+        expiresIn: process.env.JWT_EXPIRES
+      }
+      
+    );
+    var jwtRefreshToken = jwt.sign(
+        {
+            firstName,
+            lastName,
+            username,
+            email,
+        },
+        process.env.REFRESH_SECRET,
+        {
+          expiresIn: process.env.REFRESH_EXPIRES
+        }
+        
+    );
 
     if(!userExists) {
       await Users.create(newUser)
@@ -45,20 +73,23 @@ passport.use(new GoogleStrategy({
 
       const oauthDetails = {
         provider,
-        accessToken,
-        refreshToken
+        accessToken: jwtAccessToken,
+        refreshToken: jwtRefreshToken
       }
+      
       await Users.update(
         {providers: 
           sequelize.fn('array_append', sequelize.col('providers'), JSON.stringify(oauthDetails))
         },
-        { where: {email: email} }
+        { where: { email: email } }
         )
         .then((result) => {
-          console.log(result);
         })
         .catch((err) => console.log(err));
     }
+
+    newUser['accessToken'] = jwtAccessToken;
+    newUser['refreshToken'] = jwtRefreshToken;
 
     return callback(null, newUser); //profile);
   })

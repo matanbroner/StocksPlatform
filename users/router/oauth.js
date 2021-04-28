@@ -8,6 +8,8 @@ const oauthRouter = express.Router();
 oauthRouter.use(express.json());
 dotenv.config();
 
+const QueryModule = require("../utils/query");
+
 /*
  * This will redirect to /login/success upon login.
 */
@@ -22,35 +24,11 @@ oauthRouter.get('/google/login', passport.authenticate('google', { scope:
 oauthRouter.get('/google/login/callback',
     passport.authenticate('google', { failureRedirect: '/users/login' }), (req, res) => {
 
-        const { id, email} = req.user;
+        const { email } = req.user;
         const username = req.user.username;
 
-        var accessToken = jwt.sign(
-            {
-                id,
-                username,
-                email,
-            },
-            process.env.JWT_KEY,
-            {
-                expiresIn: process.env.JWT_EXPIRES
-            }
-            
-        );
-        var refreshToken = jwt.sign(
-            {
-                id,
-                username,
-                email,
-            },
-            process.env.REFRESH_SECRET,
-            {
-                expiresIn: process.env.REFRESH_EXPIRES
-            }
-            
-        );
-        
-        // Update the jwts in table
+        var accessToken = req.user.accessToken;
+        var refreshToken = req.user.refreshToken;
 
         const user = {
             username,
