@@ -15,6 +15,14 @@ if (config.use_env_variable) {
   sequelize = new Sequelize(config.database, config.username, config.password, config);
 }
 
+
+// Don't use this in production code, only for debugging.
+/*
+(async () => {
+  await sequelize.sync({force: true});
+})();
+*/
+
 fs
   .readdirSync(__dirname)
   .filter(file => {
