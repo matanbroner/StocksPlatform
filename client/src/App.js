@@ -2,13 +2,13 @@ import React from "react";
 import "semantic-ui-css/semantic.min.css";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "./App.css";
-import Home from "./components/Home";
-import Login from "./components/Login";
-import Signup from "./components/Signup";
-import Dashboard from "./components/Dashboard";
-import Project from "./components/Project";
-import StockSearch from "./components/StockSearch";
-import Settings from "./components/Settings";
+import Home from "./components/Home/index";
+import Login from "./components/Login/index";
+import Signup from "./components/Signup/index";
+import Dashboard from "./components/Dashboard/index";
+import Project from "./components/Project/index";
+import StockSearch from "./components/StockSearch/index";
+import Settings from "./components/Settings/index";
 
 import ApiHandler from './api'
 

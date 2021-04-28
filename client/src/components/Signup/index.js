@@ -1,10 +1,10 @@
 import React, { Component } from "react";
-import "../App.css";
+import "./styles.css";
 import "semantic-ui-css/semantic.min.css";
 import { Form, Checkbox, Grid, Container, Message } from "semantic-ui-react";
-import { Link, useHistory } from "react-router-dom";
+// import { Link } from "react-router-dom";
 
-import ApiHandler from "../api";
+import ApiHandler from "../../api";
 
 class Signup extends Component {
   constructor(props) {

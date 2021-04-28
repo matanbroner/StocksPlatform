@@ -1,35 +1,18 @@
 import React, { Component } from 'react';
-import '../App.css';
+import './styles.css';
 import 'semantic-ui-css/semantic.min.css';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 import { Grid } from 'semantic-ui-react';
-import Navbar from './Navbar';
-import Topbar from './Topbar';
-import axios from 'axios';
+import Navbar from '../Navbar/index';
+import Topbar from '../Topbar/index';
+import ApiHandler from "../../api";
 
-class Dashboard extends Component {
-    // componentDidMount() {
-    //     const config = {
-    //         headers: {
-    //             Authorization: 'Bearer ' + localStorage.getItem('token')
-    //         }
-    //     }
-
-    //     axios.get('user', config).then(
-    //         res => {
-    //             console.log(res);
-    //         },
-    //         err => {
-    //             console.log(err);
-    //         }
-    //     )
-    // }
-
+class Settings extends Component {
     render() {
         return (
             <div>
                 <Grid>
-                    <Grid.Row className="dash-top">
+                    <Grid.Row className="setting-top">
                         <Grid.Column stretched width={16}>
                             <Topbar />
                         </Grid.Column>
@@ -43,9 +26,9 @@ class Dashboard extends Component {
                             <Navbar />
                         </Grid.Column>
                         <Grid.Column stretched width={16}>
-                            <div className='dash-body'>
-                                <div className='dash-title'>
-                                    Welcome Back, [Name]!
+                            <div className='setting-body'>
+                                <div className='setting-title'>
+                                    My Settings
                                 </div>
                             </div>
                         </Grid.Column>
@@ -56,4 +39,4 @@ class Dashboard extends Component {
     }
 }
 
-export default Dashboard;
+export default Settings;

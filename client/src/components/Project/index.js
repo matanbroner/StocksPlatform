@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import '../App.css';
+import './styles.css';
 import 'semantic-ui-css/semantic.min.css';
 import { Button, Form, Modal, Search, Grid } from 'semantic-ui-react';
 // import { Link } from 'react-router-dom';
-import Navbar from './Navbar';
-import Topbar from './Topbar';
-import ApiHandler from "../api";
+import Navbar from '../Navbar/index';
+import Topbar from '../Topbar/index';
+// import ApiHandler from "../../api";
 
 const results = [
     {
@@ -22,7 +22,7 @@ class Project extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            projectArray: {
+            projectObj: {
                 id: "",
                 title: "",
                 description: "",
@@ -33,15 +33,9 @@ class Project extends Component {
         };
     }
 
-    handleOpen() {
+    handleModalStateChange() {
         this.setState({
-            modalOpen: true
-        });
-    }
-
-    handleClose() {
-        this.setState({
-            modalOpen: false
+            modalOpen: !this.state.modalOpen
         });
     }
 
@@ -56,6 +50,7 @@ class Project extends Component {
 
 
     render() {
+        // Using a dummy state till we connect to our stock database.
         const resRender = () => (
             <span key="name">
               Hello it works!
@@ -85,8 +80,8 @@ class Project extends Component {
                         <Grid.Column stretched width={16}>
                             <div className='project-modal'>
                                 <Modal
-                                onClose={() => this.handleClose()}
-                                open={this.modalOpen}
+                                onClose={() => this.handleModalStateChange()}
+                                open={this.state.modalOpen}
                                 trigger={<Button className='project-button' color='teal'>Add Project</Button>}
                                 >
                                     <Modal.Header>Create a Project</Modal.Header>
@@ -122,14 +117,14 @@ class Project extends Component {
                                         </Form>
                                     </Modal.Content>
                                     <Modal.Actions>
-                                        <Button onClick={() => this.handleClose()}>
+                                        <Button onClick={() => this.handleModalStateChange()}>
                                         Cancel
                                         </Button>
                                         <Button
                                         content="Create Project"
                                         labelPosition='left'
                                         icon='add'
-                                        onClick={() => this.handleClose()}
+                                        onClick={() => this.handleModalStateChange()}
                                         positive
                                         />
                                     </Modal.Actions>

@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import '../App.css';
+import './styles.css';
 import 'semantic-ui-css/semantic.min.css';
 // import { Link } from 'react-router-dom';
 import { Grid, Search } from 'semantic-ui-react';
-import Navbar from './Navbar';
-import Topbar from './Topbar';
+import Navbar from '../Navbar/index';
+import Topbar from '../Topbar/index';
+import ApiHandler from "../../api";
 
 const results = [
     {
