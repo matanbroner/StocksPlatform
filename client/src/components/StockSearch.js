@@ -2,16 +2,39 @@ import React, { Component } from 'react';
 import '../App.css';
 import 'semantic-ui-css/semantic.min.css';
 // import { Link } from 'react-router-dom';
-import { Grid } from 'semantic-ui-react';
+import { Grid, Search } from 'semantic-ui-react';
 import Navbar from './Navbar';
 import Topbar from './Topbar';
 
+const results = [
+    {
+      name: "John",
+      age: 14
+    },
+    {
+      name: "Mary",
+      age: 92
+    }
+];
+
 class StockSearch extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            results: "",
+        };
+    }
+
     render() {
+        const resRender = () => (
+            <span key="name">
+              Hello it works!
+            </span>
+        );
         return (
             <div>
                 <Grid>
-                    <Grid.Row className="dash-top">
+                    <Grid.Row className="stock-top">
                         <Grid.Column stretched width={16}>
                             <Topbar />
                         </Grid.Column>
@@ -28,6 +51,16 @@ class StockSearch extends Component {
                             <div className='stock-body'>
                                 <div className='stock-title'>
                                     Stock Search
+                                </div>
+                                <div className='stock-search'>
+                                    <Search
+                                        fluid
+                                        icon="search"
+                                        placeholder="Search Stocks..."
+                                        results={results}
+                                        onChange={(e) => this.updateForm("stock", e)}
+                                        resultRenderer={resRender}
+                                    />
                                 </div>
                             </div>
                         </Grid.Column>

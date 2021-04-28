@@ -214,15 +214,22 @@
   font-size: 35px;
 }
 
+.stock-search {
+  padding-top: 20px;
+}
+
+.stock-pick {
+  font-weight: bold;
+}
 /* Settings Styles */
-.settings-body {
-  padding-top: 25px;
+.setting-body {
   padding-left: 175px;
 }
 
-.settings-title {
+.setting-title {
   color: black;
-  font-size: 30px;
+  font-weight: bold;
+  font-size: 35px;
 }
 
 /* @keyframes App-logo-spin {

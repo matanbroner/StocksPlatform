@@ -95,6 +95,7 @@ class Project extends Component {
                                         <p>
                                         Start adding stocks to a project. Give the project a description.
                                         </p>
+                                        <br></br>
                                     </Modal.Description>
                                         <Form>
                                             <Form.Field>
@@ -109,6 +110,7 @@ class Project extends Component {
                                                 placeholder='Describe your project' 
                                                 onChange={(e) => this.updateForm("description", e)}
                                             />
+                                            <label className='stock-pick'>Pick  Your Stocks</label>
                                             <Search
                                                 fluid
                                                 icon="search"
