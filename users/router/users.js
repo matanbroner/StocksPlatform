@@ -1,9 +1,9 @@
 const express = require("express");
 const jwt = require("jsonwebtoken");
-const dotenv = require("dotenv")
+const dotenv = require("dotenv");
 
 const { Op } = require("sequelize");
-const Models = require('../models');
+const Models = require("../models");
 const userRouter = express.Router();
 
 const PasswordModule = require("../utils/passwords");

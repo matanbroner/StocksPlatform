@@ -1,38 +1,209 @@
-.App {
+/* Home Styles */
+.Header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.Logo {
+  padding-top: 20px;
+  padding-left: 30px;
+  color: #eeeeee;
+}
+
+.Buttons {
+  display: flex;
+  padding-top: 20px;
+  padding-right: 30px;
+}
+
+.Signup {
+  padding-right: 20px;
+}
+
+.HomeBackground {
+  background-color: #232931;
+  height: 1000px;
+}
+
+.HomeMessage {
+  color: white;
+  padding-top: 400px;
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+/* SignUp Styles */
+.signup-container {
+  background-color: white;
+  border-radius: 15px;
+  padding-bottom: 40px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.signup {
+  padding-top: 170px;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.SignupTitle {
+  text-align: center;
+  padding-top: 40px;
+  font-size: 37px;
+  padding-bottom: 40px;
+  font-weight: 600;
+}
+
+.signup-form {
+  display: inline-block;
+  text-align: left;
+}
+
+.signup-user {
+  width: 375px;
+}
+
+.signup-email {
+  width: 375px;
+}
+
+.signup-password {
+  width: 375px;
+}
+
+.signup-button {
+  padding-top: 20px;
+  text-align: center;
+}
+
+/* Login Styles */
+.login-logo {
+  color: teal;
+  font-size: 70px;
+  padding-top: 70px;
+  padding-bottom: 200px;
+}
+.LoginMessage {
+  text-align: center;
+}
+
+.first-column {
+  padding-left: 30px;
+}
+
+.login-email {
+  width: 300px;
+}
+
+.login-password {
+  width: 300px;
+  padding-bottom: 5px;
+}
+
+.login-email {
+  width: 400px;
+  padding-bottom: 5px;
+}
+
+.login-password {
+  width: 400px;
+}
+
+.LoginTitle {
+  color: #eeeeee;
+  font-size: 35px;
+  padding-top: 40px;
+  padding-bottom: 25px;
+}
+
+.LoginMessage {
+  color: #eeeeee;
+  font-size: 60px;
+  padding-top: 200px;
+  padding-right: 375px;
+}
+
+.LoginMessage2 {
+  color: black;
+  font-size: 45px;
+  padding-top: 200px;
+  padding-left: 200px;
+}
+
+.login-column-1 {
+  background-color: #232931;
+}
+
+.login-column-2 {
+  background-color: teal;
+}
+
+.login-button {
+  padding-top: 10px;
+  width: 100px;
+}
+
+.no-account {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  justify-content: left;
+  color: #eeeeee;
 }
 
-.App-link {
-  color: #61dafb;
+.go-to-sign {
+  color: teal;
+  padding-left: 4px;
+  cursor: pointer;
 }
 
-@keyframes App-logo-spin {
+/* Dashboard Styles */
+.dash-body {
+  padding-top: 25px;
+  padding-left: 175px;
+}
+
+.dash-title {
+  color: #eeeeee;
+  font-size: 30px;
+}
+
+/* Project Styles */
+.project-body {
+  padding-top: 25px;
+  padding-left: 175px;
+}
+
+.project-title {
+  color: #eeeeee;
+  font-size: 30px;
+}
+
+.project-buttons {
+  padding-top: 30px;
+}
+
+/* StockSearch Styles */
+.stock-body {
+  padding-top: 25px;
+  padding-left: 175px;
+}
+
+.stock-title {
+  color: #eeeeee;
+  font-size: 30px;
+}
+
+/* Settings Styles */
+.settings-body {
+  padding-top: 25px;
+  padding-left: 175px;
+}
+
+.settings-title {
+  color: #eeeeee;
+  font-size: 30px;
+}
+
+/* @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
   }
   to {
     transform: rotate(360deg);
   }
-}
+} */

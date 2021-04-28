@@ -1,0 +1,67 @@
+Sprint 2 Plan
+
+Product Name: Stocks Platform
+Team Name: BananaStocks
+Sprint Completion Date: May 4th, 2021 (Wednesday)
+Revision Number: #1
+Revision Date: April 21th, 2021
+
+Goal: Have project setup done by frontend and backend; be able to create a project and associate with a project and see the stock data.
+
+Task Listing (Organized by user stories): 
+
+Story points
+User story
+Time Estimate
+2
+As a developer, I should develop an API endpoint to service a request from  a user to return their relevant stock information.
+~2 hours
+8
+As a customer, I should be able to interact with the landing page and see relevant stock data.
+~8 hours
+5
+As a developer, I should authenticate user requested stocks as valid through an API call
+~5 hour
+5
+As a developer, I should store the necessary data to analyze and present to the user
+~5 hours
+
+
+
+Team Roles:
+Matan: Product Owner
+Sebastian: Backend Developer
+Ronald: Backend Developer
+AJ: Backend Developer
+Nathaniel: Frontend Developer
+
+Initial Task Assignment:
+Matan: 
+“As a developer,”
+Sebastian:
+“As a developer, I should”
+Ronald:
+“As a developer, I should verify JWTs requests sent by the Data Service”
+“As a developer, I should invalidate JWTs when a user logs out and monitor when to “expire” them”
+“As a developer, I should refresh active JWTs”
+“As a developer, I should implement the routing used by the Google OA” 
+AJ:
+“As a developer, I should 
+Nathaniel: 
+“As a developer, I should be able to display user projects that they want to create”
+“As a developer, I should have the correct stock to be selected; stocks can also be selected multiple times for different projects.”
+
+
+Initial Burnup Chart:
+On Google Doc: https://docs.google.com/document/d/1eSWexStmgzgnqGabHD7gYxs8wja4dQBJgWEN4ilNSLk/edit?usp=sharing
+
+Initial Scrum Board:
+https://trello.com/b/L4nsGiS1/cse115a-project
+
+Scrum Times:
+Monday: 12:00pm-12:30pm
+Wednesday: 1:00pm-1:30pm
+Friday: 11pm-11:30pm
+
+
+
