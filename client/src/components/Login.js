@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import "../App.css";
-import "semantic-ui-css/semantic.min.css";
 import { Form, Grid, Message } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 

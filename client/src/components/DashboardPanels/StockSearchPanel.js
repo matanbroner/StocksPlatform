@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
-import '../App.css';
-import 'semantic-ui-css/semantic.min.css';
-// import { Link } from 'react-router-dom';
+import '../../App.css';
 import { Grid, Search } from 'semantic-ui-react';
-import Navbar from './Navbar';
-import Topbar from './Topbar';
+import Navbar from '../Navbar';
+import Topbar from '../Topbar';
 
 const results = [
     {
@@ -17,7 +15,7 @@ const results = [
     }
 ];
 
-class StockSearch extends Component {
+class StocksPanel extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -71,4 +69,4 @@ class StockSearch extends Component {
     }
 }
 
-export default StockSearch;
+export default StocksPanel;

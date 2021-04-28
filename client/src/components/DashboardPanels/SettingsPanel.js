@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
-import '../App.css';
-import 'semantic-ui-css/semantic.min.css';
-// import { Link } from 'react-router-dom';
+import '../../App.css';
 import { Grid } from 'semantic-ui-react';
-import Navbar from './Navbar';
-import Topbar from './Topbar';
+import Navbar from '../Navbar';
+import Topbar from '../Topbar';
 
-class Settings extends Component {
+class SettingsPanel extends Component {
     render() {
         return (
             <div>
@@ -38,4 +36,4 @@ class Settings extends Component {
     }
 }
 
-export default Settings;
+export default SettingsPanel;

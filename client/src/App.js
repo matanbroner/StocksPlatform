@@ -6,9 +6,6 @@ import Home from "./components/Home";
 import Login from "./components/Login";
 import Signup from "./components/Signup";
 import Dashboard from "./components/Dashboard";
-import Project from "./components/Project";
-import StockSearch from "./components/StockSearch";
-import Settings from "./components/Settings";
 
 import ApiHandler from './api'
 
@@ -49,11 +46,7 @@ class App extends React.PureComponent {
                 />
               )}
             />
-            <Route path="/dashboard/home" component={Dashboard} />
-            <Route path="/dashboard/projects" component={Project} />
-            <Route path="/dashboard/stock-search" component={StockSearch} />
-            <Route path="/dashboard/settings" component={Settings} />
-            {/* <Route path='/dashboard/my-profile' component={Profile} /> */}
+            <Route path="/dashboard" component={Dashboard} />
           </Switch>
         </Router>
       </div>

@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
-import '../App.css';
-import 'semantic-ui-css/semantic.min.css';
+import '../../App.css';
 import { Button, Form, Modal, Search, Grid } from 'semantic-ui-react';
 // import { Link } from 'react-router-dom';
-import Navbar from './Navbar';
-import Topbar from './Topbar';
-import ApiHandler from "../api";
+import Navbar from '../Navbar';
+import Topbar from '../Topbar';
+import ApiHandler from "../../api";
 
 const results = [
     {
@@ -18,7 +17,7 @@ const results = [
     }
   ];
 
-class Project extends Component {
+class ProjectsPanel extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -143,4 +142,4 @@ class Project extends Component {
     }
 }
 
-export default Project;
+export default ProjectsPanel;

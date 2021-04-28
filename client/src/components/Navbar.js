@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import '../App.css';
-import 'semantic-ui-css/semantic.min.css';
 import { Sidebar, Menu, Icon } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 
@@ -40,7 +39,7 @@ class Navbar extends Component {
                         </Menu.Item>
                     </Link>
 
-                    <Link to='/dashboard/stock-search'>
+                    <Link to='/dashboard/stocks'>
                         <Menu.Item as='div'>
                             <Icon name='chart line' className="nav-icon"/>
                             <div className="nav-title">

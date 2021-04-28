@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import "../App.css";
-import "semantic-ui-css/semantic.min.css";
 import { Form, Checkbox, Grid, Container, Message } from "semantic-ui-react";
 import { Link, useHistory } from "react-router-dom";
 
