@@ -8,11 +8,6 @@
 
 module.exports = (sequelize, DataTypes) => {
   const Tokens = sequelize.define('Tokens', {
-/*    username: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      unique: true
-    },*/
     token: {
       type: DataTypes.TEXT,
       allowNull: false,

@@ -11,7 +11,7 @@ dotenv.config();
 /*
  * This will redirect to /login/success upon login.
 */
-oauthRouter.get('/login', passport.authenticate('google', { scope:
+oauthRouter.get('/google/login', passport.authenticate('google', { scope:
     [ 'email', 'profile' ] }
 ));
 
@@ -19,12 +19,10 @@ oauthRouter.get('/login', passport.authenticate('google', { scope:
  * Before the function here begins, we go to the callback function defined in passport.js with the user info.
  * We get the user information and call a callback in that callback to come back here.
 */
-oauthRouter.get('/login/success',
+oauthRouter.get('/google/login/callback',
     passport.authenticate('google', { failureRedirect: '/users/login' }), (req, res) => {
 
-        console.log(req.user)
-
-        const { id, email, provider} = req.user;
+        const { id, email} = req.user;
         const username = req.user.username;
 
         var accessToken = jwt.sign(
@@ -32,7 +30,6 @@ oauthRouter.get('/login/success',
                 id,
                 username,
                 email,
-                provider,
             },
             process.env.JWT_KEY,
             {
@@ -45,7 +42,6 @@ oauthRouter.get('/login/success',
                 id,
                 username,
                 email,
-                provider,
             },
             process.env.REFRESH_SECRET,
             {
@@ -53,9 +49,12 @@ oauthRouter.get('/login/success',
             }
             
         );
+        
+        // Update the jwts in table
+
         const user = {
-            username: username,
-            email: email,
+            username,
+            email,
             firstName: req.user.firstName,
             lastName: req.user.lastName,
         }

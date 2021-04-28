@@ -7,6 +7,7 @@ const Models = require('../models');
 const userRouter = express.Router();
 
 const PasswordModule = require("../utils/passwords");
+const HelperModule = require("../utils/helper");
 
 userRouter.use(express.json());
 dotenv.config();
@@ -20,6 +21,14 @@ userRouter
   .route("/sign-up")
   .post(async (req, res, next) => {
     try {
+      
+      if(!(await HelperModule.checkSignupRequest(req))) {
+        res.status(401).json({
+          status: 401,
+          error: "Missing field component(s)"
+        });
+      }
+
       var newFirstName = req.body.firstName;
       var newLastName = req.body.lastName;
       var newUsername = req.body.username;
@@ -30,16 +39,12 @@ userRouter
         where: {
           [Op.or]: [
             {
-              username: newUsername,
-            },
-            {
               email: newEmail,
-            },
+            }
           ],
         },
       });
 
-      //Could probably do userExists.username == newUsername to clarify
       if (userExists) {
         res.status(401).json({
           status: 401,
@@ -52,6 +57,7 @@ userRouter
           username: newUsername,
           email: newEmail,
           password: newPassword,
+          local: true,
         };
 
         Models.Users.create(newUser)
@@ -152,6 +158,55 @@ userRouter
     sttaus: 405,
     error: "not-supported",
   });
+});
+
+/* 
+ * Adds a route to log a user out by blacklisting the JWT token.
+ * This route doesn't support GET, PUT, DELETE requests
+*/
+userRouter.route('/logout')
+.post(async (req, res, next) => {
+
+    try {
+        
+      var headerResult = await HelperModule.checkAuthorizationHeaders(req);
+
+      if(headerResult.status == 403) {
+          res.status(403).json({
+              headerResult
+          });
+      }
+
+      var token = headerResult.token;
+
+      var tokenExists = await Models.Tokens.findOne({
+        where: { token: token }
+      });
+
+      if(tokenExists) {
+        res.status(401).json({
+                  status: 401,
+                  error:"Token is already blacklisted"
+              });
+      }
+      else {
+        const tokenEntry = { token: token, valid: false }
+        Models.Tokens.create(tokenEntry)
+          .then((result) => {
+				    res.status(200).json({
+              status: 200,
+              data:"success"
+            });
+			    }).catch((err) => console.log(err));
+		  }
+	
+    } catch (error) {
+      return res.status(400).json({
+              status: 400,
+              error:"Request has failed"
+          });
+    }
+
 });
 
 module.exports = userRouter;

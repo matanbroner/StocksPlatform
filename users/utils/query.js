@@ -11,7 +11,7 @@ const FORMAT = 'YYYY-MM-DD HH:mm:ss'
  * If so, we purge them from the database, as jwt.verify() will be able to flag it as invalid.
  * If not, keep them in the database until they expire to prevent jwt.verify() from granting access.
 */
-const removeTokens = async () => {
+const removeInvalidTokens = async () => {
 
   const tokenTime = process.env.JWT_EXPIRES_HOUR;
   const currentTime = moment().format(FORMAT)     // Already UTC?
@@ -25,7 +25,6 @@ const removeTokens = async () => {
       }
     }
   });
-  console.log(numTokensDeleted)
 };
 
 /*
@@ -36,7 +35,8 @@ const inactiveToken = async (token) => {
 
   var found = await Tokens.findOne({
       where: {
-        token: token
+        token: token,
+        valid: false
       }
   });
   return found;
@@ -52,13 +52,10 @@ const refreshToken = async (refreshToken, callback) => {
 
     if(error) {
       //JsonWebTokenError, TokenExpiredError
-      console.log('Error validiating refresh token');
-      callback("error");
+      callback(null);
     }
     else {
       
-      console.log(decodedToken);
-
       var { id, username, email } = decodedToken; // Gets decodedToken.email .username .id
 
       var accessToken = jwt.sign(
@@ -73,8 +70,6 @@ const refreshToken = async (refreshToken, callback) => {
         }
       );
 
-      console.log('New formed access token : ', accessToken)
-
       callback(accessToken);
     }
 
@@ -82,7 +77,7 @@ const refreshToken = async (refreshToken, callback) => {
 };
 
 module.exports = {
-  removeTokens,
+  removeInvalidTokens,
   inactiveToken,
   refreshToken
 }
