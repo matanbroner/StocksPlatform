@@ -10,6 +10,12 @@ const oauthRouter = require("./router/oauth");
 require("./config/passport")
 
 const app = express();
+dotenv.config();
+
+
+app.use(cors());
+app.use('/users', userRouter);
+app.use('/jwt', jwtRouter);
 
 app.use(passport.initialize());
 app.use(cors());
