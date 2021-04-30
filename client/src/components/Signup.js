@@ -99,12 +99,16 @@ class Signup extends Component {
       const {
           username,
           email,
-          password
+          password,
+          firstName,
+          lastName
       } = this.state.form
       ApiHandler.post('users', 'users/sign-up', {}, {
         username,
         email,
-        password
+        password,
+        firstName,
+        lastName
       }).then(() => {
         this.props.history.push("/login");
       }).catch((e) => {

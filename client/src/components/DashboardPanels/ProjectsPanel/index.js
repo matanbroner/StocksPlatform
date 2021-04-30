@@ -48,6 +48,10 @@ class ProjectsPanel extends Component {
     };
   }
 
+  componentDidMount(){
+    this.fetchProjects();
+  }
+
   updateModalState(isOpen) {
     this.setState({
       modalOpen: isOpen,
@@ -61,6 +65,25 @@ class ProjectsPanel extends Component {
         [key]: value || e.target.value,
       },
     });
+  }
+
+  fetchProjects(){
+    this.setState({
+      loading: true
+    }, () => {
+      ApiHandler
+      .get(
+        "data",
+        "project"
+      )
+      .then((res) => {
+        this.setState({
+          projects: [...res.data],
+          loading: false
+        })
+      })
+      .catch((err) => console.log(err));
+    })
   }
 
   submitNewProject() {
@@ -119,7 +142,7 @@ class ProjectsPanel extends Component {
             return (
               <Grid.Column id={project.id} stackable width={4}>
                 <ProjectCard
-                  projectName={project.projectName}
+                  projectName={project.project_name}
                   description={project.description}
                   stocksCount={project.stocksCount}
                 />
