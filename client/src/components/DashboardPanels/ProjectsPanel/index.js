@@ -38,10 +38,9 @@ class ProjectsPanel extends Component {
     super(props);
     this.state = {
       newProjectForm: {
-        id: "",
         title: "",
         description: "",
-        stock: "",
+        stocks: []
       },
       projects: projects,
       modalOpen: false,
