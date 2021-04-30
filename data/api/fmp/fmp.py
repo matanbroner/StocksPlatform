@@ -19,7 +19,8 @@ class FinancialModelingPrepApi:
         self.api_key = api_key or os.environ["FMP_API_KEY"]
         self.query_limit = query_limit or DEFAULT_QUERY_LIMIT
         if not self.api_key:
-            self._raise_error("No valid FinancialModelingPrep API key provided")
+            self._raise_error(
+                "No valid FinancialModelingPrep API key provided")
 
     def _raise_error(self, msg: str):
         """
@@ -101,7 +102,8 @@ class FinancialModelingPrepApi:
         ref: https://financialmodelingprep.com/developer/docs/financial-statement-free-api#Income-Statement
         """
         if statement_type not in ["income", "cash-flow", "balance-sheet"]:
-            self._raise_error(f"Statement type '{statement_type}' is not valid")
+            self._raise_error(
+                f"Statement type '{statement_type}' is not valid")
         statement_type += "-statement"
         if growth:
             statement_type += "-growth"
@@ -271,7 +273,8 @@ class FinancialModelingPrepApi:
         if tickers:
             for ticker in tickers:
                 if not isinstance(ticker, str):
-                    self._raise_error(f"Invalid ticker symbol {ticker} in news request")
+                    self._raise_error(
+                        f"Invalid ticker symbol {ticker} in news request")
             str_tickers = ",".join(tickers)
             route += f"&tickers={str_tickers}"
         return self._api_request(route=route)
@@ -305,7 +308,8 @@ class FinancialModelingPrepApi:
         ref: https://financialmodelingprep.com/developer/docs/historical-stock-data-free-api
         """
         if interval not in ["1m", "5m", "15m", "30m", "1h", "4h", "all"]:
-            self._raise_error(f"Interval {interval} is not valid in price request")
+            self._raise_error(
+                f"Interval {interval} is not valid in price request")
 
         if interval[-1] == "m":
             interval = f"{interval}in"

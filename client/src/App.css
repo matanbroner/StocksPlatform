@@ -32,12 +32,27 @@
 }
 
 /* SignUp Styles */
+.signup-container {
+  background-color: white;
+  border-radius: 15px;
+  padding-bottom: 40px;
+}
+
 .signup {
-  padding-top: 200px;
+  padding-top: 170px;
 }
 
 .SignupTitle {
   text-align: center;
+  padding-top: 40px;
+  font-size: 37px;
+  padding-bottom: 40px;
+  font-weight: 600;
+}
+
+.signup-form {
+  display: inline-block;
+  text-align: left;
 }
 
 .signup-user {
@@ -53,16 +68,23 @@
 }
 
 .signup-button {
-  width: 375px;
+  padding-top: 20px;
+  text-align: center;
 }
 
 /* Login Styles */
-body {
-  background-color: #232931;
+.login-logo {
+  color: teal;
+  font-size: 70px;
+  padding-top: 70px;
+  padding-bottom: 200px;
 }
-
 .LoginMessage {
   text-align: center;
+}
+
+.first-column {
+  padding-left: 30px;
 }
 
 .login-email {
@@ -71,10 +93,62 @@ body {
 
 .login-password {
   width: 300px;
+  padding-bottom: 5px;
+}
+
+.login-email {
+  width: 400px;
+  padding-bottom: 5px;
+}
+
+.login-password {
+  width: 400px;
+}
+
+.LoginTitle {
+  color: #eeeeee;
+  font-size: 35px;
+  padding-top: 40px;
+  padding-bottom: 25px;
+}
+
+.LoginMessage {
+  color: #eeeeee;
+  font-size: 60px;
+  padding-top: 200px;
+  padding-right: 375px;
+}
+
+.LoginMessage2 {
+  color: black;
+  font-size: 45px;
+  padding-top: 200px;
+  padding-left: 200px;
+}
+
+.login-column-1 {
+  background-color: #232931;
+}
+
+.login-column-2 {
+  background-color: teal;
 }
 
 .login-button {
-  width: 300px;
+  padding-top: 10px;
+  width: 100px;
+}
+
+.no-account {
+  display: flex;
+  justify-content: left;
+  color: #eeeeee;
+}
+
+.go-to-sign {
+  color: teal;
+  padding-left: 4px;
+  cursor: pointer;
 }
 
 /* Dashboard Styles */

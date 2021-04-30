@@ -9,7 +9,7 @@ Session = None
 
 
 def generate_db_uri(
-    driver: str = "postgres",
+    driver: str = "postgresql",
     user: str = None,
     password: str = None,
     host: str = None,
