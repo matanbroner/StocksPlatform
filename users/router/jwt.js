@@ -1,28 +1,39 @@
-const express = require('express');
-const jwt = require('jsonwebtoken');
+const express = require("express");
+const jwt = require("jsonwebtoken");
+const Models = require("../models");
 
 const jwtRouter = express.Router();
 jwtRouter.use(express.json());
 
+const getUserFromDecodedToken = async (decodedToken) => {
+  const { id } = decodedToken;
+  const user = await Models.Users.findByPk(id, {
+    raw: true,
+  });
+  return user;
+};
 
-jwtRouter.route('/verify')
-.post(async (req, res) => {
-    var token = req.body.token;
-    
-    jwt.verify(token, process.env.tokenSecret, (error, decodedToken) => {
+jwtRouter.route("/verify").post((req, res) => {
+  var token = req.body.token;
 
-        if(error) {
-            console.log('Error validiating token, cannot access resource.');
-            res.status(403).json({"error":"Password is incorrect"});
+  jwt.verify(token, process.env.JWT_KEY, async (error, decodedToken) => {
+    try {
+      if (error) {
+        throw error;
+      } else {
+        const user = await getUserFromDecodedToken(decodedToken);
+        if (!user) {
+          throw new Error("Unable to access user profile from decoded token")
         }
-        else {
-            res.setHeader('Authorization', token); 
-            res.status(200).json({
-                "data": 'success'
-            });
-        }
-
-    });
+        delete user.password;
+        res.status(200).json({
+          data: user,
+        });
+      }
+    } catch (e) {
+      res.status(403).json({ error: String(e) });
+    }
+  });
 });
 
 module.exports = jwtRouter;

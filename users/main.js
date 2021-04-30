@@ -4,6 +4,7 @@ const dotenv = require('dotenv');
 
 const userRouter = require("./router/users");
 const tokenRouter = require("./router/tokens");
+const jwtRouter = require("./router/jwt")
 const passport = require("passport");
 const oauthRouter = require("./router/oauth");
 
