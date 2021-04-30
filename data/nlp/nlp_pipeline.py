@@ -34,7 +34,3 @@ def pre_process(nlp_df):
     nlp_unit = NLPUnit(nlp_df)
     nlp_unit.determine_sentiment()
     print(nlp_unit.get_df().head(5))
-
-    # word cloud stuff, figure out later
-    # wc = NLPUnit(nlp_df).get_word_cloud()
-    # wc.show()

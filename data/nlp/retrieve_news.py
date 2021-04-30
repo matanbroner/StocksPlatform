@@ -16,18 +16,25 @@ def retrieve_news_data(src):
     Called when thread is started.
     """
     success = False
-    while not success:
+    attempts = 0
+    while not success and attempts < 3:
         try:
             response_df = src.retrieve_data()
             success = True
+            print("Successful grabbed news data for %s." % (src.get_stock()))
         except RuntimeError:
+            attempts += 1
             continue
 
-    # send to data pipeline
-    thread_lock.acquire()
-    #pl_queue.put(response_df)
-    to_pipeline(response_df)
-    thread_lock.release()
+    if not success:
+        print("Failed to grab news data for %s." %
+              (src.get_stock()))
+    else:
+        # send to data pipeline
+        thread_lock.acquire()
+        #pl_queue.put(response_df)
+        to_pipeline(response_df)
+        thread_lock.release()
 
 def main(fmp_key, stock_list):
     sources = []

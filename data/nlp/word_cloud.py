@@ -8,8 +8,7 @@ import requests
 
 class NLPWordCloud:
     def __init__(self, all_words_str, image_url=None):
-        self.wc = None
-        self.generate(all_words_str, image_url)
+        self.wc = self.generate(all_words_str, image_url)
 
     def generate(self, all_words, image_url):
         """
@@ -25,11 +24,11 @@ class NLPWordCloud:
             # getting colors from image. will use later to recolor word cloud
             image_colors = ImageColorGenerator(mask)
             
-        self.wc = WordCloud(background_color='black', height=1500, width=4000, mask=mask)
+        wc = WordCloud(background_color='black', height=1500, width=4000, mask=mask)
 
-        self.wc = self.wc.generate(all_words)
+        wc = wc.generate(all_words)
 
-        self.wc = self.wc.recolor(color_func=image_colors)
+        return wc.recolor(color_func=image_colors)
 
     def show(self):
         """
