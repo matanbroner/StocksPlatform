@@ -10,9 +10,18 @@ def auth_token_is_valid(token: str):
     @param token: bearer token
     @return: bool
     """
-    # dummy placement here until logic is added
-    g.user_id = "fake-user-id"
-    return True
+    if not token:
+        return False
+    try:
+        res = requests.post("http://users:5001/jwt/verify", {"token": token})
+        res.raise_for_status()
+        user = res.json().get("data")
+        print(user, flush=True)
+        g.user_id = user["id"]
+        return True
+    except Exception as e:
+        print(e, flush=True)
+        return False
 
 
 def auth_middleware(f):
