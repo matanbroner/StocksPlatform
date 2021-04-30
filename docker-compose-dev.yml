@@ -19,6 +19,7 @@ services:
       - postgres
 
   users:
+    container_name: users
     build:
       context: ./users
       dockerfile: Dockerfile
