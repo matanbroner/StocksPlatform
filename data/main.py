@@ -1,5 +1,6 @@
 import os
 from flask import Flask
+from flask_cors import CORS
 from db import init_db_connection, instantiate_tables
 from api.v1 import init_router
 
@@ -9,7 +10,7 @@ is_production = os.getenv("ENV") == "production"
 port = os.getenv("port") or 5000
 
 app = Flask(__name__)
-
+CORS(app)
 
 @app.route("/")
 def health_check():
