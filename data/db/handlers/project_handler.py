@@ -73,7 +73,7 @@ def create_project(project_name: str, description: str, user_id: str):
                 raise RuntimeError(
                     f"User with given ID already has project with name '{project_name}'"
                 )
-            project = Project(project_name=project_name, description=description)
+            project = Project(project_name=project_name, description=description, user_id=user_id)
             session.add(project)
             # must commit before new stock can be fetched from DB table
             session.commit()
