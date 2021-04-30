@@ -87,6 +87,9 @@ class ProjectsPanel extends Component {
   }
 
   submitNewProject() {
+    this.setState({
+      loading: true
+    })
     ApiHandler
       .post(
         "data",
@@ -102,7 +105,9 @@ class ProjectsPanel extends Component {
           projects: [
             ...this.state.projects,
             res.data
-          ]
+          ],
+          modalOpen: false,
+          loading: false
         })
       })
       .catch((err) => console.log(err));
@@ -119,6 +124,7 @@ class ProjectsPanel extends Component {
         onStateChange={this.updateModalState.bind(this)}
         onFormUpdate={this.updateForm.bind(this)}
         onSubmit={this.submitNewProject.bind(this)}
+        loading={this.state.loading}
       />
     );
   }

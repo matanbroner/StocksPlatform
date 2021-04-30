@@ -46,6 +46,7 @@ const ProjectCreateModal = (props) => {
           icon="add"
           onClick={() => props.onSubmit()}
           positive
+          loading={props.loading}
         />
       </Modal.Actions>
     </Modal>
