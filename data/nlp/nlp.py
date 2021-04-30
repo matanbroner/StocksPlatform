@@ -12,9 +12,10 @@ class NLPUnit:
         stock
         source
         date
+        title
         content
     """
-    def __init__(self, stock, data):
+    def __init__(self, data):
         self.df = data
         
         # seb
@@ -31,8 +32,6 @@ class NLPUnit:
         # seb
         self.sentiment = None
 
-        self._pre_process()
-
     def _remove_pattern(self, text, pattern):
         """
         Removes a specified pattern from the text.
@@ -47,15 +46,11 @@ class NLPUnit:
 
         return text
 
-    def _pre_process(self):
-        """
-        Handles the data pre-processing.
-        @return: None
-        """
-        self.df['clean title'] = np.vectorize(algos.clean_sentence)(self.df['title'])
+    def get_df_col(self, col):
+        return self.df[col]
     
     def get_word_cloud(self, image_url=None):
-        all_words_str = ' '.join(text for text in self.df['clean title'])
+        all_words_str = ' '.join(token.text for token in self.df['doc'])
         return NLPWordCloud(all_words_str, image_url)
 
     def determine_category(self, text):
@@ -64,14 +59,15 @@ class NLPUnit:
         """
         pass
 
-    def determine_sentiment(self, text):
+    def determine_sentiment(self):
         """
         Determine sentiment for news. -Seb
         """
-        pass
+        self.df['title sentiment'] = np.vectorize(algos.sentiment_value)(self.df['clean title'])
+        print(self.df['title sentiment'])
 
     def save(self):
         """
-        Save to sentiment
+        Save to database
         """
         pass

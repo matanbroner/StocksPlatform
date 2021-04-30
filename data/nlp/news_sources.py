@@ -21,7 +21,7 @@ class GeneralNewsData:
         self.api = FMPApi(key)
         self.stock = stock_ticker
 
-    def _create_dataframe(self, json_data):
+    def _create_articles_df(self, json_data):
         """
         Creates and returns a DataFrame with the following columns:
             stock
@@ -52,7 +52,7 @@ class GeneralNewsData:
 
         json_response = self.api.get_news([self.stock])
         
-        return self._create_dataframe(json_response)
+        return self._create_articles_df(json_response)
 
 class RedditData:
     """
