@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import "../App.css";
 import { Form, Grid, Message } from "semantic-ui-react";
-import { Link } from "react-router-dom";
-
 import ApiHandler from "../api";
 
 class Login extends Component {
@@ -66,7 +64,7 @@ class Login extends Component {
         }
       )
         .then((res) => {
-          this.props.history.push("/dashboard/home");
+          this.props.history.push("/dashboard");
           this.props.setUser(res.data);
         })
         .catch((e) => {
@@ -128,9 +126,6 @@ class Login extends Component {
                 </div>
               </div>
 
-              {/* If login is valid, route to Dashboard.js.
-                                Else, display errors. */}
-              {/* <Link to='/dashboard/home'> */}
               <Form.Button
                 size="large"
                 className="login-button"

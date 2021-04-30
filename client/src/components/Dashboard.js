@@ -5,6 +5,7 @@ import { Grid } from "semantic-ui-react";
 import Navbar from "./Navbar";
 import Topbar from "./Topbar";
 
+import HomePanel from "./DashboardPanels/HomePanel";
 import ProjectsPanel from "./DashboardPanels/ProjectsPanel";
 import StocksPanel from "./DashboardPanels/StocksPanel";
 import SettingsPanel from "./DashboardPanels/SettingsPanel";
@@ -13,7 +14,7 @@ class Dashboard extends Component {
   renderSubrouter() {
     return (
       <>
-        <Route path="/dashboard" exact component={this.renderDashboardHomePanel()} />
+        <Route path="/dashboard" exact component={HomePanel} />
         <Route path="/dashboard/projects" exact component={ProjectsPanel} />
         <Route path="/dashboard/stocks" exact component={StocksPanel} />
         <Route path="/dashboard/settings" exact component={SettingsPanel} />
@@ -21,13 +22,7 @@ class Dashboard extends Component {
     );
   }
 
-  renderDashboardHomePanel() {
-    return (
-      <div className="dash-body">
-        <div className="dash-title">Welcome Back, [Name]!</div>
-      </div>
-    );
-  }
+  
   render() {
     return (
       <div>
@@ -37,14 +32,11 @@ class Dashboard extends Component {
               <Topbar />
             </Grid.Column>
           </Grid.Row>
-          <Grid.Row>
-            <Grid.Column stretched width={16}></Grid.Column>
-          </Grid.Row>
-          <Grid.Row>
-            <Grid.Column stretched width={16}>
+          <Grid.Row columns={2}>
+            <Grid.Column stretched width={4}>
               <Navbar />
             </Grid.Column>
-            <Grid.Column stretched width={16}>
+            <Grid.Column stretched width={12}>
               {this.renderSubrouter()}
             </Grid.Column>
           </Grid.Row>
