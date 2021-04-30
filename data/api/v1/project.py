@@ -37,5 +37,6 @@ def post_project():
         if not project_name or not description:
             raise RuntimeError("Missing attributes for project creation")
         project = create_project(project_name=project_name, description=description, user_id=g.user_id)
+        return json_response(status_code=200, data=project)
     except Exception as e:
         return json_response(status_code=404, error=str(e))
