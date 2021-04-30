@@ -4,7 +4,7 @@ import ApiHandler from "../../../api";
 import BasePanel from "../BasePanel";
 import ProjectCreateModal from "../../Modals/ProjectCreateModal";
 import ProjectCard from "../../ProjectCard";
-import styles from './styles.module.css'
+import styles from "./styles.module.css";
 
 const projects = [
   {
@@ -40,7 +40,7 @@ class ProjectsPanel extends Component {
       newProjectForm: {
         title: "",
         description: "",
-        stocks: []
+        stocks: [],
       },
       projects: projects,
       modalOpen: false,
@@ -63,10 +63,30 @@ class ProjectsPanel extends Component {
     });
   }
 
+  submitNewProject() {
+    ApiHandler
+      .post(
+        "data",
+        "project",
+        {},
+        {
+          project_name: this.state.newProjectForm.title,
+          description: this.state.newProjectForm.description,
+        }
+      )
+      .then((res) => {
+        this.setState({
+          projects: [
+            ...this.state.projects,
+            res.data
+          ]
+        })
+      })
+      .catch((err) => console.log(err));
+  }
+
   renderLoader() {
-    return (
-        <Loader id={styles.loader} size='massive' active />
-    );
+    return <Loader id={styles.loader} size="massive" active />;
   }
 
   renderModal() {
@@ -75,6 +95,7 @@ class ProjectsPanel extends Component {
         open={this.state.modalOpen}
         onStateChange={this.updateModalState.bind(this)}
         onFormUpdate={this.updateForm.bind(this)}
+        onSubmit={this.submitNewProject.bind(this)}
       />
     );
   }

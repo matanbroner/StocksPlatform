@@ -44,7 +44,7 @@ const ProjectCreateModal = (props) => {
           content="Create Project"
           labelPosition="left"
           icon="add"
-          onClick={() => props.onStateChange(false)}
+          onClick={() => props.onSubmit()}
           positive
         />
       </Modal.Actions>
