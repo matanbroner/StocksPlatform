@@ -13,14 +13,12 @@ def auth_token_is_valid(token: str):
     if not token:
         return False
     try:
-        res = requests.post("http://users:5001/jwt/verify", {"token": token})
+        res = requests.post("http://users:5001/jwt/verify", json={"token": token})
         res.raise_for_status()
         user = res.json().get("data")
-        print(user, flush=True)
-        g.user_id = user["id"]
+        g.user_id = str(user["id"])
         return True
     except Exception as e:
-        print(e, flush=True)
         return False
 
 
