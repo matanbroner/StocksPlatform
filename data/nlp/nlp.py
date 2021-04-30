@@ -17,20 +17,6 @@ class NLPUnit:
     """
     def __init__(self, data):
         self.df = data
-        
-        # seb
-        self.stock = None
-        self.source = None
-
-        # aj
-        self.date = None
-        self.industry = None
-
-        # aj
-        self.category = None
-
-        # seb
-        self.sentiment = None
 
     def _remove_pattern(self, text, pattern):
         """
@@ -46,6 +32,9 @@ class NLPUnit:
 
         return text
 
+    def get_df(self):
+        return self.df
+
     def get_df_col(self, col):
         return self.df[col]
     
@@ -55,19 +44,18 @@ class NLPUnit:
 
     def determine_category(self, text):
         """
-        Determine category for news. -AJ
+        Determine category for news.
         """
         pass
 
     def determine_sentiment(self):
         """
-        Determine sentiment for news. -Seb
+        Determine sentiment for news.
         """
-        self.df['title sentiment'] = np.vectorize(algos.sentiment_value)(self.df['clean title'])
-        print(self.df['title sentiment'])
+        self.df['title sentiment'] = np.vectorize(algos.sentiment_value)(self.df['doc'])
 
     def save(self):
         """
-        Save to database
+        Save to database.
         """
         pass

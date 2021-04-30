@@ -30,5 +30,11 @@ def pre_process(nlp_df):
     # nlp = NLPUnit(nlp_df)
     # nlp.pre_process()
     print("Finished pre-processing for %s." % (nlp_df['stock'].iloc[0]))
+
+    nlp_unit = NLPUnit(nlp_df)
+    nlp_unit.determine_sentiment()
+    print(nlp_unit.get_df().head(5))
+
+    # word cloud stuff, figure out later
     # wc = NLPUnit(nlp_df).get_word_cloud()
     # wc.show()

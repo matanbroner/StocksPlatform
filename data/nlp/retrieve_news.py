@@ -25,8 +25,8 @@ def retrieve_news_data(src):
 
     # send to data pipeline
     thread_lock.acquire()
-    pl_queue.put(response_df)
-    #to_pipeline(response_df)
+    #pl_queue.put(response_df)
+    to_pipeline(response_df)
     thread_lock.release()
 
 def main(fmp_key, stock_list):
