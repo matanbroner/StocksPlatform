@@ -1,4 +1,4 @@
-from db.sqlalchemy_db import create_table
+from db.sqlalchemy_db import create_table, get_engine
 from sqlalchemy import (
     Column,
     Integer,
@@ -87,13 +87,13 @@ class Project(Base):
 
     id = p_key_column()
     project_name = Column(String)
+    description = Column(String)
     is_active = Column(Boolean, default=True)
     created_at = Column(DateTime, default=get_datettime)
     updated_at = Column(DateTime, default=get_datettime, onupdate=get_datettime)
 
-    # TODO: uncomment this and update table definition once Ronald's changes are in
     # user_id = f_key_column(column_attribute="Users.id")
-    # dummy column for feature testing
+    # TODO: this is a dummy column until I can figure out how to autopopulate a Users table here
     user_id = Column(String)
 
     @property

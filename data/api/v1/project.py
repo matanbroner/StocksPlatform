@@ -26,3 +26,16 @@ def get_project(project_id: str = None):
         return json_response(status_code=200, data=data)
     except Exception as e:
         return json_response(status_code=404, error=str(e))
+
+@router.route("/", methods=["POST"])
+@auth_middleware
+def post_project():
+    body = request.json
+    try:
+        project_name = body.get("project_name")
+        description = body.get("description")
+        if not project_name or not description:
+            raise RuntimeError("Missing attributes for project creation")
+        project = create_project(project_name=project_name, description=description)
+    except Exception as e:
+        return json_response(status_code=404, error=str(e))

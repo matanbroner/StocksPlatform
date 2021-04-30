@@ -53,7 +53,7 @@ def get_project_stocks_by_id(project_id: str):
         )
 
 
-def create_project(project_name: str, user_id: str):
+def create_project(project_name: str, description: str, user_id: str):
     """
     Create a new project associated with a user
     @param project_name: ex. "My Project"
@@ -73,7 +73,7 @@ def create_project(project_name: str, user_id: str):
                 raise RuntimeError(
                     f"User with given ID already has project with name '{project_name}'"
                 )
-            project = Project(project_name=project_name)
+            project = Project(project_name=project_name, description=description)
             session.add(project)
             # must commit before new stock can be fetched from DB table
             session.commit()

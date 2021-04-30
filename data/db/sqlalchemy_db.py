@@ -100,3 +100,10 @@ def create_table(table):
         """
         )
     table.__table__.create(bind=engine, checkfirst=True)
+
+def get_engine():
+    """
+    Get raw engine object. Should not be used unless explicitly needed.
+    """
+    global engine
+    return engine
