@@ -1,3 +1,4 @@
+const sequelize = require('sequelize');
 const { Op } = require("sequelize");
 const Models = require('../models');
 const Tokens = Models.Tokens;
@@ -44,6 +45,20 @@ const inactiveToken = async (token) => {
 };
 
 /*
+*/
+const appendProvider = async (email, oauthDetails) => {
+  await Users.update(
+    {providers: 
+      sequelize.fn('array_append', sequelize.col('providers'), JSON.stringify(oauthDetails))
+    },
+    { where: { email: email } }
+    )
+    .then((result) => {
+    })
+    .catch((err) => console.log(err));
+};
+
+/*
 Pass the refresh token to client, when their access token expires, they will pass that in here.
 The refresh token is essentially useless to the client as all the routes require a jwt.verify(accessToken)
 refresh token will only be used to say the user logged in validly, so we issue them an access token
@@ -80,5 +95,6 @@ const refreshToken = async (refreshToken, callback) => {
 module.exports = {
   removeInvalidTokens,
   inactiveToken,
+  appendProvider,
   refreshToken
 }

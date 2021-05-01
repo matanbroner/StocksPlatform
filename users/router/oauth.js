@@ -43,4 +43,28 @@ oauthRouter.get('/google/login/callback',
 
     });
 
+oauthRouter.get('/facebook/login', passport.authenticate('facebook', { scope: ['email']} ));
+
+oauthRouter.get('/facebook/login/callback',
+    passport.authenticate('facebook', { failureRedirect: '/users/login' }), (req, res) => {
+
+        const { email } = req.user;
+        const username = req.user.username;
+
+        var accessToken = req.user.accessToken;
+        var refreshToken = req.user.refreshToken;
+
+        const user = {
+            username,
+            email,
+            firstName: req.user.firstName,
+            lastName: req.user.lastName,
+        }
+        return res.status(200).json({
+            status: 200,
+            data: { ...user, accessKey: accessToken, refreshKey: refreshToken },
+        });
+
+    });
+
 module.exports = oauthRouter;

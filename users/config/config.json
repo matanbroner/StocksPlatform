@@ -2,7 +2,7 @@
   "development": {
     "username": "stocks_admin",
     "password": "stocks_admin",
-    "database": "stocks_db",
+    "database": "postgres",
     "host": "postgres",
     "dialect": "postgres"
   },
