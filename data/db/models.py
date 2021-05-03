@@ -1,5 +1,5 @@
 from db.sqlalchemy_db import create_table
-from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
+from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Numeric, func
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import validates
@@ -29,7 +29,8 @@ class Stock(Base):
     id = p_key_column()
     ticker = Column(String, unique=True, index=True, nullable=False)
     created_at = Column(DateTime, default=get_datettime)
-    updated_at = Column(DateTime, default=get_datettime, onupdate=get_datettime)
+    updated_at = Column(DateTime, default=get_datettime,
+                        onupdate=get_datettime)
 
     @validates('ticker')
     def convert_upper(self, key, value):
@@ -47,6 +48,60 @@ class Stock(Base):
             'ticker': self.ticker,
             'created_at': self.created_at,
             'updated_at': self.updated_at
+        }
+
+
+class NewsSources(Base):
+
+    __tablename__ = 'text_sources'
+
+    id = Column('id', Integer, primary_key=True)
+
+    sourcename = Column('user', String(50), nullable=False, unique=True)
+
+    @property
+    def serialize(self):
+        """
+        Return JSOn serialized version of  instance
+        @return: JSON
+        """
+        return {
+            'id': self.id,
+            'sourcename': self.sourcename,
+        }
+    ##overallweight = Column(Numeric(), nullable=False, unique=False)
+
+
+class NewsArticles(Base):
+
+    __tablename__ = 'text_articles'
+
+    id = Column(Integer(), primary_key=True)
+
+    sourceid = Column(Integer(), ForeignKey(NewsSources.id))
+
+    stockid = Column(Integer(), ForeignKey(Stock.id))
+
+    datepublished = Column(DateTime(), default=get_datettime)
+
+    avgsentiment = Column(Numeric(), nullable=False)
+
+    maintoken = Column(String(20), nullable=True)
+    ##overallWeight = Column(Numeric(), ForeginKey(NewsSources.overallweight))
+
+    @property
+    def serialize(self):
+        """
+        Return JSOn serialized version of Stock instance
+        @return: JSON
+        """
+        return {
+            'id': self.id,
+            'ticker': self.sourceid,
+            'stock_id': self.stockid,
+            'date_published': self.datepublished
+            'avg_sentiment': self.avgsentiment
+            'main_token': self.maintoken
         }
 
 
