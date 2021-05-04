@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import "./styles.css";
 import "semantic-ui-css/semantic.min.css";
 import { Form, Grid, Message } from "semantic-ui-react";
-import { Link } from "react-router-dom";
-
+import { Link } from 'react-router-dom';
+import GoogleLogin from 'react-google-login'
 import ApiHandler from "../../api";
 
 class Login extends Component {
@@ -79,6 +79,12 @@ class Login extends Component {
     }
   }
 
+  // Google aunthentication dummy response to check if it works
+  responseGoogle = (response) => {
+    console.log(response);
+    console.log(response.profileObj);
+  }
+
   render() {
     return (
       <Grid columns={2} style={{ height: "110vh" }}>
@@ -115,6 +121,7 @@ class Login extends Component {
                 placeholder="Password"
                 value={this.state.form.password}
                 onChange={(e) => this.updateForm("password", e)}
+                secureTextEntry={true}
               />
 
               <div className="no-account">
@@ -131,7 +138,6 @@ class Login extends Component {
 
               {/* If login is valid, route to Dashboard.js.
                                 Else, display errors. */}
-              {/* <Link to='/dashboard/home'> */}
               <Form.Button
                 size="large"
                 className="login-button"
@@ -141,8 +147,18 @@ class Login extends Component {
                 disabled={!this.formIsComplete()}
                 loading={this.state.loading}
               />
-              {/* </Link> */}
             </Form>
+            <br></br>
+            {/* <Link to='/google/login'>
+              <GoogleLogin
+                clientId=""
+                ButtonText="Sign In with Google"
+                onSuccess={this.responseGoogle}
+                onFailure={this.responseGoogle}
+                cookiePolicy={'single_host_origin'}
+                className="google-login"
+              />
+            </Link> */}
           </div>
         </Grid.Column>
 

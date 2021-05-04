@@ -98,11 +98,15 @@ class Signup extends Component {
           loading: true
       })
       const {
+          firstName,
+          lastName,
           username,
           email,
           password
       } = this.state.form
       ApiHandler.post('users', 'users/sign-up', {}, {
+        firstName,
+        lastName,
         username,
         email,
         password
@@ -133,7 +137,7 @@ class Signup extends Component {
               <div className="SignupTitle">Sign Up</div>
 
               <Form.Group className="signup-form">
-                <Form.Field>
+                <Form.Field required>
                   <label>First Name</label>
                   <input
                     placeholder="First Name"
@@ -141,7 +145,7 @@ class Signup extends Component {
                     onChange={(e) => this.updateForm("firstName", e)}
                   />
                 </Form.Field>
-                <Form.Field>
+                <Form.Field required>
                   <label>Last Name</label>
                   <input
                     placeholder="Last Name"
@@ -151,33 +155,35 @@ class Signup extends Component {
                 </Form.Field>
               </Form.Group>
 
-              <Form.Input
+              <Form.Input required
                 label="Username"
                 className="signup-user"
                 placeholder="Username"
                 value={this.state.form.username}
                 onChange={(e) => this.updateForm("username", e)}
               />
-              <Form.Input
+              <Form.Input required
                 label="Email"
                 className="signup-email"
                 placeholder="E-mail Address"
                 value={this.state.form.email}
                 onChange={(e) => this.updateForm("email", e)}
               />
-              <Form.Input
+              <Form.Input required
                 label="Password"
                 className="signup-password"
                 placeholder="Password"
                 value={this.state.form.password}
                 onChange={(e) => this.updateForm("password", e)}
+                secureTextEntry={true}
               />
-              <Form.Input
+              <Form.Input required
                 label="Confirm Password"
                 className="signup-password-confirm"
                 placeholder="Confirm Password"
                 value={this.state.form.confirmPassword}
                 onChange={(e) => this.updateForm("confirmPassword", e)}
+                secureTextEntry={true}
               />
               <Form.Field>
                 <Checkbox

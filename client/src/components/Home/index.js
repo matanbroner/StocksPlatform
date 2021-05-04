@@ -3,14 +3,7 @@ import './styles.css';
 import 'semantic-ui-css/semantic.min.css';
 import { Header, Button } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
-
-function Logo() {
-    return (
-      <div className="Logo">
-        <img src="/images/logo.png" alt="Banana Stocks Logo" className="home-logo"/>
-      </div>
-    )
-  }
+// import Logo from '../Logo/index';
   
   function Message() {
     return (
@@ -43,7 +36,10 @@ class Home extends Component {
       return (
           <div className="HomeBackground">
               <Header className="Header" as='h2'>
-                  <Logo />
+                  <div className="Logo">
+                  <img src="/images/logo.png" alt="Banana Stocks Logo" className="home-logo"/>
+                  </div>
+
                   <Message />
 
                   <div className="Buttons">

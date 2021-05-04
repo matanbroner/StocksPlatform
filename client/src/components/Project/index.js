@@ -2,19 +2,18 @@ import React, { Component } from 'react';
 import './styles.css';
 import 'semantic-ui-css/semantic.min.css';
 import { Button, Form, Modal, Search, Grid } from 'semantic-ui-react';
-// import { Link } from 'react-router-dom';
 import Navbar from '../Navbar/index';
 import Topbar from '../Topbar/index';
 // import ApiHandler from "../../api";
 
 const results = [
     {
-      name: "John",
-      age: 14
+      stock_name: "DIS",
+      sector: 14
     },
     {
-      name: "Mary",
-      age: 92
+      stock_name: "APPL",
+      sector: 92
     }
   ];
 

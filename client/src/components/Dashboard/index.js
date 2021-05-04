@@ -45,7 +45,7 @@ class Dashboard extends Component {
                         <Grid.Column stretched width={16}>
                             <div className='dash-body'>
                                 <div className='dash-title'>
-                                    Welcome Back, [Name]!
+                                    Welcome Back, { this.props.username }!
                                 </div>
                             </div>
                         </Grid.Column>

@@ -70,11 +70,23 @@
 .no-account {
   display: flex;
   justify-content: left;
-  color: black;
+  color: #eeeeee;
 }
 
 .go-to-sign {
-  color: teal;
+  color: rgb(2, 180, 180);
   padding-left: 4px;
   cursor: pointer;
+}
+
+.google-login {
+  width: 400px;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  color: #eeeeee;
+}
+
+.LoginMessage {
+  color: rgb(2, 180, 180);
 }
