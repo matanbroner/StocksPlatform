@@ -31,19 +31,15 @@ def retrieve_news_data(src):
               (src.get_stock()))
     else:
         # send to data pipeline
-        thread_lock.acquire()
-        #pl_queue.put(response_df)
         to_pipeline(response_df)
-        thread_lock.release()
 
 def main(fmp_key, stock_list):
     sources = []
     for stock in stock_list:
         sources.append(GeneralNewsData(fmp_key, stock))
 
-    with concurrent.futures.ThreadPoolExecutor() as executor:
+    with concurrent.futures.ProcessPoolExecutor() as executor:
         executor.map(retrieve_news_data, sources)
 
-    print(pl_queue.qsize())
     print("Exiting Main Thread")
     return 1

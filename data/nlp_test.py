@@ -28,14 +28,14 @@ class TestNLP(unittest.TestCase):
         self.nlp = nlp.NLPUnit('AAPL', self.general_news.retrieve_data())
 
 class TestNLPPipeline(unittest.TestCase):
-    def test_nlp_pipeline(self, stock_list=['AAPL', 'TSLA', 'GME', 'AMZN', 'BB', 'DIS', 'MSFT', 'TWTR', 'SNAP', 'NFLX', 'SBUX']):
-        self.assertEqual(main(API_KEY, stock_list), 1)
-
-    # def test_pipeline_stress(self):
-    #     stock_list = []
-    #     for i in range(1000):
-    #         stock_list.append('AAPL')
+    # def test_nlp_pipeline(self, stock_list=['AAPL', 'TSLA', 'GME', 'AMZN', 'BB', 'DIS', 'MSFT', 'TWTR', 'SNAP', 'NFLX', 'SBUX']):
     #     self.assertEqual(main(API_KEY, stock_list), 1)
+
+    def test_pipeline_stress(self):
+        stock_list = []
+        for i in range(1000):
+            stock_list.append('AAPL')
+        self.assertEqual(main(API_KEY, stock_list), 1)
 
 def run_tests():
     #test_classes = [TestNewsRetrieval, TestNewsSources, TestNLP]

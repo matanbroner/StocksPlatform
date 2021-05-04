@@ -36,18 +36,19 @@ def clean_sentence(txt: str):
     thread_lock.release()
     return TreebankWordDetokenizer().detokenize(lemmatized_sentence)
 
-def sentiment_value(doc):
+def sentiment_value(txt):
     """
     Returns true if average sentiment by 
     sentence is positive, otherwise returns false
     @params string (news article)
     @return bool
     """
-    txt = ' '.join([token.text for token in doc])
+    print("welcome")
     sia = SentimentIntensityAnalyzer()
     scores = []
-    for token in nltk.sent_tokenize(txt):
-        scores.append(sia.polarity_scores(token).get("compound"))
+    for sentence in nltk.sent_tokenize(txt):
+        scores.append(sia.polarity_scores(sentence).get("compound"))
+    print("have a nice day")
     return mean(scores)
 
 def headline_sentiment(txt: str) -> bool:
