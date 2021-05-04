@@ -16,7 +16,7 @@ def auth_token_is_valid(token: str):
         res = requests.post("http://users:5001/jwt/verify", json={"token": token})
         res.raise_for_status()
         user = res.json().get("data")
-        g.user_id = str(user["id"])
+        g.user_id = str(user.get("id"))
         return True
     except Exception as e:
         return False
