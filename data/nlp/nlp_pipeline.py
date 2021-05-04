@@ -14,6 +14,9 @@ pl_queue = queue.Queue()
 lock = Lock()
 
 def to_pipeline(nlp_df):
+    """
+    Sends data to pipeline manager.
+    """
     pipeline_manager(nlp_df)
 
 @Language.component("text_clean")
@@ -28,28 +31,18 @@ def text_clean_pipe(doc):
     return Doc(doc.vocab, words=token_list)
 
 def pre_process(texts):
+    """
+    Pre-processing stage of pipeline. Uses spaCy to clean and tag text.
+    @param texts: list/iter of strings
+    @return: list of pre processed texts
+    """
     return list(nlp.pipe(texts, batch_size=20))
 
-def sentiment_value(docs):
-    """
-    Returns true if average sentiment by 
-    sentence is positive, otherwise returns false
-    @params string (news article)
-    @return bool
-    """
-    print("1")
-    sia = SentimentIntensityAnalyzer()
-    print("2")
-    scores = []
-    print("3")
-    for sentence in nltk.sent_tokenize(txt):
-        print("4")
-        scores.append(sia.polarity_scores(sentence).get("compound"))
-        print("5")
-    print("6")
-    return mean(scores)
-
 def determine_sentiment(docs):
+    """
+    Sentiment stage of pipeline. Calculates sentiment value for each of the docs.
+    @param docs: list of docs created by spaCy pre-processing
+    """
     sentiment_list = []
 
     for doc in docs:
@@ -60,16 +53,16 @@ def determine_sentiment(docs):
     return sentiment_list
 
 def pipeline_manager(nlp_df):
+    """
+    Manages all stages of pipeline.
+    """
+    # pre-processing stage
     nlp_df['doc'] = pre_process(iter(nlp_df['title']))
     
+    # sentiment value calculation stage
     nlp_df['sentiment'] = determine_sentiment(nlp_df['doc'])
 
     print(nlp_df.head(5))
-    print('goodbye')
-
-    # nlp_unit = NLPUnit(nlp_df)
-    # nlp_unit.determine_sentiment()
-    # print(nlp_unit.get_df().head(5))
 
 nlp = spacy.load("en_core_web_sm", disable=['tok2vec'])
 nlp.add_pipe('text_clean', last=True)

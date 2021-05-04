@@ -43,12 +43,16 @@ def sentiment_value(txt):
     @params string (news article)
     @return bool
     """
-    print("welcome")
+    print("1")  # process terminates after printing this line
     sia = SentimentIntensityAnalyzer()
+    print("2")
     scores = []
+    print("3")
     for sentence in nltk.sent_tokenize(txt):
+        print("4")
         scores.append(sia.polarity_scores(sentence).get("compound"))
-    print("have a nice day")
+        print("5")
+    print("6")
     return mean(scores)
 
 def headline_sentiment(txt: str) -> bool:
