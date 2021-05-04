@@ -26,9 +26,9 @@ def get_all_user_projects(user_id: str):
     """
     with create_session() as session:
         projects = session.query(Project).filter(Project.user_id == user_id).all()
-        for project in projects:
-            project = project.serialize
-            project["stocks"] = get_project_stocks_by_id(project_id=project.id)
+        for i, project in enumerate(projects):
+            projects[i] = project.serialize
+            projects[i]["stocks"] = get_project_stocks_by_id(project_id=project.id)
         return projects
 
 
@@ -41,12 +41,12 @@ def get_project_stocks_by_id(project_id: str):
     """
     with create_session() as session:
         project_stocks = session.query(ProjectStock).filter(
-            ProjectStock.project_id == id
+            ProjectStock.project_id == project_id
         ).all()
         return (
             [
                 stock.serialize
-                for stock in [get_stock_by_id(ps.id) for ps in project_stocks]
+                for stock in [get_stock_by_id(ps["id"]) for ps in project_stocks]
             ]
             if project_stocks
             else []

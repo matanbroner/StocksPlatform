@@ -42,7 +42,7 @@ class ProjectsPanel extends Component {
         description: "",
         stocks: [],
       },
-      projects: projects,
+      projects: [],
       modalOpen: false,
       loading: false,
     };
@@ -79,10 +79,14 @@ class ProjectsPanel extends Component {
       .then((res) => {
         this.setState({
           projects: [...res.data],
+        })
+      })
+      .catch((err) => console.log(err))
+      .finally(() => {
+        this.setState({
           loading: false
         })
       })
-      .catch((err) => console.log(err));
     })
   }
 
