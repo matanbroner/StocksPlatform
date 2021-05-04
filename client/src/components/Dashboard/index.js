@@ -1,59 +1,49 @@
-import React, { Component } from 'react';
-import './styles.css';
-import 'semantic-ui-css/semantic.min.css';
-// import { Link } from 'react-router-dom';
-import { Grid } from 'semantic-ui-react';
-import Navbar from '../Navbar/index';
-import Topbar from '../Topbar/index';
-// import axios from 'axios';
+import React, { Component } from "react";
+import "../App.css";
+import { Switch, Route } from "react-router-dom";
+import { Grid } from "semantic-ui-react";
+import Navbar from "./Navbar";
+import Topbar from "./Topbar";
+
+import HomePanel from "./DashboardPanels/HomePanel";
+import ProjectsPanel from "./DashboardPanels/ProjectsPanel";
+import StocksPanel from "./DashboardPanels/StocksPanel";
+import SettingsPanel from "./DashboardPanels/SettingsPanel";
 
 class Dashboard extends Component {
-    // componentDidMount() {
-    //     const config = {
-    //         headers: {
-    //             Authorization: 'Bearer ' + localStorage.getItem('token')
-    //         }
-    //     }
+  renderSubrouter() {
+    return (
+      <>
+        <Route path="/dashboard" exact component={HomePanel} />
+        <Route path="/dashboard/projects" exact component={ProjectsPanel} />
+        <Route path="/dashboard/stocks" exact component={StocksPanel} />
+        <Route path="/dashboard/settings" exact component={SettingsPanel} />
+      </>
+    );
+  }
 
-    //     axios.get('user', config).then(
-    //         res => {
-    //             console.log(res);
-    //         },
-    //         err => {
-    //             console.log(err);
-    //         }
-    //     )
-    // }
-
-    render() {
-        return (
-            <div>
-                <Grid>
-                    <Grid.Row className="dash-top">
-                        <Grid.Column stretched width={16}>
-                            <Topbar />
-                        </Grid.Column>
-                    </Grid.Row> 
-                    <Grid.Row>
-                        <Grid.Column stretched width={16}>
-                        </Grid.Column>  
-                    </Grid.Row>          
-                    <Grid.Row>
-                        <Grid.Column stretched width={16}>
-                            <Navbar />
-                        </Grid.Column>
-                        <Grid.Column stretched width={16}>
-                            <div className='dash-body'>
-                                <div className='dash-title'>
-                                    Welcome Back, { this.props.username }!
-                                </div>
-                            </div>
-                        </Grid.Column>
-                    </Grid.Row>
-                </Grid>
-            </div>
-        )
-    }
+  
+  render() {
+    return (
+      <div>
+        <Grid>
+          <Grid.Row className="dash-top">
+            <Grid.Column stretched width={16}>
+              <Topbar />
+            </Grid.Column>
+          </Grid.Row>
+          <Grid.Row columns={2}>
+            <Grid.Column stretched width={4}>
+              <Navbar />
+            </Grid.Column>
+            <Grid.Column stretched width={12}>
+              {this.renderSubrouter()}
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
+      </div>
+    );
+  }
 }
 
 export default Dashboard;

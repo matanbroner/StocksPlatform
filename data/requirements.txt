@@ -1,4 +1,6 @@
+black
 flask
+flask-cors
 psycopg2
 pytest
 praw
