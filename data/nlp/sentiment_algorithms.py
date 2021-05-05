@@ -7,10 +7,6 @@ from nltk.corpus import stopwords
 from nltk.tokenize.treebank import TreebankWordDetokenizer
 stop_words = stopwords.words('english')
 
-import threading
-
-thread_lock = threading.Lock()
-
 def clean_sentence(txt: str):
     """
     Normalizes the words of article for better analysis.
@@ -20,7 +16,6 @@ def clean_sentence(txt: str):
     @return list of str
     source: digitalocean.com
     """
-    thread_lock.acquire()
     article_tokens = [w for w in nltk.word_tokenize(
         txt) if w.isalpha() and w.lower() not in stop_words]
     lemmatizer = WordNetLemmatizer()
@@ -33,26 +28,24 @@ def clean_sentence(txt: str):
         else:
             pos = 'a'
         lemmatized_sentence.append(lemmatizer.lemmatize(word, pos))
-    thread_lock.release()
+
     return TreebankWordDetokenizer().detokenize(lemmatized_sentence)
 
 def sentiment_value(txt):
     """
-    Returns true if average sentiment by 
-    sentence is positive, otherwise returns false
-    @params string (news article)
-    @return bool
+    Calculates the average sentiment from text.
+    @param txt: text to process as string (ex: news article)
+    @return: mean value of text or None if exception
     """
-    print("1")  # process terminates after printing this line
-    sia = SentimentIntensityAnalyzer()
-    print("2")
     scores = []
-    print("3")
-    for sentence in nltk.sent_tokenize(txt):
-        print("4")
-        scores.append(sia.polarity_scores(sentence).get("compound"))
-        print("5")
-    print("6")
+    try:
+        sia = SentimentIntensityAnalyzer()
+        for sentence in nltk.sent_tokenize(txt):
+            scores.append(sia.polarity_scores(sentence).get("compound"))
+    except Exception as e:
+        print('Exception', e)
+        return None
+
     return mean(scores)
 
 def headline_sentiment(txt: str) -> bool:

@@ -4,19 +4,11 @@ from spacy.tokens.doc import Doc
 
 from nlp.sentiment_algorithms import sentiment_value
 
-from multiprocessing import Lock
-
-import queue
-
-from nlp.nlp import NLPUnit
-
-pl_queue = queue.Queue()
-lock = Lock()
-
 def to_pipeline(nlp_df):
     """
     Sends data to pipeline manager.
     """
+    #print("Sending to pipeline...")
     pipeline_manager(nlp_df)
 
 @Language.component("text_clean")
@@ -42,15 +34,23 @@ def determine_sentiment(docs):
     """
     Sentiment stage of pipeline. Calculates sentiment value for each of the docs.
     @param docs: list of docs created by spaCy pre-processing
+    @return: list of sentiment values
     """
     sentiment_list = []
-
     for doc in docs:
         text = ' '.join([token.text for token in doc])
         sentiment_list.append(sentiment_value(text))
-    print(len(sentiment_list))
 
     return sentiment_list
+
+def save_data(df):
+    """
+    Saves data from DataFrame to database.
+    Note: Be wary of race conditions when saving.
+    @param df: DataFrame with necessary data, don't necessarily need to store all columns
+    @return: None
+    """
+    pass
 
 def pipeline_manager(nlp_df):
     """
@@ -62,7 +62,10 @@ def pipeline_manager(nlp_df):
     # sentiment value calculation stage
     nlp_df['sentiment'] = determine_sentiment(nlp_df['doc'])
 
-    print(nlp_df.head(5))
+    # save to database stage
+    save_data(nlp_df)
+
+    #print("Exiting pipeline...")
 
 nlp = spacy.load("en_core_web_sm", disable=['tok2vec'])
 nlp.add_pipe('text_clean', last=True)

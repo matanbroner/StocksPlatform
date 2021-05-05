@@ -52,6 +52,10 @@ class GeneralNewsData:
 
         json_response = self.api.get_news([self.stock])
         
+        if len(json_response) == 0:
+            print("No news data found for %s." % (self.stock))
+            return None
+        
         return self._create_articles_df(json_response)
 
 class RedditData:
