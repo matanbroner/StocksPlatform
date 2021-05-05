@@ -8,6 +8,14 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
+      firstName: {
+        allowNull: false,
+        type: Sequelize.STRING
+      },
+      lastName: {
+        allowNull: false,
+        type: Sequelize.STRING
+      },
       username: {
         type: Sequelize.STRING,
         allowNull: false,
@@ -20,6 +28,15 @@ module.exports = {
       },
       password: {
         type: Sequelize.STRING
+      },
+      local: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false,
+      },
+      providers: {
+        type: Sequelize.ARRAY(Sequelize.JSON),
+        allowNull: true,
+        defaultValue: null,
       },
       createdAt: {
         allowNull: false,
