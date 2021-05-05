@@ -1,0 +1,48 @@
+/* SignUp Styles */
+#container {
+  border-radius: 15px;
+  padding-bottom: 40px;
+}
+
+#signup {
+  padding-top: 170px;
+}
+
+#title {
+  text-align: center;
+  padding-top: 40px;
+  font-size: 37px;
+  padding-bottom: 40px;
+  font-weight: 600;
+}
+
+#form {
+  display: inline-block;
+  text-align: left;
+}
+
+#smallform {
+  display: flex;
+  justify-content: space-between;
+}
+
+#user {
+  width: 375px;
+}
+
+#email {
+  width: 375px;
+}
+
+#password {
+  width: 375px;
+}
+
+#confirm {
+  width: 375px;
+}
+
+#button {
+  margin-top: 20px;
+  text-align: center;
+}

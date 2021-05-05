@@ -1,8 +1,54 @@
 import React from "react";
 import { Form, Modal, Button, Search } from "semantic-ui-react";
 
+const results = [
+  {
+      company: "Disney",
+      stock_name: "DIS",
+      value: '$186.02'
+  },
+  {
+      company: "Coca-Cola",
+      stock_name: "KO",
+      value: '$53.98'
+  },
+  {
+      company: "Apple",
+      stock_name: "AAPL",
+      value: '$127.85'
+  },
+];
+
 const ProjectCreateModal = (props) => {
-  const resRender = () => <span key="name">Hello it works!</span>;
+  const resRender = () => (
+    <div>
+        {results.filter((val, key) => {
+            if (this.state.search == null) {
+                // console.log(val);
+                return val;
+            } else if (val.company.toLowerCase().includes(this.state.search.toLowerCase()) || val.stock_name.toLowerCase().includes(this.state.search.toLowerCase())) {
+                console.log(this.state.search);
+                // console.log(val);
+                return val;
+            }
+        }).map((val, key) => {
+            return (
+                <div key={key}>
+                  <div>
+                    {val.company}
+                  </div>
+                  <div>
+                    {val.stock_name}
+                  </div>
+                  <div>
+                    {val.value}
+                  </div>
+                </div>
+            );
+        })}
+    </div>
+  );
+
   return (
     <Modal onClose={() => props.onStateChange(false)} open={props.open}>
       <Modal.Header>Create a Project</Modal.Header>
