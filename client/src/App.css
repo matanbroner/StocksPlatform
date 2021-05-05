@@ -6,8 +6,12 @@
 
 .Logo {
   padding-top: 20px;
-  padding-left: 30px;
   color: #eeeeee;
+  padding-left: 20px;
+}
+
+.home-logo {
+  width: 70px;
 }
 
 .Buttons {
@@ -28,12 +32,11 @@
 .HomeMessage {
   color: white;
   padding-top: 400px;
-  text-align: center;
+  font-size: 50px;
 }
 
 /* SignUp Styles */
 .signup-container {
-  background-color: white;
   border-radius: 15px;
   padding-bottom: 40px;
 }
@@ -74,11 +77,13 @@
 
 /* Login Styles */
 .login-logo {
-  color: teal;
-  font-size: 70px;
-  padding-top: 70px;
-  padding-bottom: 200px;
+  width: 175px;
+  height: 250px;
+  padding-top: 20px;
+  display: flex;
+  justify-content: center;
 }
+
 .LoginMessage {
   text-align: center;
 }
@@ -108,22 +113,22 @@
 .LoginTitle {
   color: #eeeeee;
   font-size: 35px;
-  padding-top: 40px;
+  padding-top: 150px;
   padding-bottom: 25px;
 }
 
 .LoginMessage {
-  color: #eeeeee;
-  font-size: 60px;
-  padding-top: 200px;
-  padding-right: 375px;
+  color: teal;
+  font-size: 70px;
+  padding-top: 250px;
+  font-weight: bold;
 }
 
 .LoginMessage2 {
   color: black;
-  font-size: 45px;
+  font-size: 50px;
   padding-top: 200px;
-  padding-left: 200px;
+  text-align: center;
 }
 
 .login-column-1 {
@@ -131,7 +136,7 @@
 }
 
 .login-column-2 {
-  background-color: teal;
+  background-color: #eeeeee;
 }
 
 .login-button {
@@ -142,7 +147,7 @@
 .no-account {
   display: flex;
   justify-content: left;
-  color: #eeeeee;
+  color: black;
 }
 
 .go-to-sign {
@@ -152,14 +157,32 @@
 }
 
 /* Dashboard Styles */
+.nav-sidebar {
+  color: #393e46;
+}
+
+.nav-logo {
+  height: 60px;
+  padding-left: 38px;
+}
+
+.nav-icon {
+  color: teal;
+}
+
+.nav-title {
+  color: teal;
+}
+
 .dash-body {
   padding-top: 25px;
   padding-left: 175px;
 }
 
 .dash-title {
-  color: #eeeeee;
-  font-size: 30px;
+  color: black;
+  font-size: 35px;
+  font-weight: bold;
 }
 
 /* Project Styles */
@@ -169,34 +192,44 @@
 }
 
 .project-title {
-  color: #eeeeee;
-  font-size: 30px;
+  color: black;
+  font-weight: bold;
+  font-size: 35px;
+  padding-left: 175px;
 }
 
-.project-buttons {
-  padding-top: 30px;
+.project-modal {
+  padding-top: 25px;
+  padding-left: 175px;
 }
 
 /* StockSearch Styles */
 .stock-body {
-  padding-top: 25px;
   padding-left: 175px;
 }
 
 .stock-title {
-  color: #eeeeee;
-  font-size: 30px;
+  color: black;
+  font-weight: bold;
+  font-size: 35px;
 }
 
+.stock-search {
+  padding-top: 20px;
+}
+
+.stock-pick {
+  font-weight: bold;
+}
 /* Settings Styles */
-.settings-body {
-  padding-top: 25px;
+.setting-body {
   padding-left: 175px;
 }
 
-.settings-title {
-  color: #eeeeee;
-  font-size: 30px;
+.setting-title {
+  color: black;
+  font-weight: bold;
+  font-size: 35px;
 }
 
 /* @keyframes App-logo-spin {

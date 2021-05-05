@@ -45,7 +45,7 @@ class ApiHandler {
     }
     headers["Authorization"] = `Bearer ${this.authToken}`;
     headers["Access-Control-Allow-Origin"] = "*";
-    const url = `${this.urlBase}/${service}/${route}`;
+    const url = `${this.urlBase}/${service}/${route}/`;
     try {
       const res = await axios({
         method,

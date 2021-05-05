@@ -1,6 +1,7 @@
 from flask import make_response
 import warnings
 
+
 def json_response(status_code: int, data=None, error=None):
     is_error = status_code < 200 or status_code > 299
     if is_error and data != None:
