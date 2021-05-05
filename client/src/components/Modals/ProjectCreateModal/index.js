@@ -78,7 +78,7 @@ const ProjectCreateModal = (props) => {
             fluid
             icon="search"
             placeholder="Search Stocks..."
-            results={[]}
+            results={results}
             onChange={(e) => props.onFormUpdate("stock", e)}
             resultRenderer={resRender}
           />
