@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import '../App.css';
+import styles from "./styles.module.css";
 import { Link } from 'react-router-dom';
 import { Menu, Button, Icon } from 'semantic-ui-react';
 

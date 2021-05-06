@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, Icon } from "semantic-ui-react";
+import { Card, Icon, Button } from "semantic-ui-react";
 import styles from "./styles.module.css";
 
 const ProjectCard = (props) => {
@@ -10,6 +10,7 @@ const ProjectCard = (props) => {
       <Card.Content extra>
         <Icon name="chart line" />{props.stocksCount} Stocks
       </Card.Content>
+      <Button color='red'>Delete</Button>
     </Card>
   );
 };

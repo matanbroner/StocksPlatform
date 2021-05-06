@@ -134,7 +134,7 @@ class Signup extends Component {
             <Form id={styles.form}>
               <div id={styles.title}>Sign Up</div>
 
-              <Form.Group id={styles.smallform}>
+              <Form.Group>
                 <Form.Field>
                   <label>First Name</label>
                   <input
