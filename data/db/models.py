@@ -2,6 +2,7 @@ from db.sqlalchemy_db import create_table, get_engine
 from sqlalchemy import (
     Column,
     Integer,
+    Float,
     Boolean,
     String,
     DateTime,
@@ -83,7 +84,7 @@ class Project(Base):
     """
 
     __tablename__ = "project"
-    __table_args__ = (UniqueConstraint("user_id", "project_name"), )
+    __table_args__ = (UniqueConstraint("user_id", "project_name"),)
 
     id = p_key_column()
     project_name = Column(String)
@@ -99,7 +100,7 @@ class Project(Base):
     @property
     def serialize(self):
         """
-        Return JSON serialized version of Project instance
+        Return JSON serialized version of  instance
         @return: JSON
         """
         return {
@@ -119,11 +120,57 @@ class ProjectStock(Base):
     __tablename__ = "project_stock"
 
     id = p_key_column()
+    project_id = f_key_column(column_attribute="project.id")
+    stock_id = f_key_column(column_attribute="stock.id")
     created_at = Column(DateTime, default=get_datettime)
     updated_at = Column(DateTime, default=get_datettime, onupdate=get_datettime)
 
-    project_id = f_key_column(column_attribute="project.id")
-    stock_id = f_key_column(column_attribute="stock.id")
+
+class NewsSource(Base):
+    __tablename__ = "news_source"
+
+    id = p_key_column()
+    source_name = Column(String(50), nullable=False, unique=True)
+    created_at = Column(DateTime, default=get_datettime)
+    updated_at = Column(DateTime, default=get_datettime, onupdate=get_datettime)
+
+    @property
+    def serialize(self):
+        """
+        Return JSON serialized version of  instance
+        @return: JSON
+        """
+        return {
+            "id": self.id,
+            "source_name": self.source_name,
+        }
+
+
+class NewsArticle(Base):
+    __tablename__ = "news_article"
+
+    id = p_key_column()
+    source_id = f_key_column("news_source.id")
+    stock_id = f_key_column("stock.id")
+    date_published = Column(DateTime(), default=get_datettime)
+    avg_sentiment = Column(Float(), nullable=False)
+    created_at = Column(DateTime, default=get_datettime)
+    updated_at = Column(DateTime, default=get_datettime, onupdate=get_datettime)
+
+    @property
+    def serialize(self):
+        """
+        Return JSON serialized version of Stock instance
+        @return: JSON
+        """
+        return {
+            "id": self.id,
+            "ticker": self.sourceid,
+            "stock_id": self.stockid,
+            "date_published": self.datepublished,
+            "avg_sentiment": self.avgsentiment,
+            "main_token": self.maintoken,
+        }
 
 
 def instantiate_tables():
