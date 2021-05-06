@@ -1,6 +1,7 @@
 from db import create_session
 from db.models import Stock, NewsArticles
 from sqlalchemy import func
+from date import date
 
 
 def get_ticker_id(ticker: str):
@@ -17,7 +18,7 @@ def get_ticker_id(ticker: str):
             return None
 
 
-def add_news_article(source: str, ticker: str, avg_sentiment: float, main_token: str):
+def add_news_article(source: str, ticker: str, avg_sentiment: float, published_date: datetime.date):
     """
     Adds news article 
     @params str for soucre, date published in date format, an avarge sentiment and a main token
@@ -29,7 +30,7 @@ def add_news_article(source: str, ticker: str, avg_sentiment: float, main_token:
             news_article = NewsArticles()
             news_article.stockid = get_ticker_id(ticker)
             news_article.avgsentiment = avg_sentiment
-            news_article.maintoken = news_article.maintoken
+            news_article.datepublished = published_date
             session.add(news_article)
             session.commit()
 

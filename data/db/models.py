@@ -86,7 +86,6 @@ class NewsArticles(Base):
 
     avgsentiment = Column(Numeric(), nullable=False)
 
-    maintoken = Column(String(20), nullable=True)
     ##overallWeight = Column(Numeric(), ForeginKey(NewsSources.overallweight))
 
     @property
