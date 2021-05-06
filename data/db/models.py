@@ -40,7 +40,7 @@ class Stock(Base):
     @property
     def serialize(self):
         """
-        Return JSOn serialized version of Stock instance
+        Return JSON serialized version of Stock instance
         @return: JSON
         """
         return {
@@ -51,34 +51,32 @@ class Stock(Base):
         }
 
 
-class NewsSources(Base):
+class NewsSource(Base):
 
-    __tablename__ = 'text_sources'
+    __tablename__ = 'news_source'
 
-    id = Column('id', Integer, primary_key=True)
-
-    sourcename = Column('user', String(50), nullable=False, unique=True)
+    id = p_key_column()
+    source_name = Column(String(50), nullable=False, unique=True)
 
     @property
     def serialize(self):
         """
-        Return JSOn serialized version of  instance
+        Return JSON serialized version of  instance
         @return: JSON
         """
         return {
             'id': self.id,
-            'sourcename': self.sourcename,
+            'source_name': self.source_name,
         }
-    ##overallweight = Column(Numeric(), nullable=False, unique=False)
 
 
-class NewsArticles(Base):
+class NewsArticle(Base):
 
-    __tablename__ = 'text_articles'
+    __tablename__ = 'news_articles'
 
-    id = Column(Integer(), primary_key=True)
+    id = p_key_column()
 
-    sourceid = Column(Integer(), ForeignKey(NewsSources.id))
+    source_id = Column(Integer(), ForeignKey(NewsSources.id))
 
     stockid = Column(Integer(), ForeignKey(Stock.id))
 
