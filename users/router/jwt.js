@@ -1,43 +1,39 @@
-const express = require('express');
-const jwt = require('jsonwebtoken');
+const express = require("express");
+const jwt = require("jsonwebtoken");
+const Models = require("../models");
 
 const jwtRouter = express.Router();
 jwtRouter.use(express.json());
 
+const getUserFromDecodedToken = async (decodedToken) => {
+  const { id } = decodedToken;
+  const user = await Models.Users.findByPk(id, {
+    raw: true,
+  });
+  return user;
+};
 
-jwtRouter.route('/verify')
-    .post(async (req, res) => {
-        var header = req.get("authorization");
-        if (!header) {
-            res.status(403).json({
-                status: 403,
-                error: "Authorization header required for verification"
-            });
+jwtRouter.route("/verify").post((req, res) => {
+  var token = req.body.token;
+
+  jwt.verify(token, process.env.JWT_KEY, async (error, decodedToken) => {
+    try {
+      if (error) {
+        throw error;
+      } else {
+        const user = await getUserFromDecodedToken(decodedToken);
+        if (!user) {
+          throw new Error("Unable to access user profile from decoded token")
         }
-        header = header.split(" ")
-        if(header.length !== 2 || header[0] !== "Bearer"){
-            res.status(403).json({
-                status: 403,
-                error: "Invalid authorization header"
-            });
-        }
-        var token = header[1];
-        jwt.verify(token, process.env.tokenSecret, (error, decodedToken) => {
-
-            if (error) {
-                console.log('Error validiating token, cannot access resource.');
-                res.status(403).json({
-                    status: 403,
-                    error: "Password is incorrect"
-                });
-            } else {
-                res.status(200).json({
-                    status: 200,
-                    data: decodedToken
-                });
-            }
-
+        delete user.password;
+        res.status(200).json({
+          data: user,
         });
-    });
+      }
+    } catch (e) {
+      res.status(403).json({ error: String(e) });
+    }
+  });
+});
 
 module.exports = jwtRouter;

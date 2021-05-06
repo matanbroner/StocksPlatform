@@ -21,3 +21,9 @@ Change databases and showcase schema/tables
 \c postgres
 \dt
 ```
+
+## Documentation
+
+# Tokens
+
+- Won't encode a user's first and last name into the token.

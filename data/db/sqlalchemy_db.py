@@ -60,6 +60,13 @@ def init_db_connection():
 
 @contextmanager
 def create_session():
+    """
+    Creates and returns a session
+    Uses contextlib's contextmanager decorator to allow for generator syntax:
+    with create_session() as session:
+        ...etc.
+    @return: active session
+    """
     global Session
     if Session == None:
         raise RuntimeError(
@@ -78,6 +85,7 @@ def create_session():
     finally:
         session.close()
 
+
 def create_table(table):
     """
     Generate table from declarative base definition
@@ -92,3 +100,10 @@ def create_table(table):
         """
         )
     table.__table__.create(bind=engine, checkfirst=True)
+
+def get_engine():
+    """
+    Get raw engine object. Should not be used unless explicitly needed.
+    """
+    global engine
+    return engine

@@ -33,17 +33,31 @@ class Thread(threading.Thread):
         """
         response_df = self.src.retrieve_data()
 
+<<<<<<< HEAD
+        while True:
+            source, date, content = self.src.retrieve_data()
+            print(source, date, content)
+            # nlp = NLPUnit(source, date, context)
+            thread_lock.acquire()
+=======
         nlp = NLPUnit(self.src.get_stock(), response_df)
+>>>>>>> 6495917061dad774c16f588a298910166a45bcf1
 
         thread_lock.acquire()
         # save data to db
         thread_lock.release()
 
 
+<<<<<<< HEAD
+
+thread_lock = threading.Lock()
+threads = []
+=======
 def main(fmp_key, news_sources):
     sources = []
     for source in news_sources:
         sources.append(GeneralNewsData(fmp_key, source))
+>>>>>>> 6495917061dad774c16f588a298910166a45bcf1
 
     # create new threads
     for i in range(len(sources)):
@@ -57,5 +71,10 @@ def main(fmp_key, news_sources):
     for t in threads:
         t.join()
 
+<<<<<<< HEAD
+# print(sentiment_data)
+print("Exiting Main Thread")
+=======
     print("Exiting Main Thread")
     return 1
+>>>>>>> 6495917061dad774c16f588a298910166a45bcf1

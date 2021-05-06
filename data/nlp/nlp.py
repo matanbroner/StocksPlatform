@@ -5,6 +5,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from wordcloud import WordCloud
 
+
 class NLPUnit:
     """
     Processes data retrieved from news sources.
