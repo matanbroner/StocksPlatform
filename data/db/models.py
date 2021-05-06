@@ -26,11 +26,11 @@ def p_key_column(use_int: bool = False):
 
 
 def f_key_column(
-    column_attribute: str,
-    use_int: bool = False,
-    on_delete: str = "CASCADE",
-    on_update: str = "CASCADE",
-    nullable: bool = False,
+        column_attribute: str,
+        use_int: bool = False,
+        on_delete: str = "CASCADE",
+        on_update: str = "CASCADE",
+        nullable: bool = False,
 ):
     if use_int:
         type = Integer
@@ -127,7 +127,6 @@ class ProjectStock(Base):
 
 
 class NewsSource(Base):
-
     __tablename__ = "news_source"
 
     id = p_key_column()
@@ -148,7 +147,6 @@ class NewsSource(Base):
 
 
 class NewsArticle(Base):
-
     __tablename__ = "news_article"
 
     id = p_key_column()
