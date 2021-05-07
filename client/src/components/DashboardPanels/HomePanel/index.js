@@ -1,7 +1,7 @@
 import React from "react";
-import BasePanel from "./BasePanel";
+import BasePanel from "../BasePanel";
 import { Card, Icon, Image } from "semantic-ui-react";
-import userDefaultImage from '../../assets/images/user_default.png'
+import userDefaultImage from '../../../assets/images/user_default.png'
 
 class HomePanel extends React.PureComponent {
   renderProfileCard() {

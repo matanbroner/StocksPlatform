@@ -1,0 +1,79 @@
+/* Login Styles */
+#logo {
+  width: 175px;
+  height: 250px;
+  padding-top: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+#seccolumn {
+  padding-left: 30px;
+}
+
+#email {
+  width: 300px;
+}
+
+#password {
+  width: 300px;
+  padding-bottom: 10px;
+}
+
+#email {
+  width: 400px;
+  padding-bottom: 10px;
+}
+
+#password {
+  width: 400px;
+}
+
+#title {
+  color: #eeeeee;
+  font-size: 35px;
+  padding-top: 150px;
+  padding-bottom: 25px;
+}
+
+#message1 {
+  color: teal;
+  font-size: 70px;
+  padding-top: 250px;
+  font-weight: bold;
+  text-align: center;
+}
+
+#message2 {
+  color: black;
+  font-size: 50px;
+  padding-top: 200px;
+  text-align: center;
+}
+
+#firstcolumn {
+  background-color: #232931;
+}
+
+#thirdcolumn {
+  background-color: #eeeeee;
+}
+
+#button {
+  padding-top: 10px;
+  width: 100px;
+  padding-bottom: 10px;
+}
+
+#account {
+  display: flex;
+  justify-content: left;
+  color: #eeeeee;
+  padding-bottom: 10px;
+}
+
+#sign {
+  color: teal;
+  padding-left: 4px;
+  cursor: pointer;
+}

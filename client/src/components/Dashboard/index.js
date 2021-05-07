@@ -1,14 +1,14 @@
 import React, { Component } from "react";
-import "../App.css";
+import styles from "./styles.module.css";
 import { Switch, Route } from "react-router-dom";
 import { Grid } from "semantic-ui-react";
-import Navbar from "./Navbar";
-import Topbar from "./Topbar";
+import Navbar from "../Navbar";
+import Topbar from "../Topbar/index";
 
-import HomePanel from "./DashboardPanels/HomePanel";
-import ProjectsPanel from "./DashboardPanels/ProjectsPanel";
-import StocksPanel from "./DashboardPanels/StocksPanel";
-import SettingsPanel from "./DashboardPanels/SettingsPanel";
+import HomePanel from "../DashboardPanels/HomePanel/index";
+import ProjectsPanel from "../DashboardPanels/ProjectsPanel";
+import StocksPanel from "../DashboardPanels/StocksPanel/index";
+import SettingsPanel from "../DashboardPanels/SettingsPanel/index";
 
 class Dashboard extends Component {
   renderSubrouter() {

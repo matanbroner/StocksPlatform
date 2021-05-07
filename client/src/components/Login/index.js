@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import "../App.css";
 import { Form, Grid, Message } from "semantic-ui-react";
-import ApiHandler from "../api";
+import ApiHandler from "../../api";
+import styles from "./styles.module.css";
 
 class Login extends Component {
   constructor(props) {
@@ -82,14 +82,14 @@ class Login extends Component {
         <Grid.Column
           style={{ height: "100%" }}
           width={4}
-          className="login-column-1"
+          id={styles.firstcolumn}
         >
-          <div className="first-column">
+          <div id={styles.seccolumn}>
             <div>
-                <img src="/images/logo.png" alt="Banana Stocks Logo" className="login-logo"/>
+                <img src="/images/logo.png" alt="Banana Stocks Logo" id={styles.logo}/>
             </div>
 
-            <div className="LoginTitle">Log in</div>
+            <div id={styles.title}>Log in</div>
 
             {this.state.error ? (
               <Message negative>
@@ -101,23 +101,23 @@ class Login extends Component {
             <Form className="login-form">
               <Form.Input
                 size="large"
-                className="login-email"
+                id={styles.email}
                 placeholder="E-mail Address"
                 value={this.state.form.email}
                 onChange={(e) => this.updateForm("email", e)}
               />
               <Form.Input
                 size="large"
-                className="login-password"
+                id={styles.password}
                 placeholder="Password"
                 value={this.state.form.password}
                 onChange={(e) => this.updateForm("password", e)}
               />
 
-              <div className="no-account">
+              <div id={styles.account}>
                 Don't have an account?
                 <div
-                  className="go-to-sign"
+                  id={styles.sign}
                   onClick={() => {
                     this.props.history.push("/signup");
                   }}
@@ -128,7 +128,7 @@ class Login extends Component {
 
               <Form.Button
                 size="large"
-                className="login-button"
+                id={styles.button}
                 content="Login"
                 color="teal"
                 onClick={() => this.submit()}
@@ -143,10 +143,10 @@ class Login extends Component {
         <Grid.Column
           width={12}
           style={{ height: "100%" }}
-          className="login-column-2"
+          id={styles.thirdcolumn}
         >
-          <div className="LoginMessage">Stock Trading Simplified</div>
-          <div className="LoginMessage2">
+          <div id={styles.message1}>Stock Trading Simplified</div>
+          <div id={styles.message2}>
             We help you get the best data on all your stock needs.
           </div>
         </Grid.Column>

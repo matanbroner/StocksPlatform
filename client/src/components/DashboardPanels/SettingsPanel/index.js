@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import '../../App.css';
-import BasePanel from "./BasePanel"
+import styles from './styles.module.css';
+import BasePanel from "../BasePanel"
 
 class SettingsPanel extends Component {
     render() {

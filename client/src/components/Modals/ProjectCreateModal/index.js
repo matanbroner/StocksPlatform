@@ -1,8 +1,8 @@
 import React from "react";
-import { Form, Modal, Button, Search } from "semantic-ui-react";
+import { Form, Modal, Button } from "semantic-ui-react";
+import Searchbar from "../../DashboardPanels/Searchbar/index";
 
 const ProjectCreateModal = (props) => {
-  const resRender = () => <span key="name">Hello it works!</span>;
   return (
     <Modal onClose={() => props.onStateChange(false)} open={props.open}>
       <Modal.Header>Create a Project</Modal.Header>
@@ -28,13 +28,8 @@ const ProjectCreateModal = (props) => {
             onChange={(e) => props.onFormUpdate("description", e)}
           />
           <label className="stock-pick">Initial Stocks</label>
-          <Search
-            fluid
-            icon="search"
-            placeholder="Search Stocks..."
-            results={[]}
-            onChange={(e) => props.onFormUpdate("stock", e)}
-            resultRenderer={resRender}
+          <Searchbar
+            // onChange={(e) => props.onFormUpdate("stock", e)}
           />
         </Form>
       </Modal.Content>

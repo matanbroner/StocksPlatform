@@ -1,0 +1,10 @@
+/* Settings Styles */
+#setting-body {
+  padding-left: 175px;
+}
+
+#setting-title {
+  color: black;
+  font-weight: bold;
+  font-size: 35px;
+}

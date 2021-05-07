@@ -2,10 +2,10 @@ import React from "react";
 import "semantic-ui-css/semantic.min.css";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "./App.css";
-import Home from "./components/Home";
-import Login from "./components/Login";
-import Signup from "./components/Signup";
-import Dashboard from "./components/Dashboard";
+import Home from "./components/Home/index";
+import Login from "./components/Login/index";
+import Signup from "./components/Signup/index";
+import Dashboard from "./components/Dashboard/index";
 
 import ApiHandler from "./api";
 
