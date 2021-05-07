@@ -19,15 +19,7 @@ const SearchBar = (props) => {
     props.onChange(value);
   }
 
-  const onSelectResult = (e, { result }) => props.onSelect(value)
-
-  const renderResults = (result) => {
-    return (
-      <div key={result.key}>
-        <div>{result.value}</div>
-      </div>
-    );
-  };
+  const onSelectResult = (e, { result }) => props.onSelect(result)
 
   return (
     <Search
@@ -35,11 +27,11 @@ const SearchBar = (props) => {
       icon="search"
       placeholder={props.placeholder || "Search..."}
       loading={props.loading}
+      resultRenderer={props.renderResult}
+      results={props.results}
       onResultSelect={onSelectResult}
       onSearchChange={onSearchChange}
-      results={props.results}
       value={value}
-      resultRenderer={renderResults}
     />
   );
 };

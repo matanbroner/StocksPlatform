@@ -118,7 +118,7 @@ class App extends React.PureComponent {
             />
             {this.state.loading
               ? null
-              : [<Route path="/dashboard" component={Dashboard} />]}
+              : <Route path="/dashboard" component={Dashboard} />}
           </Switch>
         </Router>
       </div>

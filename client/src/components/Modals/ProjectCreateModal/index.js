@@ -1,6 +1,6 @@
 import React from "react";
 import { Form, Modal, Button } from "semantic-ui-react";
-import Searchbar from "../../SearchBar";
+import StockSearch from "../../StockSearch";
 
 const ProjectCreateModal = (props) => {
   return (
@@ -27,9 +27,9 @@ const ProjectCreateModal = (props) => {
             placeholder="Describe your project"
             onChange={(e) => props.onFormUpdate("description", e)}
           />
-          <label className="stock-pick">Initial Stocks</label>
-          <Searchbar
-            // onChange={(e) => props.onFormUpdate("stock", e)}
+          <label className="stock-pick">Add Stocks</label>
+          <StockSearch
+            onSelect={(v) => console.log(v)}
           />
         </Form>
       </Modal.Content>

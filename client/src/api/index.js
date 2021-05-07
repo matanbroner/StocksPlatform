@@ -45,7 +45,10 @@ class ApiHandler {
     }
     headers["Authorization"] = `Bearer ${this.authToken}`;
     headers["Access-Control-Allow-Origin"] = "*";
-    const url = `${this.urlBase}/${service}/${route}`;
+    let url = `${this.urlBase}/${service}/${route}`;
+    if(!url.includes("?")){
+      url += "/"; // odd issue with CORS needing a trailing slash
+    }
     try {
       const res = await axios({
         method,
