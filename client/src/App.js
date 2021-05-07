@@ -32,7 +32,7 @@ class App extends React.PureComponent {
     this.handleReLogin();
   }
 
-  async refreshAccessKey(refreshKey){
+  async refreshAccessKey(refreshKey) {
     try {
       const res = await ApiHandler.post(
         "users",
@@ -85,12 +85,14 @@ class App extends React.PureComponent {
       if (
         e.error // if is internal JSON error
       ) {
-        if(e.error && e.error.includes("TokenExpiredError")){
-          this.refreshAccessKey(refreshKey)
-        } else if(!OPEN_ROUTES.includes(window.location.pathname)){
+        if (e.error && e.error.includes("TokenExpiredError")) {
+          this.refreshAccessKey(refreshKey);
+        } else if (!OPEN_ROUTES.includes(window.location.pathname)) {
+          console.log("in here")
           window.location.pathname = "/login";
         }
-      } else { // TODO: handle client error here, should go to a crash page
+      } else {
+        // TODO: handle client error here, should go to a crash page
         return;
       }
     }
@@ -116,9 +118,18 @@ class App extends React.PureComponent {
                 />
               )}
             />
-            {this.state.loading
-              ? null
-              : <Route path="/dashboard" component={Dashboard} />}
+            {this.state.loading ? null : (
+              <Route path="/dashboard" component={(props) => (
+                <Dashboard 
+                {...props}
+                onLogout={() => {
+                  localStorage.removeItem(ACCESS_KEY)
+                  localStorage.removeItem(REFRESH_KEY)
+                  ApiHandler.revokeToken()
+                }}
+                />
+              )} />
+            )}
           </Switch>
         </Router>
       </div>

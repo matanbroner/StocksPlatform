@@ -35,7 +35,9 @@ class Dashboard extends React.Component {
         <Grid>
           <Grid.Row className="dash-top">
             <Grid.Column stretched width={16}>
-              <Topbar />
+              <Topbar 
+              onLogout={() => this.props.onLogout()}
+              />
             </Grid.Column>
           </Grid.Row>
           <Grid.Row columns={2}>

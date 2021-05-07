@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import {connect} from "react-redux"
 import { Button, Grid, Divider, Dimmer, Loader } from "semantic-ui-react";
 import ApiHandler from "../../../api";
 import BasePanel from "../BasePanel";
@@ -146,7 +147,7 @@ class ProjectsPanel extends Component {
 
   render() {
     return (
-      <BasePanel title="[Name]'s Projects">
+      <BasePanel title={`${this.props.user.firstName}'s Projects`}>
         {this.state.loading ? (
           this.renderLoader()
         ) : (
@@ -168,4 +169,10 @@ class ProjectsPanel extends Component {
   }
 }
 
-export default ProjectsPanel;
+const mapStateToProps = (state) => {
+  return {
+    user: state.user.profile
+  }
+}
+
+export default connect(mapStateToProps)(ProjectsPanel);
