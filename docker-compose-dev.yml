@@ -15,6 +15,7 @@ services:
       - DB_PASSWORD=stocks_admin
       - DB_HOST=postgres
       - DB_NAME=stocks_db
+      - FMP_API_KEY=e2d9d13e5b7ac7976216133f32d7f775
     depends_on: 
       - postgres
 

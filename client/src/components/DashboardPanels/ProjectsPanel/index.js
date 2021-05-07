@@ -6,33 +6,6 @@ import ProjectCreateModal from "../../Modals/ProjectCreateModal";
 import ProjectCard from "../../ProjectCard";
 import styles from "./styles.module.css";
 
-const projects = [
-  {
-    id: 0,
-    projectName: "My Project",
-    description: "This is my project",
-    stocksCount: 4,
-  },
-  {
-    id: 1,
-    projectName: "My Project",
-    description: "This is my project",
-    stocksCount: 4,
-  },
-  {
-    id: 2,
-    projectName: "My Project",
-    description: "This is my project",
-    stocksCount: 4,
-  },
-  {
-    id: 3,
-    projectName: "My Project",
-    description: "This is my project",
-    stocksCount: 4,
-  },
-];
-
 class ProjectsPanel extends Component {
   constructor(props) {
     super(props);
@@ -114,7 +87,13 @@ class ProjectsPanel extends Component {
           loading: false
         })
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err)
+        this.setState({
+          modalOpen: false,
+          loading: false
+        })
+      });
   }
 
   renderLoader() {

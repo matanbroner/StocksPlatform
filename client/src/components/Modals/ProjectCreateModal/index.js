@@ -1,6 +1,6 @@
 import React from "react";
 import { Form, Modal, Button } from "semantic-ui-react";
-import Searchbar from "../../DashboardPanels/Searchbar/index";
+import Searchbar from "../../SearchBar";
 
 const ProjectCreateModal = (props) => {
   return (

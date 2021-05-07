@@ -59,7 +59,7 @@ class FinancialModelingPrepApi:
         else:
             return body
 
-    def search_query(self, keyword: str, limit: int):
+    def search_query(self, keyword: str, limit: int = None):
         """
         Search for a ticker based on a keyword (can be a company name or ticker)
         @param keyword: ex. "TSLA" or "General Motors"

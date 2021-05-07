@@ -2,16 +2,17 @@ import React from "react";
 import BasePanel from "../BasePanel";
 import { Card, Icon, Image } from "semantic-ui-react";
 import userDefaultImage from '../../../assets/images/user_default.png'
+import { dateStringToEnglish } from "../../../util"
 
-class HomePanel extends React.PureComponent {
-  renderProfileCard() {
+const HomePanel = (props) => {
+  function renderProfileCard() {
     return (
       <Card>
         <Image src={userDefaultImage} wrapped ui={false} />
         <Card.Content>
-          <Card.Header>[Name]</Card.Header>
+          <Card.Header>{props.user.firstName}</Card.Header>
           <Card.Meta>
-            <span className="date">Joined in [Year]</span>
+            <span className="date">Joined {dateStringToEnglish(props.user.createdAt)}</span>
           </Card.Meta>
         </Card.Content>
         <Card.Content extra>
@@ -24,16 +25,13 @@ class HomePanel extends React.PureComponent {
     );
   }
 
-  render 
-  render() {
     return (
-      <BasePanel title={`Welcome back [Name]!`}>
+      <BasePanel title={`Welcome back ${props.user.firstName}!`}>
         <div>
-            {this.renderProfileCard()}
+            {renderProfileCard()}
         </div>
       </BasePanel>
     );
-  }
 }
 
 export default HomePanel;

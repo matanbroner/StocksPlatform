@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import styles from "./styles.module.css";
 import { Switch, Route } from "react-router-dom";
 import { Grid } from "semantic-ui-react";
@@ -10,11 +11,17 @@ import ProjectsPanel from "../DashboardPanels/ProjectsPanel";
 import StocksPanel from "../DashboardPanels/StocksPanel/index";
 import SettingsPanel from "../DashboardPanels/SettingsPanel/index";
 
-class Dashboard extends Component {
+class Dashboard extends React.Component {
   renderSubrouter() {
     return (
       <>
-        <Route path="/dashboard" exact component={HomePanel} />
+        <Route path="/dashboard" exact component={(props) => (
+                <HomePanel
+                  {...props}
+                  user={this.props.user}
+                />
+        )}
+        />
         <Route path="/dashboard/projects" exact component={ProjectsPanel} />
         <Route path="/dashboard/stocks" exact component={StocksPanel} />
         <Route path="/dashboard/settings" exact component={SettingsPanel} />
@@ -22,7 +29,6 @@ class Dashboard extends Component {
     );
   }
 
-  
   render() {
     return (
       <div>
@@ -46,4 +52,10 @@ class Dashboard extends Component {
   }
 }
 
-export default Dashboard;
+const mapStateToProps = (state) => {
+  return {
+    user: state.user.profile,
+  };
+};
+
+export default connect(mapStateToProps)(Dashboard);

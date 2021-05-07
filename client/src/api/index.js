@@ -15,13 +15,13 @@ class ApiHandler {
     }
   }
 
-  setToken(authToken){
-      this.authToken = authToken
+  setToken(authToken) {
+    this.authToken = authToken;
   }
 
-  revokeToken(){
-    this.authToken = null
-}
+  revokeToken() {
+    this.authToken = null;
+  }
 
   get(service, route, headers = {}, data = {}) {
     return this._request("GET", service, route, headers, data);
@@ -45,7 +45,7 @@ class ApiHandler {
     }
     headers["Authorization"] = `Bearer ${this.authToken}`;
     headers["Access-Control-Allow-Origin"] = "*";
-    const url = `${this.urlBase}/${service}/${route}/`;
+    const url = `${this.urlBase}/${service}/${route}`;
     try {
       const res = await axios({
         method,
@@ -56,7 +56,10 @@ class ApiHandler {
       return Promise.resolve(res.data);
     } catch (error) {
       if (error.response) {
-        return Promise.reject(error.response.data);
+        return Promise.reject({
+          ...error.response.data,
+          status: error.response.status,
+        });
       } else {
         return Promise.reject({
           status: 500,
