@@ -7,4 +7,4 @@ praw
 requests
 sqlalchemy
 uuid
-praw
+pandas
