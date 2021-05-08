@@ -50,6 +50,10 @@ def save_data(df):
     @param df: DataFrame with necessary data, don't necessarily need to store all columns
     @return: None
     """
+    for row in df:
+        continue
+        # add_news_sources(source)
+        # add_news_article(source, ticker, avg_sentiment, date_published)
     pass
 
 def pipeline_manager(nlp_df):
@@ -65,6 +69,7 @@ def pipeline_manager(nlp_df):
     # save to database stage
     save_data(nlp_df)
 
+    print(nlp_df.head(5))
     #print("Exiting pipeline...")
 
 nlp = spacy.load("en_core_web_sm", disable=['tok2vec'])

@@ -6,7 +6,6 @@ API_KEY = "e2d9d13e5b7ac7976216133f32d7f775"
 
 
 class TestFinancialModelingPrepApi(unittest.TestCase):
-
     def setUp(self):
         self.api = FinancialModelingPrepApi(api_key=API_KEY)
 
@@ -18,8 +17,9 @@ class TestFinancialModelingPrepApi(unittest.TestCase):
 
     def test_get_statement_by_type(self):
         # test income statements fetching with dynamic statement type
-        search_aapl_income_qtr = self.api.get_statement_by_type(ticker="AAPL", statement_type="income",
-                                                                period="quarter")
+        search_aapl_income_qtr = self.api.get_statement_by_type(
+            ticker="AAPL", statement_type="income", period="quarter"
+        )
         self.assertIsInstance(search_aapl_income_qtr, list)
         self.assertIsInstance(search_aapl_income_qtr[0], object)
         self.assertTrue(search_aapl_income_qtr[0]["symbol"] == "AAPL")
@@ -30,7 +30,7 @@ class TestFinancialModelingPrepApi(unittest.TestCase):
         qtr_1 = (search_aapl_income_qtr[0]["date"]).split("-")[1]
         qtr_2 = (search_aapl_income_qtr[1]["date"]).split("-")[1]
         # check is three month difference
-        assert (int(qtr_1) - int(qtr_2) == 3)
+        assert int(qtr_1) - int(qtr_2) == 3
 
     def test_get_all_statements(self):
         search_appl = self.api.get_all_statements(ticker="APPL")
@@ -80,5 +80,5 @@ class TestFinancialModelingPrepApi(unittest.TestCase):
         self.assertIsInstance(search_appl[0], object)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

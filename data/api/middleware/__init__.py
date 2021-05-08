@@ -1,0 +1,1 @@
+from api.middleware.authentication import auth_middleware
