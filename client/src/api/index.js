@@ -9,7 +9,7 @@ class ApiHandler {
       this.mock = true;
     }
     if (process.env.REACT_APP_MODE === "production") {
-      this.urlBase = `https://${process.env.REACT_APP_DOMAIN}/api`;
+      this.urlBase = `http://${process.env.REACT_APP_DOMAIN}/api`;
     } else {
       this.urlBase = "http://localhost/api";
     }
@@ -17,7 +17,7 @@ class ApiHandler {
 
   setToken(authToken) {
     this.authToken = authToken;
-  }xw
+  }
 
   revokeToken() {
     this.authToken = null;
@@ -45,7 +45,7 @@ class ApiHandler {
     }
     headers["Authorization"] = `Bearer ${this.authToken}`;
     headers["Access-Control-Allow-Origin"] = "*";
-    let url = `${this.urlBase}/${service}/${route}`;
+    let url = `${service}/${route}`;
     if(!url.includes("?")){
       url += "/"; // odd issue with CORS needing a trailing slash
     }
