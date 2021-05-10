@@ -9,7 +9,6 @@ import { Provider } from "react-redux";
 
 import store from "./store";
 
-axios.defaults.baseURL = "http://localhost:3000/";
 ReactDOM.render(
   <Provider store={store}>
     {/* <React.StrictMode> */}

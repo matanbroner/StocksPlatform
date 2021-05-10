@@ -1,0 +1,105 @@
+
+version: '3.7'
+
+services:
+  data:
+    build:
+      context: ./data
+      dockerfile: Dockerfile
+    volumes:
+      - './data:/app'
+    ports:
+      - '5000:5000'
+    environment:
+      ENV: production
+      DOMAIN: 18.144.54.113
+      DB_USER: stocks_admin
+      DB_PASSWORD: /run/secrets/db_password
+      DB_HOST: postgres
+      DB_NAME: stocks_db
+      FMP_API_KEY: /run/secrets/fmp_api_key
+    depends_on: 
+      - postgres
+
+  users:
+    container_name: users
+    build:
+      context: ./users
+      dockerfile: Dockerfile
+    volumes:
+      - './users:/app'
+      - '/app/node_modules'
+    ports: 
+      - '5001:5001'
+    environment:
+      JWT_KEY: /run/secrets/jwt_key
+      JWT_EXPIRES: 1h
+      JWT_EXPIRES_HOUR: 1
+      REFRESH_SECRET: /run/secrets/refresh_secret
+      REFRESH_EXPIRES: 30h
+      CLIENT_ID: 297422208742-5pt82cje5dvp2701a60ngllvd2cul08g.apps.googleusercontent.com
+      CLIENT_SECRET: GBN4_GuUKpsPGgUlesgPctVp
+      DB_USER: stocks_admin
+      DB_PASSWORD: /run/secrets/db_password
+      DB_HOST: postgres
+      DB_NAME: stocks_db
+    depends_on:
+      - postgres
+
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+      args:
+        env: 'DEV'
+    ports:
+      - '3000:3000'
+    environment:
+      NODE_ENV: production
+      REACT_APP_BUILD: production
+      REACT_ENV_DOMAIN: 18.144.54.113
+    volumes:
+      - './client:/app'
+      - '/app/node_modules'
+    depends_on:
+      - users
+
+  postgres:
+    image: postgres
+    container_name: postgres
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_DB: stocks_db
+      POSTGRES_USER: stocks_admin
+      POSTGRES_PASSWORD: /run/secrets/db_password
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+    restart: always
+
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    ports:
+      - '80:80'
+      - '443:443'
+    command: [nginx-debug, '-g', 'daemon off;']
+    depends_on:
+      - client
+      - users
+      - data
+
+secrets:
+  db_password:
+    file: ../secrets/db_password.txt
+  jwt_key:
+    file: ../secrets/jwt_key.txt
+  refresh_secret:
+    file: ../secrets/refresh_secret.txt
+  fmp_api_key:
+    file: ../secrets/fmp_api_key.txt
+
+volumes:
+  pg-data:
+    driver: local
