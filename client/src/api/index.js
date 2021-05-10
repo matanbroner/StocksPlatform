@@ -9,7 +9,7 @@ class ApiHandler {
       this.mock = true;
     }
     if (process.env.NODE_ENV === "production") {
-      this.urlBase = `https://${process.env.REACT_ENV_DOMAIN}/api`;
+      this.urlBase = `https://${process.env.REACT_ENV_MODE}/api`;
     } else {
       this.urlBase = "http://localhost/api";
     }

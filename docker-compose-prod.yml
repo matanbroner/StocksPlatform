@@ -55,7 +55,7 @@ services:
       - '3000:3000'
     environment:
       - NODE_ENV=production
-      - REACT_APP_BUILD=production
+      - REACT_ENV_MODE=production
       - REACT_ENV_DOMAIN=18.144.54.113
     volumes:
       - './client:/app'
