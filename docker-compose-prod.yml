@@ -31,10 +31,6 @@ services:
       - '/app/node_modules'
     ports: 
       - '5001:5001'
-    secrets:
-      - db_password
-      - jwt_key
-      - refresh_secret
     environment:
       - JWT_EXPIRES=1h
       - JWT_EXPIRES_HOUR=1
