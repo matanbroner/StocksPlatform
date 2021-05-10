@@ -8,9 +8,10 @@ class ApiHandler {
     if (process.env.REACT_APP_API_MOCK === true) {
       this.mock = true;
     }
-    this.servicePorts = {
-      data: 5000,
-      users: 5001
+    if (process.env.REACT_APP_MODE === "production") {
+      this.urlBase = `http://${process.env.REACT_APP_DOMAIN}/api`;
+    } else {
+      this.urlBase = "http://localhost/api";
     }
   }
 
@@ -42,13 +43,9 @@ class ApiHandler {
     if (this.mock) {
       return this._mock_request(service, method, route, headers, data);
     }
-    const port = this.servicePorts[service]
-    if(port === 'undefined'){
-      throw "Illegal service name"
-    }
     headers["Authorization"] = `Bearer ${this.authToken}`;
     headers["Access-Control-Allow-Origin"] = "*";
-    let url = `${service}:${port}/${route}`;
+    let url = `${this.urlBase}/${service}/${route}`;
     if(!url.includes("?")){
       url += "/"; // odd issue with CORS needing a trailing slash
     }
@@ -69,7 +66,7 @@ class ApiHandler {
       } else {
         return Promise.reject({
           status: 500,
-          error: "HTTP Error",
+          error: `${error}`,
         });
       }
     }
