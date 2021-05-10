@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import {connect} from "react-redux"
+import { connect } from "react-redux";
 import { Button, Grid, Divider, Dimmer, Loader } from "semantic-ui-react";
 import ApiHandler from "../../../api";
 import BasePanel from "../BasePanel";
@@ -22,7 +22,7 @@ class ProjectsPanel extends Component {
     };
   }
 
-  componentDidMount(){
+  componentDidMount() {
     this.fetchProjects();
   }
 
@@ -41,59 +41,68 @@ class ProjectsPanel extends Component {
     });
   }
 
-  fetchProjects(){
-    this.setState({
-      loading: true
-    }, () => {
-      ApiHandler
-      .get(
-        "data",
-        "project"
-      )
-      .then((res) => {
-        this.setState({
-          projects: [...res.data],
-        })
-      })
-      .catch((err) => console.log(err))
-      .finally(() => {
-        this.setState({
-          loading: false
-        })
-      })
-    })
+  updateStocks(ticker, remove = false) {
+    console.log("In update stock");
+    if (remove) {
+      this.updateForm("stocks", null, [
+        ...this.state.newProjectForm.stocks.filter((s) => s !== ticker),
+      ]);
+    } else {
+      this.updateForm("stocks", null, [
+        ...this.state.newProjectForm.stocks,
+        ticker,
+      ]);
+    }
+  }
+
+  fetchProjects() {
+    this.setState(
+      {
+        loading: true,
+      },
+      () => {
+        ApiHandler.get("data", "project")
+          .then((res) => {
+            this.setState({
+              projects: [...res.data],
+            });
+          })
+          .catch((err) => console.log(err))
+          .finally(() => {
+            this.setState({
+              loading: false,
+            });
+          });
+      }
+    );
   }
 
   submitNewProject() {
     this.setState({
-      loading: true
-    })
-    ApiHandler
-      .post(
-        "data",
-        "project",
-        {},
-        {
-          project_name: this.state.newProjectForm.title,
-          description: this.state.newProjectForm.description,
-        }
-      )
+      loading: true,
+    });
+    ApiHandler.post(
+      "data",
+      "project",
+      {},
+      {
+        project_name: this.state.newProjectForm.title,
+        description: this.state.newProjectForm.description,
+      }
+    )
       .then((res) => {
         this.setState({
-          projects: [
-            ...this.state.projects,
-            res.data
-          ],
+          projects: [...this.state.projects, res.data],
           modalOpen: false,
-          loading: false
-        })
+          loading: false,
+        });
       })
       .catch((err) => {
-        console.log(err)
+        console.log(err);
         this.setState({
           modalOpen: false,
-          loading: false
-        })
+          loading: false,
+        });
       });
   }
 
@@ -105,8 +114,10 @@ class ProjectsPanel extends Component {
     return (
       <ProjectCreateModal
         open={this.state.modalOpen}
+        stocks={this.state.newProjectForm.stocks}
         onStateChange={this.updateModalState.bind(this)}
         onFormUpdate={this.updateForm.bind(this)}
+        onStockUpdate={this.updateStocks.bind(this)}
         onSubmit={this.submitNewProject.bind(this)}
         loading={this.state.loading}
       />
@@ -171,8 +182,8 @@ class ProjectsPanel extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    user: state.user.profile
-  }
-}
+    user: state.user.profile,
+  };
+};
 
 export default connect(mapStateToProps)(ProjectsPanel);

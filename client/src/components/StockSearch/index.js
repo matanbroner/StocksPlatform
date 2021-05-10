@@ -26,14 +26,14 @@ const StockSearch = (props) => {
     return results.map((result, i) => {
       return {
         id: i,
-        name: result.name,
+        title: result.name,
         symbol: result.symbol,
       };
     });
   }
 
   function renderSearchResult(result) {
-    return <Label key={result.id} content={`${result.name} - ${result.symbol}`} />;
+    return <Label key={result.id} content={`${result.title} - ${result.symbol}`} />;
   }
 
   return (

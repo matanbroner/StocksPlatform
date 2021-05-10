@@ -16,5 +16,5 @@ export const dateStringToEnglish = (dateString) => {
     const monthName = months[date.getMonth()];
     const day = date.getDate();
     const year = date.getFullYear()
-    return `${day} ${monthName} ${year}`
+    return `${monthName} ${day} ${year}`
 }

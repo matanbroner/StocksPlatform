@@ -125,6 +125,7 @@ class Login extends Component {
               <Form.Input
                 size="large"
                 id={styles.password}
+                type="password"
                 placeholder="Password"
                 value={this.state.form.password}
                 onChange={(e) => this.updateForm("password", e)}

@@ -34,6 +34,7 @@ def post_project():
     try:
         project_name = body.get("project_name")
         description = body.get("description")
+        stocks = body.get("stocks")
         if not project_name or not description:
             raise RuntimeError("Missing attributes for project creation")
         project = create_project(project_name=project_name, description=description, user_id=g.user_id)

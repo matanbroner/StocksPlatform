@@ -1,5 +1,5 @@
 import React from "react";
-import { Form, Modal, Button } from "semantic-ui-react";
+import { Form, Modal, Button, Label, Icon } from "semantic-ui-react";
 import StockSearch from "../../StockSearch";
 
 const ProjectCreateModal = (props) => {
@@ -28,10 +28,19 @@ const ProjectCreateModal = (props) => {
             onChange={(e) => props.onFormUpdate("description", e)}
           />
           <label className="stock-pick">Add Stocks</label>
-          <StockSearch
-            onSelect={(v) => console.log(v)}
-          />
+          <StockSearch onSelect={(v) => {
+            console.log(v)
+            props.onStockUpdate(v.symbol)
+          }} />
         </Form>
+        <div>
+          {props.stocks.map((s) => (
+            <Label key={s}>
+              {s}
+              <Icon name="delete" />
+            </Label>
+          ))}
+        </div>
       </Modal.Content>
       <Modal.Actions>
         <Button onClick={() => props.onStateChange(false)}>Cancel</Button>

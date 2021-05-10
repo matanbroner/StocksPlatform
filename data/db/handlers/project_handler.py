@@ -1,6 +1,10 @@
 from db import create_session
-from db.models import Project, ProjectStock
-from db.handlers.stock_handler import get_stock_by_id
+from db.models import Project, ProjectStock, Stock
+from db.handlers.stock_handler import (
+    get_stock_by_id,
+    create_stock
+)
+from db.util import get_or_create
 import warnings
 
 
@@ -53,7 +57,7 @@ def get_project_stocks_by_id(project_id: str):
         )
 
 
-def create_project(project_name: str, description: str, user_id: str):
+def create_project(project_name: str, description: str, tickers: list, user_id: str):
     """
     Create a new project associated with a user
     @param project_name: ex. "My Project"
@@ -73,11 +77,17 @@ def create_project(project_name: str, description: str, user_id: str):
                 raise RuntimeError(
                     f"User with given ID already has project with name '{project_name}'"
                 )
+            stock_ids = []
+            for ticker in tickers:
+                stock = get_or_create(session, Stock, ticker=ticker)
+                stock_ids.append(stock.id)
             project = Project(project_name=project_name, description=description, user_id=user_id)
             session.add(project)
-            # must commit before new stock can be fetched from DB table
+            # must commit before new project can be fetched from DB table
             session.commit()
-            return project.serialize
+            for stock_id in stock_ids:
+                add_stock_to_project(project_id=project.id, stock_id=stock_id)
+            return get_project_by_id(id=project.id)
         except Exception as e:
             raise e
 
