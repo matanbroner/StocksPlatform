@@ -91,5 +91,5 @@ services:
       - data
 
 volumes:
-  pg-data:
+  prod-pg-data:
     driver: local
