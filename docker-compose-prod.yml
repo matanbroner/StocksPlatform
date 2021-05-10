@@ -13,9 +13,9 @@ services:
     environment:
       - ENV=production
       - DOMAIN=18.144.54.113
-      - DB_USER=stocks_admin
-      - DB_HOST=postgres
-      - DB_NAME=stocks_db
+      - POSTGRES_HOST=postgres
+      - POSTGRES_USER=stocks_admin
+      - POSTGRES_DB=stocks_db
     env_file:
       - ./secrets.env
     depends_on: 
@@ -37,9 +37,9 @@ services:
       - REFRESH_EXPIRES=30h
       - CLIENT_ID=297422208742-5pt82cje5dvp2701a60ngllvd2cul08g.apps.googleusercontent.com
       - CLIENT_SECRET=GBN4_GuUKpsPGgUlesgPctVp
-      - DB_USER=stocks_admin
-      - DB_HOST=postgres
-      - DB_NAME=stocks_db
+      - POSTGRES_USER=stocks_admin
+      - POSTGRES_HOST=postgres
+      - POSTGRES_DB=stocks_db
     env_file:
       - ./secrets.env
     depends_on:
@@ -71,7 +71,6 @@ services:
     environment:
       - POSTGRES_DB=stocks_db
       - POSTGRES_USER=stocks_admin
-      - POSTGRES_PASSWORD=${DB_PASSWORD}
     env_file:
       - ./secrets.env
     volumes:

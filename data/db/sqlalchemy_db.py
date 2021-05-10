@@ -27,11 +27,11 @@ def generate_db_uri(
     @return: string URI
     """
     driver = os.getenv("DB_DRIVER") or driver
-    user = os.getenv("DB_USER") or user
-    password = os.getenv("DB_PASSWORD") or password
-    host = os.getenv("DB_HOST") or host
-    port = os.getenv("DB_PORT") or port
-    db = os.getenv("DB_NAME") or db
+    user = os.getenv("POSTGRES_USER") or user
+    password = os.getenv("POSTGRES_PASSWORD") or password
+    host = os.getenv("POSTGRES_HOST") or host
+    port = os.getenv("POSTGRES_PORT") or port
+    db = os.getenv("POSTGRES_DB") or db
 
     for uri_key, uri_val in [
         ("user", user),
