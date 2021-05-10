@@ -75,6 +75,7 @@ services:
     environment:
       - POSTGRES_DB=stocks_db
       - POSTGRES_USER=stocks_admin
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
     env_file:
       - ./secrets.env
     volumes:
