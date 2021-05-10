@@ -10,6 +10,9 @@ services:
       - './data:/app'
     ports:
       - '5000:5000'
+    secrets:
+      - db_password
+      - fmp_api_key
     environment:
       ENV: production
       DOMAIN: 18.144.54.113
@@ -31,6 +34,10 @@ services:
       - '/app/node_modules'
     ports: 
       - '5001:5001'
+    secrets:
+      - db_password
+      - jwt_key
+      - refresh_secret
     environment:
       JWT_KEY: /run/secrets/jwt_key
       JWT_EXPIRES: 1h
@@ -69,6 +76,8 @@ services:
     container_name: postgres
     ports:
       - '5432:5432'
+    secrets:
+      - db_password
     environment:
       POSTGRES_DB: stocks_db
       POSTGRES_USER: stocks_admin
