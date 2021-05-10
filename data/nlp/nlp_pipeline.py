@@ -4,6 +4,10 @@ from spacy.tokens.doc import Doc
 
 from nlp.sentiment_algorithms import sentiment_value
 
+import db.handlers.stock_handler 
+import db.handlers.news_source_handler
+import db.handlers.news_articles_handler
+
 def to_pipeline(nlp_df):
     """
     Sends data to pipeline manager.
@@ -50,11 +54,14 @@ def save_data(df):
     @param df: DataFrame with necessary data, don't necessarily need to store all columns
     @return: None
     """
-    for row in df:
-        continue
-        # add_news_sources(source)
-        # add_news_article(source, ticker, avg_sentiment, date_published)
-    pass
+    try:
+        for i, row in df.iterrows():
+            print(db.handlers.stock_handler.get_stock_by_ticker(row['stock']))
+            print(db.handlers.news_source_handler.get_news_source_by_name(row['source']))
+            # create_news_sources(source)
+            # create_news_article(source, ticker, avg_sentiment, date_published)
+    except Exception as e:
+        print(e)
 
 def pipeline_manager(nlp_df):
     """
@@ -69,7 +76,7 @@ def pipeline_manager(nlp_df):
     # save to database stage
     save_data(nlp_df)
 
-    print(nlp_df.head(5))
+    #print(nlp_df.head(5))
     #print("Exiting pipeline...")
 
 nlp = spacy.load("en_core_web_sm", disable=['tok2vec'])
