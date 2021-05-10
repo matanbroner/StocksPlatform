@@ -10,17 +10,14 @@ services:
       - './data:/app'
     ports:
       - '5000:5000'
-    secrets:
-      - db_password
-      - fmp_api_key
     environment:
       - ENV=production
       - DOMAIN=18.144.54.113
       - DB_USER=stocks_admin
-      - DB_PASSWORD=/run/secrets/db_password
       - DB_HOST=postgres
       - DB_NAME=stocks_db
-      - FMP_API_KEY=/run/secrets/fmp_api_key
+    env_file:
+      - ./secrets.env
     depends_on: 
       - postgres
 
@@ -39,17 +36,16 @@ services:
       - jwt_key
       - refresh_secret
     environment:
-      - JWT_KEY=/run/secrets/jwt_key
       - JWT_EXPIRES=1h
       - JWT_EXPIRES_HOUR=1
-      - REFRESH_SECRET=/run/secrets/refresh_secret
       - REFRESH_EXPIRES=30h
       - CLIENT_ID=297422208742-5pt82cje5dvp2701a60ngllvd2cul08g.apps.googleusercontent.com
       - CLIENT_SECRET=GBN4_GuUKpsPGgUlesgPctVp
       - DB_USER=stocks_admin
-      - DB_PASSWORD=/run/secrets/db_password
       - DB_HOST=postgres
       - DB_NAME=stocks_db
+    env_file:
+      - ./secrets.env
     depends_on:
       - postgres
 
@@ -76,12 +72,11 @@ services:
     container_name: postgres
     ports:
       - '5432:5432'
-    secrets:
-      - db_password
     environment:
       - POSTGRES_DB=stocks_db
       - POSTGRES_USER=stocks_admin
-      - POSTGRES_PASSWORD=/run/secrets/db_password
+    env_file:
+      - ./secrets.env
     volumes:
       - pg-data:/var/lib/postgresql/data
     restart: always
@@ -98,16 +93,6 @@ services:
       - client
       - users
       - data
-
-secrets:
-  db_password:
-    file: ../secrets/db_password.txt
-  jwt_key:
-    file: ../secrets/jwt_key.txt
-  refresh_secret:
-    file: ../secrets/refresh_secret.txt
-  fmp_api_key:
-    file: ../secrets/fmp_api_key.txt
 
 volumes:
   pg-data:
