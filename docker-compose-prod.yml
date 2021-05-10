@@ -57,7 +57,7 @@ services:
       - NODE_ENV=production
       - REACT_APP_MODE=production
       - REACT_APP_BUILD=production
-      - REACT_APP_DOMAIN=18.144.54.113
+      - REACT_APP_DOMAIN=54.177.114.147
     volumes:
       - './client:/app'
       - '/app/node_modules'
