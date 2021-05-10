@@ -12,7 +12,7 @@ services:
       - '5000:5000'
     environment:
       - ENV=production
-      - DOMAIN=18.144.54.113
+      - DOMAIN=54.177.114.147
       - POSTGRES_HOST=postgres
       - POSTGRES_USER=stocks_admin
       - POSTGRES_DB=stocks_db
