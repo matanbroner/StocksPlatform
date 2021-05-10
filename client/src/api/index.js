@@ -5,11 +5,11 @@ class ApiHandler {
   constructor() {
     // if mock explicitly set or null api token, mock all responses
     // this means we should never pass null if not mocking
-    if (process.env.REACT_ENV_API_MOCK === true) {
+    if (process.env.REACT_APP_API_MOCK === true) {
       this.mock = true;
     }
-    if (process.env.NODE_ENV === "production") {
-      this.urlBase = `https://${process.env.REACT_ENV_MODE}/api`;
+    if (process.env.REACT_APP_MODE === "production") {
+      this.urlBase = `https://${process.env.REACT_APP_DOMAIN}/api`;
     } else {
       this.urlBase = "http://localhost/api";
     }
@@ -17,7 +17,7 @@ class ApiHandler {
 
   setToken(authToken) {
     this.authToken = authToken;
-  }
+  }xw
 
   revokeToken() {
     this.authToken = null;
