@@ -12,7 +12,7 @@ services:
       - '5000:5000'
     environment:
       - ENV=production
-      - DOMAIN=3.101.45.204
+      - DOMAIN=banana-stocks.com
       - POSTGRES_HOST=postgres
       - POSTGRES_USER=stocks_admin
       - POSTGRES_DB=stocks_db
@@ -57,7 +57,7 @@ services:
       - NODE_ENV=production
       - REACT_APP_MODE=production
       - REACT_APP_BUILD=production
-      - REACT_APP_DOMAIN=3.101.45.204
+      - REACT_APP_DOMAIN=banana-stocks.com
     volumes:
       - './client:/app'
       - '/app/node_modules'
