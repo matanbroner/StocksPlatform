@@ -12,7 +12,7 @@ services:
       - '5000:5000'
     environment:
       - ENV=production
-      - DOMAIN=52.53.190.244
+      - DOMAIN=3.101.45.204
       - POSTGRES_HOST=postgres
       - POSTGRES_USER=stocks_admin
       - POSTGRES_DB=stocks_db
@@ -57,7 +57,7 @@ services:
       - NODE_ENV=production
       - REACT_APP_MODE=production
       - REACT_APP_BUILD=production
-      - REACT_APP_DOMAIN=52.53.190.244
+      - REACT_APP_DOMAIN=3.101.45.204
     volumes:
       - './client:/app'
       - '/app/node_modules'
