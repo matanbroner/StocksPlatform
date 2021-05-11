@@ -8,7 +8,7 @@ from db.util import get_or_create
 import warnings
 
 
-def get_project_by_id(id: str):
+def get_project_by_id(id: str, serialize=True):
     """
     Get project and its associated stocks by primary key
     @param id: UUID
@@ -18,7 +18,9 @@ def get_project_by_id(id: str):
         project = session.get(Project, id)
         if project == None:
             return None
-        project["stocks"] = get_project_stocks_by_id(project_id=project.id)
+        elif serialize:
+            project = project.serialize
+            project["stocks"] = get_project_stocks_by_id(project_id=project["id"])
         return project
 
 
@@ -48,10 +50,7 @@ def get_project_stocks_by_id(project_id: str):
             ProjectStock.project_id == project_id
         ).all()
         return (
-            [
-                stock.serialize
-                for stock in [get_stock_by_id(ps["id"]) for ps in project_stocks]
-            ]
+            [ get_stock_by_id(ps.stock_id) for ps in project_stocks ]
             if project_stocks
             else []
         )
@@ -98,7 +97,7 @@ def delete_project_by_id(id: str):
     @param id: UUID
     """
     with create_session() as session:
-        project = get_project_by_id(id=id)
+        project = get_project_by_id(id=id, serialize=False)
         if not project:
             raise RuntimeError(f"Cannot delete nonexistent project with ID {id}")
         project.delete()

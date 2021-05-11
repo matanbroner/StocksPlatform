@@ -1,0 +1,9 @@
+.wrapper{
+    cursor: pointer;
+}
+
+.wrapper:hover{
+    border-bottom: none;
+    transition: 0.2s all;
+    opacity: 75%;
+}

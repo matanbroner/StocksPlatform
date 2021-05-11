@@ -27,7 +27,7 @@ class Topbar extends Component {
                     <Menu.Item className='profile-icon'>
                         <Icon name='user' />
                         <div>
-                            Username
+                            {this.props.user.username}
                         </div>
                     </Menu.Item>
 

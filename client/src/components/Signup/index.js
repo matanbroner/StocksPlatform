@@ -178,6 +178,7 @@ class Signup extends Component {
               <Form.Input
                 label="Confirm Password"
                 id={styles.confirm}
+                type="password"
                 placeholder="Confirm Password"
                 value={this.state.form.confirmPassword}
                 onChange={(e) => this.updateForm("confirmPassword", e)}

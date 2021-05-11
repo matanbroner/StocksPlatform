@@ -1,4 +1,5 @@
 import React from "react";
+import styles from "./styles.module.css"
 import { Form, Modal, Button, Label, Icon } from "semantic-ui-react";
 import StockSearch from "../../StockSearch";
 
@@ -23,6 +24,7 @@ const ProjectCreateModal = (props) => {
             />
           </Form.Field>
           <Form.TextArea
+            required
             label="Project Description"
             placeholder="Describe your project"
             onChange={(e) => props.onFormUpdate("description", e)}
@@ -35,7 +37,7 @@ const ProjectCreateModal = (props) => {
         </Form>
         <div>
           {props.stocks.map((s) => (
-            <Label key={s}>
+            <Label className={styles.chosenTicker} key={s}>
               {s}
               <Icon name="delete" />
             </Label>

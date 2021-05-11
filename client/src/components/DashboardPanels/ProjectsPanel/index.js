@@ -14,7 +14,7 @@ class ProjectsPanel extends Component {
       newProjectForm: {
         title: "",
         description: "",
-        stocks: [],
+        tickers: [],
       },
       projects: [],
       modalOpen: false,
@@ -42,14 +42,13 @@ class ProjectsPanel extends Component {
   }
 
   updateStocks(ticker, remove = false) {
-    console.log("In update stock");
     if (remove) {
-      this.updateForm("stocks", null, [
-        ...this.state.newProjectForm.stocks.filter((s) => s !== ticker),
+      this.updateForm("tickers", null, [
+        ...this.state.newProjectForm.tickers.filter((s) => s !== ticker),
       ]);
-    } else {
-      this.updateForm("stocks", null, [
-        ...this.state.newProjectForm.stocks,
+    } else if (this.state.newProjectForm.tickers.indexOf(ticker) === -1) {
+      this.updateForm("tickers", null, [
+        ...this.state.newProjectForm.tickers,
         ticker,
       ]);
     }
@@ -81,13 +80,15 @@ class ProjectsPanel extends Component {
     this.setState({
       loading: true,
     });
+    const { title, description, tickers } = this.state.newProjectForm;
     ApiHandler.post(
       "data",
       "project",
       {},
       {
-        project_name: this.state.newProjectForm.title,
-        description: this.state.newProjectForm.description,
+        project_name: title,
+        description,
+        tickers,
       }
     )
       .then((res) => {
@@ -114,7 +115,7 @@ class ProjectsPanel extends Component {
     return (
       <ProjectCreateModal
         open={this.state.modalOpen}
-        stocks={this.state.newProjectForm.stocks}
+        stocks={this.state.newProjectForm.tickers}
         onStateChange={this.updateModalState.bind(this)}
         onFormUpdate={this.updateForm.bind(this)}
         onStockUpdate={this.updateStocks.bind(this)}
@@ -145,7 +146,7 @@ class ProjectsPanel extends Component {
                 <ProjectCard
                   projectName={project.project_name}
                   description={project.description}
-                  stocksCount={project.stocksCount}
+                  stocksCount={project.stocks.length}
                 />
               </Grid.Column>
             );
