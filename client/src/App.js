@@ -6,7 +6,6 @@ import Home from "./components/Home/index";
 import Login from "./components/Login/index";
 import Signup from "./components/Signup/index";
 import Dashboard from "./components/Dashboard/index";
-
 import ApiHandler from "./api";
 
 // TODO: This should be moved away to a token verify/refresh module

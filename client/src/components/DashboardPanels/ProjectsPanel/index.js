@@ -4,6 +4,8 @@ import ApiHandler from "../../../api";
 import BasePanel from "../BasePanel";
 import ProjectCreateModal from "../../Modals/ProjectCreateModal";
 import ProjectCard from "../../ProjectCard";
+import Charts from "../Charts/index";
+import Apex from "../Charts/apex";
 import styles from "./styles.module.css";
 
 const projects = [
@@ -168,6 +170,11 @@ class ProjectsPanel extends Component {
   render() {
     return (
       <BasePanel title="[Name]'s Projects">
+        <h2>ReCharts Chart</h2>
+        <Charts />
+        <h2>ApexChart Chart</h2>
+        <Apex />
+        <br></br>
         {this.state.loading ? (
           this.renderLoader()
         ) : (

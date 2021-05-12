@@ -10,7 +10,7 @@ const ProjectCard = (props) => {
       <Card.Content extra>
         <Icon name="chart line" />{props.stocksCount} Stocks
       </Card.Content>
-      <Button color='red'>Delete</Button>
+      <Button color='grey'>Delete</Button>
     </Card>
   );
 };

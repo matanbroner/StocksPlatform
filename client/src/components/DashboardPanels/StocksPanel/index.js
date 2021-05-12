@@ -3,7 +3,6 @@ import styles from "./styles.module.css";
 import BasePanel from "../BasePanel";
 import Searchbar from "../Searchbar/index";
 
-
 class StocksPanel extends Component {
   constructor(props) {
     super(props);

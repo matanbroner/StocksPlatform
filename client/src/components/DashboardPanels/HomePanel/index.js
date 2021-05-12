@@ -1,7 +1,8 @@
 import React from "react";
 import BasePanel from "../BasePanel";
 import { Card, Icon, Image } from "semantic-ui-react";
-import userDefaultImage from '../../../assets/images/user_default.png'
+import userDefaultImage from '../../../assets/images/user_default.png';
+import Charts from "../Charts/index";
 
 class HomePanel extends React.PureComponent {
   renderProfileCard() {
@@ -28,6 +29,7 @@ class HomePanel extends React.PureComponent {
   render() {
     return (
       <BasePanel title={`Welcome back [Name]!`}>
+        <Charts />
         <div>
             {this.renderProfileCard()}
         </div>
