@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import { Button, Grid, Divider, Dimmer, Loader } from "semantic-ui-react";
 import ApiHandler from "../../../api";
 import BasePanel from "../BasePanel";
@@ -8,33 +9,6 @@ import Charts from "../Charts/index";
 import Apex from "../Charts/apex";
 import styles from "./styles.module.css";
 
-const projects = [
-  {
-    id: 0,
-    projectName: "My Project",
-    description: "This is my project",
-    stocksCount: 4,
-  },
-  {
-    id: 1,
-    projectName: "My Project",
-    description: "This is my project",
-    stocksCount: 4,
-  },
-  {
-    id: 2,
-    projectName: "My Project",
-    description: "This is my project",
-    stocksCount: 4,
-  },
-  {
-    id: 3,
-    projectName: "My Project",
-    description: "This is my project",
-    stocksCount: 4,
-  },
-];
-
 class ProjectsPanel extends Component {
   constructor(props) {
     super(props);
@@ -42,7 +16,7 @@ class ProjectsPanel extends Component {
       newProjectForm: {
         title: "",
         description: "",
-        stocks: [],
+        tickers: [],
       },
       projects: [],
       modalOpen: false,
@@ -50,7 +24,7 @@ class ProjectsPanel extends Component {
     };
   }
 
-  componentDidMount(){
+  componentDidMount() {
     this.fetchProjects();
   }
 
@@ -69,54 +43,70 @@ class ProjectsPanel extends Component {
     });
   }
 
-  fetchProjects(){
-    this.setState({
-      loading: true
-    }, () => {
-      ApiHandler
-      .get(
-        "data",
-        "project"
-      )
-      .then((res) => {
-        this.setState({
-          projects: [...res.data],
-        })
-      })
-      .catch((err) => console.log(err))
-      .finally(() => {
-        this.setState({
-          loading: false
-        })
-      })
-    })
+  updateStocks(ticker, remove = false) {
+    if (remove) {
+      this.updateForm("tickers", null, [
+        ...this.state.newProjectForm.tickers.filter((s) => s !== ticker),
+      ]);
+    } else if (this.state.newProjectForm.tickers.indexOf(ticker) === -1) {
+      this.updateForm("tickers", null, [
+        ...this.state.newProjectForm.tickers,
+        ticker,
+      ]);
+    }
+  }
+
+  fetchProjects() {
+    this.setState(
+      {
+        loading: true,
+      },
+      () => {
+        ApiHandler.get("data", "project")
+          .then((res) => {
+            this.setState({
+              projects: [...res.data],
+            });
+          })
+          .catch((err) => console.log(err))
+          .finally(() => {
+            this.setState({
+              loading: false,
+            });
+          });
+      }
+    );
   }
 
   submitNewProject() {
     this.setState({
-      loading: true
-    })
-    ApiHandler
-      .post(
-        "data",
-        "project",
-        {},
-        {
-          project_name: this.state.newProjectForm.title,
-          description: this.state.newProjectForm.description,
-        }
-      )
+      loading: true,
+    });
+    const { title, description, tickers } = this.state.newProjectForm;
+    ApiHandler.post(
+      "data",
+      "project",
+      {},
+      {
+        project_name: title,
+        description,
+        tickers,
+      }
+    )
       .then((res) => {
         this.setState({
-          projects: [
-            ...this.state.projects,
-            res.data
-          ],
+          projects: [...this.state.projects, res.data],
           modalOpen: false,
-          loading: false
-        })
+          loading: false,
+        });
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+        this.setState({
+          modalOpen: false,
+          loading: false,
+        });
+      });
   }
 
   renderLoader() {
@@ -127,8 +117,10 @@ class ProjectsPanel extends Component {
     return (
       <ProjectCreateModal
         open={this.state.modalOpen}
+        stocks={this.state.newProjectForm.tickers}
         onStateChange={this.updateModalState.bind(this)}
         onFormUpdate={this.updateForm.bind(this)}
+        onStockUpdate={this.updateStocks.bind(this)}
         onSubmit={this.submitNewProject.bind(this)}
         loading={this.state.loading}
       />
@@ -156,7 +148,7 @@ class ProjectsPanel extends Component {
                 <ProjectCard
                   projectName={project.project_name}
                   description={project.description}
-                  stocksCount={project.stocksCount}
+                  stocksCount={project.stocks.length}
                 />
               </Grid.Column>
             );
@@ -169,16 +161,16 @@ class ProjectsPanel extends Component {
 
   render() {
     return (
-      <BasePanel title="[Name]'s Projects">
-        <h2>ReCharts Chart</h2>
-        <Charts />
-        <h2>ApexChart Chart</h2>
-        <Apex />
-        <br></br>
+      <BasePanel title={`${this.props.user.firstName}'s Projects`}>
         {this.state.loading ? (
           this.renderLoader()
         ) : (
           <React.Fragment>
+            <h2>ReCharts Chart</h2>
+            <Charts />
+            <h2>ApexChart Chart</h2>
+            <Apex />
+            <br></br>
             <Button
               className="project-button"
               color="teal"
@@ -196,4 +188,10 @@ class ProjectsPanel extends Component {
   }
 }
 
-export default ProjectsPanel;
+const mapStateToProps = (state) => {
+  return {
+    user: state.user.profile,
+  };
+};
+
+export default connect(mapStateToProps)(ProjectsPanel);

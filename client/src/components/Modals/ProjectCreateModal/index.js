@@ -1,6 +1,7 @@
 import React from "react";
-import { Form, Modal, Button } from "semantic-ui-react";
-import Searchbar from "../../DashboardPanels/Searchbar/index";
+import styles from "./styles.module.css"
+import { Form, Modal, Button, Label, Icon } from "semantic-ui-react";
+import StockSearch from "../../StockSearch";
 
 const ProjectCreateModal = (props) => {
   return (
@@ -23,15 +24,25 @@ const ProjectCreateModal = (props) => {
             />
           </Form.Field>
           <Form.TextArea
+            required
             label="Project Description"
             placeholder="Describe your project"
             onChange={(e) => props.onFormUpdate("description", e)}
           />
-          <label className="stock-pick">Initial Stocks</label>
-          <Searchbar
-            // onChange={(e) => props.onFormUpdate("stock", e)}
-          />
+          <label className="stock-pick">Add Stocks</label>
+          <StockSearch onSelect={(v) => {
+            console.log(v)
+            props.onStockUpdate(v.symbol)
+          }} />
         </Form>
+        <div>
+          {props.stocks.map((s) => (
+            <Label className={styles.chosenTicker} key={s}>
+              {s}
+              <Icon name="delete" />
+            </Label>
+          ))}
+        </div>
       </Modal.Content>
       <Modal.Actions>
         <Button onClick={() => props.onStateChange(false)}>Cancel</Button>

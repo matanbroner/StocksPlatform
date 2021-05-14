@@ -2,21 +2,24 @@ import React, { Component } from "react";
 import styles from "./styles.module.css";
 import BasePanel from "../BasePanel";
 import Searchbar from "../Searchbar/index";
+import StockSearch from "../../StockSearch";
 
 class StocksPanel extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      results: [],
-      isLoading: false,
-      value: "",
-    };
+    this.state = {};
+  }
+
+  onSearchBarSelect(result) {
+    console.log(result);
   }
 
   render() {
     return (
       <BasePanel title="Find and Analyze Stocks">
-        <Searchbar />
+        <div id={styles.searchWrapper}>
+          <StockSearch onSelect={this.onSearchBarSelect.bind(this)} />
+        </div>
       </BasePanel>
     );
   }

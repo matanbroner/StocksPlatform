@@ -96,7 +96,6 @@ userRouter
       var { email, password } = req.body;
 
       var user = await Models.Users.findOne({
-        attributes: ["id", "firstName", "lastName", "username", "email", "password"],
         where: {
           email,
         },

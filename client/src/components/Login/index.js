@@ -1,7 +1,12 @@
 import React, { Component } from "react";
+import { connect } from "react-redux"
 import { Form, Grid, Message } from "semantic-ui-react";
 import ApiHandler from "../../api";
 import styles from "./styles.module.css";
+
+import {
+  setUser
+} from "../../store/actions/userActions"
 
 class Login extends Component {
   constructor(props) {
@@ -14,6 +19,12 @@ class Login extends Component {
       error: null,
       loading: false,
     };
+  }
+
+  componentDidMount(){
+    if(this.props.accessKey){
+      this.props.history.push("/dashboard")
+    }
   }
 
   updateForm(key, e, value = null) {
@@ -64,8 +75,13 @@ class Login extends Component {
         }
       )
         .then((res) => {
+          const profile = res.data;
+          const { accessKey, refreshKey } = profile;
+          delete profile.accessKey;
+          delete profile.refreshKey;
+          this.props.setUser(profile, accessKey, refreshKey)
+          this.props.setTokens(accessKey, refreshKey);
           this.props.history.push("/dashboard");
-          this.props.setUser(res.data);
         })
         .catch((e) => {
           this.setState({
@@ -109,6 +125,7 @@ class Login extends Component {
               <Form.Input
                 size="large"
                 id={styles.password}
+                type="password"
                 placeholder="Password"
                 value={this.state.form.password}
                 onChange={(e) => this.updateForm("password", e)}
@@ -155,4 +172,17 @@ class Login extends Component {
   }
 }
 
-export default Login;
+const mapStateToProps = (state) => {
+  return {
+    accessKey: state.user.accessKey
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    setUser: (profile, accessKey, refreshKey) => dispatch(setUser(profile, accessKey, refreshKey)),
+  }
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
