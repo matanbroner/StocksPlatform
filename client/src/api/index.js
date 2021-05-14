@@ -5,23 +5,23 @@ class ApiHandler {
   constructor() {
     // if mock explicitly set or null api token, mock all responses
     // this means we should never pass null if not mocking
-    if (process.env.REACT_ENV_API_MOCK === true) {
+    if (process.env.REACT_APP_API_MOCK === true) {
       this.mock = true;
     }
-    if (process.env.NODE_ENV === "production") {
-      this.urlBase = `https://${process.env.REACT_ENV_DOMAIN}/api`;
+    if (process.env.REACT_APP_MODE === "production") {
+      this.urlBase = `http://${process.env.REACT_APP_DOMAIN}/api`;
     } else {
       this.urlBase = "http://localhost/api";
     }
   }
 
-  setToken(authToken){
-      this.authToken = authToken
+  setToken(authToken) {
+    this.authToken = authToken;
   }
 
-  revokeToken(){
-    this.authToken = null
-}
+  revokeToken() {
+    this.authToken = null;
+  }
 
   get(service, route, headers = {}, data = {}) {
     return this._request("GET", service, route, headers, data);
@@ -45,7 +45,10 @@ class ApiHandler {
     }
     headers["Authorization"] = `Bearer ${this.authToken}`;
     headers["Access-Control-Allow-Origin"] = "*";
-    const url = `${this.urlBase}/${service}/${route}/`;
+    let url = `${this.urlBase}/${service}/${route}`;
+    if(!url.includes("?")){
+      url += "/"; // odd issue with CORS needing a trailing slash
+    }
     try {
       const res = await axios({
         method,
@@ -56,11 +59,14 @@ class ApiHandler {
       return Promise.resolve(res.data);
     } catch (error) {
       if (error.response) {
-        return Promise.reject(error.response.data);
+        return Promise.reject({
+          ...error.response.data,
+          status: error.response.status,
+        });
       } else {
         return Promise.reject({
           status: 500,
-          error: "HTTP Error",
+          error: `${error}`,
         });
       }
     }

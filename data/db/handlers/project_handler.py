@@ -1,10 +1,14 @@
 from db import create_session
-from db.models import Project, ProjectStock
-from db.handlers.stock_handler import get_stock_by_id
+from db.models import Project, ProjectStock, Stock
+from db.handlers.stock_handler import (
+    get_stock_by_id,
+    create_stock
+)
+from db.util import get_or_create
 import warnings
 
 
-def get_project_by_id(id: str):
+def get_project_by_id(id: str, serialize=True):
     """
     Get project and its associated stocks by primary key
     @param id: UUID
@@ -14,7 +18,9 @@ def get_project_by_id(id: str):
         project = session.get(Project, id)
         if project == None:
             return None
-        project["stocks"] = get_project_stocks_by_id(project_id=project.id)
+        elif serialize:
+            project = project.serialize
+            project["stocks"] = get_project_stocks_by_id(project_id=project["id"])
         return project
 
 
@@ -44,16 +50,13 @@ def get_project_stocks_by_id(project_id: str):
             ProjectStock.project_id == project_id
         ).all()
         return (
-            [
-                stock.serialize
-                for stock in [get_stock_by_id(ps["id"]) for ps in project_stocks]
-            ]
+            [ get_stock_by_id(ps.stock_id) for ps in project_stocks ]
             if project_stocks
             else []
         )
 
 
-def create_project(project_name: str, description: str, user_id: str):
+def create_project(project_name: str, description: str, tickers: list, user_id: str):
     """
     Create a new project associated with a user
     @param project_name: ex. "My Project"
@@ -73,11 +76,17 @@ def create_project(project_name: str, description: str, user_id: str):
                 raise RuntimeError(
                     f"User with given ID already has project with name '{project_name}'"
                 )
+            stock_ids = []
+            for ticker in tickers:
+                stock = get_or_create(session, Stock, ticker=ticker)
+                stock_ids.append(stock.id)
             project = Project(project_name=project_name, description=description, user_id=user_id)
             session.add(project)
-            # must commit before new stock can be fetched from DB table
+            # must commit before new project can be fetched from DB table
             session.commit()
-            return project.serialize
+            for stock_id in stock_ids:
+                add_stock_to_project(project_id=project.id, stock_id=stock_id)
+            return get_project_by_id(id=project.id)
         except Exception as e:
             raise e
 
@@ -88,7 +97,7 @@ def delete_project_by_id(id: str):
     @param id: UUID
     """
     with create_session() as session:
-        project = get_project_by_id(id=id)
+        project = get_project_by_id(id=id, serialize=False)
         if not project:
             raise RuntimeError(f"Cannot delete nonexistent project with ID {id}")
         project.delete()
