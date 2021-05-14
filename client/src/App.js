@@ -7,7 +7,6 @@ import Home from "./components/Home/index";
 import Login from "./components/Login/index";
 import Signup from "./components/Signup/index";
 import Dashboard from "./components/Dashboard/index";
-
 import ApiHandler from "./api";
 
 import { setUser } from "./store/actions/userActions";

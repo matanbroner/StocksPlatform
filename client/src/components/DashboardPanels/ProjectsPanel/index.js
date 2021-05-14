@@ -5,6 +5,8 @@ import ApiHandler from "../../../api";
 import BasePanel from "../BasePanel";
 import ProjectCreateModal from "../../Modals/ProjectCreateModal";
 import ProjectCard from "../../ProjectCard";
+import Charts from "../Charts/index";
+import Apex from "../Charts/apex";
 import styles from "./styles.module.css";
 
 class ProjectsPanel extends Component {
@@ -164,6 +166,11 @@ class ProjectsPanel extends Component {
           this.renderLoader()
         ) : (
           <React.Fragment>
+            <h2>ReCharts Chart</h2>
+            <Charts />
+            <h2>ApexChart Chart</h2>
+            <Apex />
+            <br></br>
             <Button
               className="project-button"
               color="teal"
