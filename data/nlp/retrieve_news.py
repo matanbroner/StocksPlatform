@@ -1,4 +1,5 @@
 import concurrent.futures
+from logging import error
 import time
 
 import pandas as pd
@@ -28,7 +29,7 @@ def retrieve_news_data(src):
         print("Failed to grab news data for %s." % (src.get_stock()))
     elif response_df is not None:
         # send to data processing pipeline
-        to_pipeline(response_df)
+        return response_df
 
 def main(fmp_key, stock_list):
     """
@@ -39,7 +40,17 @@ def main(fmp_key, stock_list):
         sources.append(GeneralNewsData(fmp_key, stock))
 
     with concurrent.futures.ProcessPoolExecutor() as executor:
-        executor.map(retrieve_news_data, sources)
+        future_to_stock = {executor.submit(retrieve_news_data, source):source.get_stock() for source in sources}
 
+        for future in concurrent.futures.as_completed(future_to_stock):
+            stock = future_to_stock[future]
+            try:
+                data = future.result()
+            except Exception as e:
+                print('%s news retrieval generated an exception: %s' % (stock, e))
+            else:
+                if data is not None:
+                    print("Sending", stock, "to pipeline.")
+                    to_pipeline(data)
     #print("Exiting Main Thread")
     return 1
