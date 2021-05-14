@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import styles from "./styles.module.css";
 import BasePanel from "../BasePanel";
-import Searchbar from "../Searchbar/index";
 import StockSearch from "../../StockSearch";
 
 class StocksPanel extends Component {
