@@ -1,3 +1,50 @@
+/* Dashboard Styles */
+.nav-sidebar {
+  color: #393e46;
+}
+
+.nav-logo {
+  height: 60px;
+  padding-left: 38px;
+}
+
+.nav-icon {
+  color: teal;
+}
+
+.nav-title {
+  color: teal;
+}
+
+.dash-body {
+  padding-top: 25px;
+  padding-left: 175px;
+}
+
+.dash-title {
+  color: black;
+  font-size: 35px;
+  font-weight: bold;
+}
+
+/* Project Styles */
+.project-body {
+  padding-top: 25px;
+  padding-left: 175px;
+}
+
+.project-title {
+  color: black;
+  font-weight: bold;
+  font-size: 35px;
+  padding-left: 175px;
+}
+
+.project-modal {
+  padding-top: 25px;
+  padding-left: 175px;
+}
+
 /* @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

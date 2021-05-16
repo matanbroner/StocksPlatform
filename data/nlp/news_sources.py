@@ -21,9 +21,10 @@ class GeneralNewsData:
         self.api = FMPApi(key)
         self.stock = stock_ticker
 
-    def _create_dataframe(self, json_data):
+    def _create_articles_df(self, json_data):
         """
         Creates and returns a DataFrame with the following columns:
+            stock
             source
             date
             title
@@ -33,6 +34,7 @@ class GeneralNewsData:
         """
         df = pd.DataFrame(json_data, columns=['site', 'publishedDate', 'title', 'text'])
         df['publishedDate'] = pd.to_datetime(df['publishedDate'], infer_datetime_format=True).dt.date
+        df.insert(0, 'stock', value=self.stock)
         return df.rename(columns={'site': 'source', 'publishedDate': 'date', 'text': 'content'})
 
     def get_stock(self):
@@ -50,7 +52,11 @@ class GeneralNewsData:
 
         json_response = self.api.get_news([self.stock])
         
-        return self._create_dataframe(json_response)
+        if len(json_response) == 0:
+            print("No news data found for %s." % (self.stock))
+            return None
+        
+        return self._create_articles_df(json_response)
 
 class RedditData:
     """
