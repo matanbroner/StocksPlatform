@@ -39,10 +39,10 @@ services:
       - GOOGLE_CLIENT_SECRET=GBN4_GuUKpsPGgUlesgPctVp
       - FACEBOOK_CLIENT_ID=2892497347641862
       - FACEBOOK_CLIENT_SECRET=f93af30a2ff9b82e39f688a9e082a2c9
-      - DB_USER=stocks_admin
-      - DB_PASSWORD=stocks_admin
-      - DB_HOST=postgres
-      - DB_NAME=stocks_db
+      - POSTGRES_USER=stocks_admin
+      - POSTGRES_PASSWORD=stocks_admin
+      - POSTGRES_HOST=postgres
+      - POSTGRES_DB=stocks_db
     depends_on:
       - postgres
 
