@@ -1,14 +1,11 @@
 const express = require('express');
 const dotenv = require('dotenv')
 const passport = require('passport');
-const jwt = require("jsonwebtoken");
 
 const oauthRouter = express.Router();
 
 oauthRouter.use(express.json());
 dotenv.config();
-
-const QueryModule = require("../utils/query");
 
 /*
  * This will redirect to /login/success upon login.

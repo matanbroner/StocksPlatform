@@ -1,0 +1,16 @@
+When a user logs in through google oauth, then logs out, we need to delete that provider?
+When a user with oauth logs in, their access token expires, need to update in table?
+
+For deleting an account, it requires a valid Access Token, maybe change this to also include refresh token?
+
+
+Change oauth username to email.
+username is no longer unique
+
+//Creating more unit tests
+//Been working on functionality for users to delete their account
+//resetting or replacing their username because if they signed in through the oauth, they have a
+//string of digits as their username.
+//Looking into implementing email verification for accounts and also a forgot password feature
+//  https://stackoverflow.com/questions/39092822/how-to-confirm-email-address-using-express-node
+//  but these would be implemented later on

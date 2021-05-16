@@ -29,4 +29,6 @@ const intervalSeconds = 200000
 
 setInterval(() => { Events.removeInvalidTokens() }, intervalSeconds);
 
-app.listen(process.env.PORT || 5001);
+var server = app.listen(process.env.PORT || 5001);
+
+module.exports = server;

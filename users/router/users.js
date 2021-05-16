@@ -8,6 +8,7 @@ const userRouter = express.Router();
 
 const PasswordModule = require("../utils/passwords");
 const HelperModule = require("../utils/helper");
+const QueryModule = require("../utils/query");
 
 userRouter.use(express.json());
 dotenv.config();
@@ -110,29 +111,8 @@ userRouter
       } else {
         if (await PasswordModule.compare(password, user.password)) {
 		      const { id, username, email } = user;
-			    var accessToken = jwt.sign(
-            {
-              id,
-              username,
-              email,
-            },
-            process.env.JWT_KEY,
-            {
-            expiresIn: process.env.JWT_EXPIRES
-            }
-          );
-
-          var refreshToken = jwt.sign(
-            {
-              id,
-              username,
-              email,
-            },
-              process.env.REFRESH_SECRET,
-            {
-              expiresIn: process.env.REFRESH_EXPIRES
-            }
-          );
+			    var accessToken = await HelperModule.createAccessToken({id, username, email});
+          var refreshToken = await HelperModule.createRefreshToken({id, username, email});
 
           delete user.password;
           res.status(200).json({
@@ -195,7 +175,7 @@ userRouter.route('/logout')
           .then((result) => {
 				    res.status(200).json({
               status: 200,
-              data:"success"
+              data: "success"
             });
 			    }).catch((err) => console.log(err));
 		  }
@@ -207,6 +187,125 @@ userRouter.route('/logout')
           });
     }
 
+});
+
+// Use delete without passing any data in body to be RESTful (not that it matters)
+userRouter.route('/delete-account/:email')
+.delete(async (req, res) => {
+
+  try {
+        
+    var headerResult = await HelperModule.checkAuthorizationHeaders(req);
+
+    if(headerResult.status == 403) {
+        res.status(403).json({
+            headerResult
+        });
+    }
+    var token = headerResult.token;
+
+    jwt.verify(token, process.env.JWT_KEY, async (error, decodedToken) => {
+        
+      if(error) {
+        res.status(403).json({
+            status: 403,
+            error: "Access Token is incorrect"
+        });
+      } else {
+        const email = req.params.email;
+
+        var userDeleted = await Models.Users.destroy({
+          where: {
+            email
+          },
+        });
+
+        if(userDeleted) {
+          
+          const tokenEntry = { token: token, valid: false }
+          await Models.Tokens.create(tokenEntry)
+
+          res.status(200).json({
+              status: 200
+          });
+          
+        } else {
+            res.status(403).json({
+              status: 403,
+              error: "Access Token is valid, email is incorrect"
+            });
+        }
+      }
+    });
+  } catch (error) {
+    return res.status(400).json({
+            status: 400,
+            error:"Request has failed"
+        });
+  }
+
+});
+
+userRouter.route("/change-password")
+.post(async (req, res) => {
+  try {
+
+    var headerResult = await HelperModule.checkAuthorizationHeaders(req);
+
+    if(headerResult.status == 403) {
+        res.status(403).json({
+            headerResult
+        });
+    }
+    var token = headerResult.token;
+
+    jwt.verify(token, process.env.JWT_KEY, async (error, decodedToken) => {
+        
+      if(error) {
+        res.status(403).json({
+            status: 403,
+            error: "Access Token is incorrect"
+        });
+      } else {
+          var { email, currentPassword, newPassword } = req.body;
+
+          var userExists = await Models.Users.findOne({
+            where: {
+              email
+            },
+          });
+
+          if(userExists && await PasswordModule.compare(currentPassword, userExists.password)) {
+            
+            var encryptedPassword = await PasswordModule.encrypt(newPassword);
+
+            await Models.Users.update(
+              {password: encryptedPassword},
+              {where: { email }}
+            ).then((result) => {
+              res.status(200).json({
+                status: 200,
+                data: "Password changed successfully"
+              });
+            }).catch((err) => {
+              console.log(err);
+            });
+
+          } else {
+            res.status(403).json({
+              status: 403,
+              error: `Incorrect Credentials: ${email}, ${currentPassword}`
+            });
+          }
+      }
+    });
+
+  } catch (error) {
+    return res.status(400).json({
+            status: 400,
+            error:"Request has failed"
+        });
+  }
 });
 
 module.exports = userRouter;

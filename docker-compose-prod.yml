@@ -11,11 +11,13 @@ services:
     ports:
       - '5000:5000'
     environment:
-      - POSTGRES_USER=stocks_admin
-      - POSTGRES_PASSWORD=stocks_admin
+      - ENV=production
+      - DOMAIN=banana-stocks.com
       - POSTGRES_HOST=postgres
+      - POSTGRES_USER=stocks_admin
       - POSTGRES_DB=stocks_db
-      - FMP_API_KEY=e2d9d13e5b7ac7976216133f32d7f775
+    env_file:
+      - ./secrets.env
     depends_on: 
       - postgres
 
@@ -30,19 +32,21 @@ services:
     ports: 
       - '5001:5001'
     environment:
-      - JWT_KEY=stocks_jwt
-      - JWT_EXPIRES=1h
-      - JWT_EXPIRES_HOUR=1
-      - REFRESH_SECRET=stocks_refresh_jwt
-      - REFRESH_EXPIRES=30h
-      - GOOGLE_CLIENT_ID=297422208742-5pt82cje5dvp2701a60ngllvd2cul08g.apps.googleusercontent.com
-      - GOOGLE_CLIENT_SECRET=GBN4_GuUKpsPGgUlesgPctVp
-      - FACEBOOK_CLIENT_ID=2892497347641862
-      - FACEBOOK_CLIENT_SECRET=f93af30a2ff9b82e39f688a9e082a2c9
-      - DB_USER=stocks_admin
-      - DB_PASSWORD=stocks_admin
-      - DB_HOST=postgres
-      - DB_NAME=stocks_db
+        - JWT_KEY=stocks_jwt
+        - JWT_EXPIRES=1h
+        - JWT_EXPIRES_HOUR=1
+        - REFRESH_SECRET=stocks_refresh_jwt
+        - REFRESH_EXPIRES=30h
+        - GOOGLE_CLIENT_ID=297422208742-5pt82cje5dvp2701a60ngllvd2cul08g.apps.googleusercontent.com
+        - GOOGLE_CLIENT_SECRET=GBN4_GuUKpsPGgUlesgPctVp
+        - FACEBOOK_CLIENT_ID=2892497347641862
+        - FACEBOOK_CLIENT_SECRET=f93af30a2ff9b82e39f688a9e082a2c9
+        - DB_USER=stocks_admin
+        - DB_PASSWORD=stocks_admin
+        - DB_HOST=postgres
+        - DB_NAME=stocks_db
+    env_file:
+      - ./secrets.env
     depends_on:
       - postgres
 
@@ -55,9 +59,10 @@ services:
     ports:
       - '3000:3000'
     environment:
-      - NODE_ENV=development
-      - REACT_APP_MODE=development
-      - REACT_APP_BUILD=development
+      - NODE_ENV=production
+      - REACT_APP_MODE=production
+      - REACT_APP_BUILD=production
+      - REACT_APP_DOMAIN=banana-stocks.com
     volumes:
       - './client:/app'
       - '/app/node_modules'
@@ -72,9 +77,10 @@ services:
     environment:
       - POSTGRES_DB=stocks_db
       - POSTGRES_USER=stocks_admin
-      - POSTGRES_PASSWORD=stocks_admin
+    env_file:
+      - ./secrets.env
     volumes:
-      - pg-data:/var/lib/postgresql/data
+      - prod-pg-data:/var/lib/postgresql/data
     restart: always
 
   nginx:
@@ -89,6 +95,7 @@ services:
       - client
       - users
       - data
+
 volumes:
-  pg-data:
+  prod-pg-data:
     driver: local

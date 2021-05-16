@@ -2,14 +2,15 @@ const passport = require('passport');
 var GoogleStrategy = require( 'passport-google-oauth2' ).Strategy;
 var FacebookStrategy = require('passport-facebook').Strategy;
 
-const sequelize = require('sequelize');
-const jwt = require("jsonwebtoken");
+//const sequelize = require('sequelize');
+//const jwt = require("jsonwebtoken");
 
 const Models = require("../models");
 const Users = Models.Users;
 const { Op } = require("sequelize");
 
 const QueryModule = require("../utils/query");
+const HelperModule = require("../utils/helper");
 
 passport.use(new GoogleStrategy({
     clientID:     process.env.GOOGLE_CLIENT_ID,
@@ -20,7 +21,7 @@ passport.use(new GoogleStrategy({
   async (request, accessToken, refreshToken, profile, callback) => {
 
     const { email, provider } = profile;
-    const username = profile.id;
+    const username = profile.email;
     const firstName = profile.given_name;
     const lastName = profile.family_name;
 
@@ -42,32 +43,9 @@ passport.use(new GoogleStrategy({
       local: false,
     };
 
-    var jwtAccessToken = jwt.sign(
-      {
-          firstName,
-          lastName,
-          username,
-          email,
-      },
-      process.env.JWT_KEY,
-      {
-        expiresIn: process.env.JWT_EXPIRES
-      }
-      
-    );
-    var jwtRefreshToken = jwt.sign(
-        {
-            firstName,
-            lastName,
-            username,
-            email,
-        },
-        process.env.REFRESH_SECRET,
-        {
-          expiresIn: process.env.REFRESH_EXPIRES
-        }
-        
-    );
+    var jwtAccessToken = await HelperModule.createAccessToken(newUser);
+
+    var jwtRefreshToken = await HelperModule.createRefreshToken(newUser);
 
     const oauthDetails = {
       provider,
@@ -120,7 +98,7 @@ passport.use(new FacebookStrategy({
     
     const { email } = profile._json;
     const { provider } = profile;
-    const username = profile._json.id;
+    const username = profile._json.email;
     const firstName = profile._json.first_name;
     const lastName = profile._json.last_name;
 
@@ -142,32 +120,9 @@ passport.use(new FacebookStrategy({
       local: false,
     };
 
-    var jwtAccessToken = jwt.sign(
-      {
-          firstName,
-          lastName,
-          username,
-          email,
-      },
-      process.env.JWT_KEY,
-      {
-        expiresIn: process.env.JWT_EXPIRES
-      }
-      
-    );
-    var jwtRefreshToken = jwt.sign(
-        {
-            firstName,
-            lastName,
-            username,
-            email,
-        },
-        process.env.REFRESH_SECRET,
-        {
-          expiresIn: process.env.REFRESH_EXPIRES
-        }
-        
-    );
+    var jwtAccessToken = await HelperModule.createAccessToken(newUser);
+
+    var jwtRefreshToken = await HelperModule.createRefreshToken(newUser);
 
     const oauthDetails = {
       provider,
