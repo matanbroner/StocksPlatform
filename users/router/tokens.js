@@ -17,56 +17,45 @@ tokensRouter.route('/verify')
             headerResult
         });
     }
-
     var token = headerResult.token;
-
-    if(await QueryModule.inactiveToken(token)) {
-        res.status(403).json({
-            status: 403,
-            error:"Token is invalidated or Inactive"
-        });
-    }
-
-   else{
     
-        jwt.verify(token, process.env.JWT_KEY, async (error, decodedToken) => {
-            
-            if(error) {
+    jwt.verify(token, process.env.JWT_KEY, async (error, decodedToken) => {
+        
+        if(error) {
 
-                if(error.name === 'TokenExpiredError') {
-                    await QueryModule.refreshToken(req.body.refreshKey, (newAccessToken) => {
-                        
-                        if(newAccessToken === null) {
-                            res.status(403).json({
-                                status: 403,
-                                error: "Incorrect Refresh Token, Access token expired"
-                            });
-                        }
-                        else {
-                            res.status(200).json({
-                                status: 200,
-                                data: { accessKey: newAccessToken }    // Don't need to send back refresh token
-                            });
-                        }
-                    });
-                }
-                else{
-                    res.status(403).json({
-                        status: 403,
-                        error: "Access Token is incorrect"
-                    });
-                }
-            }
-            else {
-                res.setHeader('authorization', token); 
-                res.status(200).json({
-                    status: 200,
-                    data: decodedToken
+            if(error.name === 'TokenExpiredError') {
+                await QueryModule.refreshToken(req.body.refreshKey, (newAccessToken) => {
+                    
+                    if(newAccessToken === null) {
+                        res.status(403).json({
+                            status: 403,
+                            error: "Incorrect Refresh Token, Access token expired"
+                        });
+                    }
+                    else {
+                        res.status(200).json({
+                            status: 200,
+                            data: { accessKey: newAccessToken }    // Don't need to send back refresh token
+                        });
+                    }
                 });
             }
+            else{
+                res.status(403).json({
+                    status: 403,
+                    error: "Access Token is incorrect"
+                });
+            }
+        }
+        else {
+            res.setHeader('authorization', token); 
+            res.status(200).json({
+                status: 200,
+                data: decodedToken
+            });
+        }
 
-        });
-    }
+    });
 });
 
 module.exports = tokensRouter;

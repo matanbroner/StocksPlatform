@@ -1,14 +1,11 @@
 const express = require('express');
 const dotenv = require('dotenv')
 const passport = require('passport');
-const jwt = require("jsonwebtoken");
 
 const oauthRouter = express.Router();
 
 oauthRouter.use(express.json());
 dotenv.config();
-
-const QueryModule = require("../utils/query");
 
 /*
  * This will redirect to /login/success upon login.
@@ -23,6 +20,30 @@ oauthRouter.get('/google/login', passport.authenticate('google', { scope:
 */
 oauthRouter.get('/google/login/callback',
     passport.authenticate('google', { failureRedirect: '/users/login' }), (req, res) => {
+
+        const { email } = req.user;
+        const username = req.user.username;
+
+        var accessToken = req.user.accessToken;
+        var refreshToken = req.user.refreshToken;
+
+        const user = {
+            username,
+            email,
+            firstName: req.user.firstName,
+            lastName: req.user.lastName,
+        }
+        return res.status(200).json({
+            status: 200,
+            data: { ...user, accessKey: accessToken, refreshKey: refreshToken },
+        });
+
+    });
+
+oauthRouter.get('/facebook/login', passport.authenticate('facebook', { scope: ['email']} ));
+
+oauthRouter.get('/facebook/login/callback',
+    passport.authenticate('facebook', { failureRedirect: '/users/login' }), (req, res) => {
 
         const { email } = req.user;
         const username = req.user.username;
