@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Button, Grid, Divider, Dimmer, Loader } from "semantic-ui-react";
+import { Switch, Route } from "react-router-dom";
 import ApiHandler from "../../../api";
 import BasePanel from "../BasePanel";
 import ProjectCreateModal from "../../Modals/ProjectCreateModal";
@@ -142,7 +143,14 @@ class ProjectsPanel extends Component {
         <Grid.Row id={chunkIdx} columns={12}>
           {chunk.map((project) => {
             return (
-              <Grid.Column id={project.id} stackable width={4}>
+              <Grid.Column
+                onClick={() => {
+                  this.props.history.push(`/dashboard/projects/${project.id}`);
+                }}
+                id={project.id}
+                stackable
+                width={4}
+              >
                 <ProjectCard
                   projectName={project.project_name}
                   description={project.description}
