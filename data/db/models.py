@@ -1,5 +1,15 @@
-from db.sqlalchemy_db import create_table
-from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Numeric, func
+from sqlalchemy.sql.expression import null
+from db.sqlalchemy_db import create_table, get_engine
+from sqlalchemy import (
+    Column,
+    Integer,
+    Float,
+    Boolean,
+    String,
+    DateTime,
+    ForeignKey,
+    UniqueConstraint,
+)
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import validates
@@ -16,6 +26,24 @@ def p_key_column(use_int: bool = False):
         return Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
 
 
+def f_key_column(
+        column_attribute: str,
+        use_int: bool = False,
+        on_delete: str = "CASCADE",
+        on_update: str = "CASCADE",
+        nullable: bool = False,
+):
+    if use_int:
+        type = Integer
+    else:
+        type = UUID(as_uuid=True)
+    return Column(
+        type,
+        ForeignKey(column_attribute, ondelete=on_delete, onupdate=on_update),
+        nullable=nullable,
+    )
+
+
 def get_datettime():
     return datetime.datetime.now()
 
@@ -24,6 +52,7 @@ class Stock(Base):
     """
     Base stock table, used as an identifier in other tables
     """
+
     __tablename__ = "stock"
 
     id = p_key_column()
@@ -32,7 +61,7 @@ class Stock(Base):
     updated_at = Column(DateTime, default=get_datettime,
                         onupdate=get_datettime)
 
-    @validates('ticker')
+    @validates("ticker")
     def convert_upper(self, key, value):
         # ensures that all tickers are inserted as uppercase (ex. "tsla" => "TSLA")
         return value.upper()
@@ -40,73 +69,116 @@ class Stock(Base):
     @property
     def serialize(self):
         """
-        Return JSOn serialized version of Stock instance
+        Return JSON serialized version of Stock instance
         @return: JSON
         """
         return {
-            'id': self.id,
-            'ticker': self.ticker,
-            'created_at': self.created_at,
-            'updated_at': self.updated_at
+            "id": self.id,
+            "ticker": self.ticker,
+            "created_at": self.created_at,
+            "updated_at": self.updated_at,
         }
 
 
-class NewsSources(Base):
+class Project(Base):
+    """
+    Base project table, used as identifier in other tables and allows activating/deactivating a project
+    """
 
-    __tablename__ = 'text_sources'
+    __tablename__ = "project"
+    __table_args__ = (UniqueConstraint("user_id", "project_name"),)
 
-    id = Column('id', Integer, primary_key=True)
+    id = p_key_column()
+    project_name = Column(String)
+    description = Column(String)
+    is_active = Column(Boolean, default=True)
+    created_at = Column(DateTime, default=get_datettime)
+    updated_at = Column(DateTime, default=get_datettime,
+                        onupdate=get_datettime)
 
-    sourcename = Column('user', String(50), nullable=False, unique=True)
+    # user_id = f_key_column(column_attribute="Users.id")
+    # TODO: this is a dummy column until I can figure out how to autopopulate a Users table here
+    user_id = Column(String)
 
     @property
     def serialize(self):
         """
-        Return JSOn serialized version of  instance
+        Return JSON serialized version of  instance
         @return: JSON
         """
         return {
-            'id': self.id,
-            'sourcename': self.sourcename,
+            "id": self.id,
+            "project_name": self.project_name,
+            "description": self.description,
+            "is_active": self.is_active,
+            "created_at": self.created_at,
+            "updated_at": self.updated_at,
         }
-    ##overallweight = Column(Numeric(), nullable=False, unique=False)
 
 
-class NewsArticles(Base):
+class ProjectStock(Base):
+    """
+    Relationship table allowing stocks to be linked to a project
+    """
 
-    __tablename__ = 'text_articles'
+    __tablename__ = "project_stock"
 
-    id = Column(Integer(), primary_key=True)
+    id = p_key_column()
+    project_id = f_key_column(column_attribute="project.id")
+    stock_id = f_key_column(column_attribute="stock.id")
+    created_at = Column(DateTime, default=get_datettime)
+    updated_at = Column(DateTime, default=get_datettime,
+                        onupdate=get_datettime)
 
-    sourceid = Column(Integer(), ForeignKey(NewsSources.id))
 
-    stockid = Column(Integer(), ForeignKey(Stock.id))
+class NewsSource(Base):
+    __tablename__ = "news_source"
 
-    datepublished = Column(DateTime(), default=get_datettime)
-
-    avgsentiment = Column(Numeric(), nullable=False)
-
-    ##overallWeight = Column(Numeric(), ForeginKey(NewsSources.overallweight))
+    id = p_key_column()
+    source_name = Column(String(50), nullable=False, unique=True)
+    created_at = Column(DateTime, default=get_datettime)
+    updated_at = Column(DateTime, default=get_datettime,
+                        onupdate=get_datettime)
 
     @property
     def serialize(self):
         """
-        Return JSOn serialized version of Stock instance
+        Return JSON serialized version of  instance
         @return: JSON
         """
         return {
-            'id': self.id,
-            'ticker': self.sourceid,
-            'stock_id': self.stockid,
-            'date_published': self.datepublished
-            'avg_sentiment': self.avgsentiment
-            'main_token': self.maintoken
+            "id": self.id,
+            "source_name": self.source_name,
         }
 
 
-def instantiate_tables():
-    """
-    Define all tables, should be called only once
-    """
-    for table in [Stock]:
-        create_table(table)
+class NewsArticle(Base):
+    __tablename__ = "news_article"
+    __table_args__ = (UniqueConstraint("user_id", "project_name"),)
+
+    id = p_key_column()
+    title = p_key_column()
+    title = Column(String, unique=True, nullable=False)
+    source_id = f_key_column("news_source.id")
+    stock_id = f_key_column("stock.id")
+    date_published = Column(DateTime(), default=get_datettime)
+    avg_sentiment = Column(Float(), nullable=False)
+    created_at = Column(DateTime, default=get_datettime)
+    updated_at = Column(DateTime, default=get_datettime,
+                        onupdate=get_datettime)
+
+    @property
+    def serialize(self):
+        """
+        Return JSON serialized version of Stock instance
+        @return: JSON
+        """
+        return {
+            "id": self.id,
+            "title": self.title,
+            "ticker": self.sourceid,
+            "stock_id": self.stockid,
+            "date_published": self.datepublished,
+            "avg_sentiment": self.avgsentiment,
+            "main_token": self.maintoken,
+        }
