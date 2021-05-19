@@ -133,7 +133,7 @@ class Signup extends Component {
                 </Message>
               ) : null}
               <Form id={styles.form}>
-                <div id={styles.title}>Create Account</div>
+                <div id={styles.title}>Sign Up</div>
 
                 <Form.Group>
                   <Form.Field>

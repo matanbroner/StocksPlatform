@@ -66,17 +66,12 @@ const SettingsPanel = (props) => {
                             {renderProfile()}
                         </Table.Row>
                         <br></br>
-                        <Divider />
                         <br></br>
-                        <Table.Row>
-                            <Button color='green' onClick={handleDeleteAccount}>
+                        <Table.Row id={styles.table_buttons}>
+                            <Button color='green' onClick={handleChangePassword}>
                                 Change Password
                             </Button>
-                        </Table.Row>
-                        <br></br>
-                        <Divider />
-                        <br></br>
-                        <Table.Row>
+
                             <Button color='red' onClick={handleDeleteAccount}>
                                 Delete Account
                             </Button>

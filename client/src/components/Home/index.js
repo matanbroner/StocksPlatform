@@ -12,7 +12,8 @@ import {
   Menu,
   Segment,
   Sidebar,
-  Visibility, } from 'semantic-ui-react';
+  Visibility,
+  Modal } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 
 function Logo() {
@@ -40,7 +41,7 @@ function Logo() {
   function SignUpButton() {
     return (
       <div id={styles.Signup}>
-        <Button basic inverted color="green" id={styles.sign_button}>Sign Up</Button>
+        <Button basic inverted color="teal">Sign Up</Button>
       </div>
     )
   }
@@ -48,7 +49,7 @@ function Logo() {
   function LogInButton() {
     return (
       <div id={styles.Login}>
-        <Button basic inverted color="green">Log In</Button>
+        <Button basic inverted color="teal">Log In</Button>
       </div>
     )
   }

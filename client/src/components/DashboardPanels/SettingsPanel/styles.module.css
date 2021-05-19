@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap");
+
 /* Settings Styles */
 #setting-body {
   padding-left: 175px;
@@ -12,6 +14,8 @@
 #table {
   width: 90%;
   padding: 10px;
+  border-width: 3px;
+  border-color: black;
 }
 
 #table_row {
@@ -27,4 +31,10 @@
 #title {
   padding-left: 50%;
   display: flex;
+  font-family: "Montserrat", sans-serif;
+}
+
+#table_buttons {
+  display: flex;
+  justify-content: space-between;
 }

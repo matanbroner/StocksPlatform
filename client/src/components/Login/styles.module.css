@@ -99,3 +99,10 @@
     font-weight: 700;
   }
 }
+
+@media screen and (max-width: 1050px) {
+  #account,
+  #sign {
+    font-size: 10px;
+  }
+}
