@@ -1,6 +1,6 @@
 from db import create_session
 from db.models import Stock
-from flask import jsonify
+
 
 def get_stock_by_id(id: str):
     """
@@ -21,13 +21,8 @@ def get_stock_by_ticker(ticker: str):
     """
     ticker = ticker.upper()
     with create_session() as session:
-        try:
-            stock = session.query(Stock).filter(Stock.ticker == ticker).one()
-            return stock.serialize
-        except Exception:
-            # no rows found, SA throws NoResultFound
-            # Note: .one() may throw MultipleResultsFound, but "ticker" is a unqiue column
-            return None
+        stock = session.query(Stock).filter(Stock.ticker == ticker).first()
+        return stock.serialize if stock else None
 
 
 def get_all_stocks():
@@ -51,7 +46,9 @@ def create_stock(ticker: str):
         try:
             exists = get_stock_by_ticker(ticker=ticker)
             if exists:
-                raise RuntimeError(f"Stock with associated ticker {ticker} already exists")
+                raise RuntimeError(
+                    f"Stock with associated ticker {ticker} already exists"
+                )
             stock = Stock(ticker=ticker)
             session.add(stock)
             # must commit before new stock can be fetched from DB table
@@ -60,10 +57,11 @@ def create_stock(ticker: str):
         except Exception as e:
             raise e
 
+
 def delete_stock_by_id(id: str):
     """
     Delete a stock using a primary key ID
-    @param id: primary key
+    @param id: UUID
     """
     with create_session() as session:
         stock = get_stock_by_id(id=id)

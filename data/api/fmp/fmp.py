@@ -16,7 +16,7 @@ DEFAULT_QUERY_LIMIT = 50
 
 class FinancialModelingPrepApi:
     def __init__(self, api_key: str = None, query_limit: int = None):
-        self.api_key = api_key or os.environ['FMP_API_KEY']
+        self.api_key = api_key or os.environ["FMP_API_KEY"]
         self.query_limit = query_limit or DEFAULT_QUERY_LIMIT
         if not self.api_key:
             self._raise_error(
@@ -30,7 +30,14 @@ class FinancialModelingPrepApi:
         """
         raise RuntimeError(f"FinancialModelingPrep Error: {msg}")
 
-    def _api_request(self, route: str, method: str = "GET", data: dict = {}, headers: dict = {}, api_v: str = "v3"):
+    def _api_request(
+            self,
+            route: str,
+            method: str = "GET",
+            data: dict = {},
+            headers: dict = {},
+            api_v: str = "v3",
+    ):
         """
         Generic API request handler for FMP
         @param route
@@ -41,21 +48,28 @@ class FinancialModelingPrepApi:
         @return: JSON or raise RuntimeError
         """
         url = f"https://financialmodelingprep.com/api/{api_v}/{route}"
-        if '?' in url:
+        if "?" in url:
             url += f"&apikey={self.api_key}"
         else:
             url += f"?apikey={self.api_key}"
-        response = requests.request(
-            method,
-            url=url,
-            data=data,
-            headers=headers
-        )
+        response = requests.request(method, url=url, data=data, headers=headers)
         body = response.json()
         if "Error Message" in body:
             self._raise_error(body["Error Message"])
         else:
             return body
+
+    def search_query(self, keyword: str, limit: int = None):
+        """
+        Search for a ticker based on a keyword (can be a company name or ticker)
+        @param keyword: ex. "TSLA" or "General Motors"
+        @return: JSON
+        ref: https://financialmodelingprep.com/developer/docs/stock-ticker-symbol-lookup-api
+        """
+        if not limit:
+            limit = self.query_limit
+        route = f"/search?query={keyword}&limit={limit}"
+        return self._api_request(route=route)
 
     def company_profile(self, ticker: str):
         """
@@ -67,9 +81,15 @@ class FinancialModelingPrepApi:
         route = f"profile/{ticker}"
         return self._api_request(route=route)
 
-    def get_statement_by_type(self, ticker: str, statement_type: str, growth: bool = False, period: str = "quarter",
-                              limit: int = None,
-                              datatype: str = None):
+    def get_statement_by_type(
+            self,
+            ticker: str,
+            statement_type: str,
+            growth: bool = False,
+            period: str = "quarter",
+            limit: int = None,
+            datatype: str = None,
+    ):
         """
         Fetch company income statement on quarter or yearly increments
         @param ticker: ex. "TSLA"
@@ -94,8 +114,14 @@ class FinancialModelingPrepApi:
             route += f"&datatype={datatype}"
         return self._api_request(route=route)
 
-    def get_all_statements(self, ticker: str, growth: bool = False, period: str = "quarter", limit: int = None,
-                           datatype: str = None):
+    def get_all_statements(
+            self,
+            ticker: str,
+            growth: bool = False,
+            period: str = "quarter",
+            limit: int = None,
+            datatype: str = None,
+    ):
         """
         Collect income, balance sheet, and cash flow statements for a company all at once
         Is atomic, if one of three calls fail, entire method fails.
@@ -112,15 +138,22 @@ class FinancialModelingPrepApi:
         statements = {}
         try:
             for type in statement_types:
-                statements[type] = self.get_statement_by_type(ticker=ticker, growth=growth, statement_type=type,
-                                                              period=period,
-                                                              limit=limit, datatype=datatype)
+                statements[type] = self.get_statement_by_type(
+                    ticker=ticker,
+                    growth=growth,
+                    statement_type=type,
+                    period=period,
+                    limit=limit,
+                    datatype=datatype,
+                )
             return statements
         except RuntimeError as e:
             # relay error back to user
             raise e
 
-    def get_ratios(self, ticker: str, ttm: bool = False, period: str = "quarter", limit: int = None):
+    def get_ratios(
+            self, ticker: str, ttm: bool = False, period: str = "quarter", limit: int = None
+    ):
         """
         Get company financial ratios either TTM or on a periodic basis
         @param ticker: ex. "TSLA"
@@ -139,7 +172,9 @@ class FinancialModelingPrepApi:
             route += f"/{ticker}?period={period}&limit={limit}"
         return self._api_request(route=route)
 
-    def get_enterprise_value(self, ticker: str, period: str = "quarter", limit: int = None):
+    def get_enterprise_value(
+            self, ticker: str, period: str = "quarter", limit: int = None
+    ):
         """
         Get enterprise value for a company
         @param ticker: ex. "TSLA"
@@ -153,7 +188,9 @@ class FinancialModelingPrepApi:
         route = f"enterprise-values/{ticker}?period={period}&limit={limit}"
         return self._api_request(route=route)
 
-    def get_company_growth(self, ticker: str, period: str = "quarter", limit: int = None):
+    def get_company_growth(
+            self, ticker: str, period: str = "quarter", limit: int = None
+    ):
         """
         Get growth financial statement for a company
         @param ticker: ex. "TSLA"
@@ -184,7 +221,13 @@ class FinancialModelingPrepApi:
             route += f"?limit={limit}"
         return self._api_request(route=route)
 
-    def get_dcf(self, ticker: str, historical: bool = False, period: str = "quarter", limit: int = None):
+    def get_dcf(
+            self,
+            ticker: str,
+            historical: bool = False,
+            period: str = "quarter",
+            limit: int = None,
+    ):
         """
         Get discounted cash flow for a company
         @param ticker: ex. "TSLA"
@@ -210,7 +253,8 @@ class FinancialModelingPrepApi:
         for ticker in tickers:
             if not isinstance(ticker, str):
                 self._raise_error(
-                    f"Invalid ticker symbol {ticker} in batch price request")
+                    f"Invalid ticker symbol {ticker} in batch price request"
+                )
         str_tickers = ",".join(tickers)
         route = f"quote/{str_tickers}"
         return self._api_request(route=route)
@@ -267,9 +311,9 @@ class FinancialModelingPrepApi:
             self._raise_error(
                 f"Interval {interval} is not valid in price request")
 
-        if interval[-1] == 'm':
+        if interval[-1] == "m":
             interval = f"{interval}in"
-        elif interval[-1] == 'h':
+        elif interval[-1] == "h":
             interval = f"{interval}our"
 
         if interval == "all":

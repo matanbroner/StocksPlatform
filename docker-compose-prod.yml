@@ -1,0 +1,96 @@
+
+version: '3.7'
+
+services:
+  data:
+    build:
+      context: ./data
+      dockerfile: Dockerfile
+    volumes:
+      - './data:/app'
+    ports:
+      - '5000:5000'
+    environment:
+      - ENV=production
+      - DOMAIN=banana-stocks.com
+      - POSTGRES_HOST=postgres
+      - POSTGRES_USER=stocks_admin
+      - POSTGRES_DB=stocks_db
+    env_file:
+      - ./secrets.env
+    depends_on: 
+      - postgres
+
+  users:
+    container_name: users
+    build:
+      context: ./users
+      dockerfile: Dockerfile
+    volumes:
+      - './users:/app'
+      - '/app/node_modules'
+    ports: 
+      - '5001:5001'
+    environment:
+      - JWT_EXPIRES=1h
+      - JWT_EXPIRES_HOUR=1
+      - REFRESH_EXPIRES=30h
+      - CLIENT_ID=297422208742-5pt82cje5dvp2701a60ngllvd2cul08g.apps.googleusercontent.com
+      - CLIENT_SECRET=GBN4_GuUKpsPGgUlesgPctVp
+      - POSTGRES_USER=stocks_admin
+      - POSTGRES_HOST=postgres
+      - POSTGRES_DB=stocks_db
+    env_file:
+      - ./secrets.env
+    depends_on:
+      - postgres
+
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+      args:
+        env: 'DEV'
+    ports:
+      - '3000:3000'
+    environment:
+      - NODE_ENV=production
+      - REACT_APP_MODE=production
+      - REACT_APP_BUILD=production
+      - REACT_APP_DOMAIN=banana-stocks.com
+    volumes:
+      - './client:/app'
+      - '/app/node_modules'
+    depends_on:
+      - users
+
+  postgres:
+    image: postgres
+    container_name: postgres
+    ports:
+      - '5432:5432'
+    environment:
+      - POSTGRES_DB=stocks_db
+      - POSTGRES_USER=stocks_admin
+    env_file:
+      - ./secrets.env
+    volumes:
+      - prod-pg-data:/var/lib/postgresql/data
+    restart: always
+
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    ports:
+      - '80:80'
+      - '443:443'
+    command: [nginx-debug, '-g', 'daemon off;']
+    depends_on:
+      - client
+      - users
+      - data
+
+volumes:
+  prod-pg-data:
+    driver: local

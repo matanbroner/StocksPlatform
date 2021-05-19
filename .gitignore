@@ -1,3 +1,7 @@
+.idea
+.vscode
+secrets.env
+
 ### Python ###
 
 # Byte-compiled / optimized / DLL files

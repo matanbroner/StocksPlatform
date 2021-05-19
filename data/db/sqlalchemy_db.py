@@ -27,11 +27,11 @@ def generate_db_uri(
     @return: string URI
     """
     driver = os.getenv("DB_DRIVER") or driver
-    user = os.getenv("DB_USER") or user
-    password = os.getenv("DB_PASSWORD") or password
-    host = os.getenv("DB_HOST") or host
-    port = os.getenv("DB_PORT") or port
-    db = os.getenv("DB_NAME") or db
+    user = os.getenv("POSTGRES_USER") or user
+    password = os.getenv("POSTGRES_PASSWORD") or password
+    host = os.getenv("POSTGRES_HOST") or host
+    port = os.getenv("POSTGRES_PORT") or port
+    db = os.getenv("POSTGRES_DB") or db
 
     for uri_key, uri_val in [
         ("user", user),
@@ -41,7 +41,7 @@ def generate_db_uri(
     ]:
         if uri_val == None:
             raise RuntimeError(f"Incomplete DB URI component given: '{uri_key}'")
-
+    print(f"{driver}://{user}:{password}@{host}:{port}/{db}", flush=True)
     return f"{driver}://{user}:{password}@{host}:{port}/{db}"
 
 
@@ -60,6 +60,13 @@ def init_db_connection():
 
 @contextmanager
 def create_session():
+    """
+    Creates and returns a session
+    Uses contextlib's contextmanager decorator to allow for generator syntax:
+    with create_session() as session:
+        ...etc.
+    @return: active session
+    """
     global Session
     if Session == None:
         raise RuntimeError(
@@ -78,6 +85,7 @@ def create_session():
     finally:
         session.close()
 
+
 def create_table(table):
     """
     Generate table from declarative base definition
@@ -92,3 +100,10 @@ def create_table(table):
         """
         )
     table.__table__.create(bind=engine, checkfirst=True)
+
+def get_engine():
+    """
+    Get raw engine object. Should not be used unless explicitly needed.
+    """
+    global engine
+    return engine

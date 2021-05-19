@@ -1,4 +1,3 @@
-from sqlalchemy.sql.expression import null
 from db.sqlalchemy_db import create_table, get_engine
 from sqlalchemy import (
     Column,
@@ -154,11 +153,8 @@ class NewsSource(Base):
 
 class NewsArticle(Base):
     __tablename__ = "news_article"
-    __table_args__ = (UniqueConstraint("user_id", "project_name"),)
 
     id = p_key_column()
-    title = p_key_column()
-    title = Column(String, unique=True, nullable=False)
     source_id = f_key_column("news_source.id")
     stock_id = f_key_column("stock.id")
     date_published = Column(DateTime(), default=get_datettime)
@@ -175,10 +171,17 @@ class NewsArticle(Base):
         """
         return {
             "id": self.id,
-            "title": self.title,
             "ticker": self.sourceid,
             "stock_id": self.stockid,
             "date_published": self.datepublished,
             "avg_sentiment": self.avgsentiment,
             "main_token": self.maintoken,
         }
+
+
+def instantiate_tables():
+    """
+    Define all tables, should be called only once
+    """
+    for table in [Stock, Project, ProjectStock]:
+        create_table(table)
