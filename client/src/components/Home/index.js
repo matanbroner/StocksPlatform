@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import '../App.css';
+import styles from "./styles.module.css";
 import { Header, Button } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 
 function Logo() {
     return (
-      <div className="Logo">
-        <img src="/images/logo.png" alt="Banana Stocks Logo" className="home-logo"/>
+      <div id={styles.Logo}>
+        <img src="/images/logo.png" alt="Banana Stocks Logo" id={styles.logoimage}/>
       </div>
     )
   }
@@ -14,7 +14,7 @@ function Logo() {
   function Message() {
     return (
       <Header size="large">
-        <div className="HomeMessage">
+        <div id={styles.HomeMessage}>
           Here to support all your stock portfolio needs.
         </div>
       </Header>
@@ -23,16 +23,16 @@ function Logo() {
   
   function SignUpButton() {
     return (
-      <div className="Signup">
-        <Button basic inverted color="green" className="home-sign-up">Sign Up</Button>
+      <div id={styles.Signup}>
+        <Button basic inverted color="green">Sign Up</Button>
       </div>
     )
   }
   
   function LogInButton() {
     return (
-      <div className="Login">
-        <Button basic inverted color="green" className="home-log-in">Log In</Button>
+      <div id={styles.Login}>
+        <Button basic inverted color="green">Log In</Button>
       </div>
     )
   }
@@ -40,12 +40,12 @@ function Logo() {
 class Home extends Component {
     render() {
       return (
-          <div className="HomeBackground">
-              <Header className="Header" as='h2'>
+          <div id={styles.HomeBackground}>
+              <Header id={styles.Header} as='h2'>
                   <Logo />
                   <Message />
 
-                  <div className="Buttons">
+                  <div id={styles.Buttons}>
                       <Link to='/signup'>
                           <SignUpButton />
                       </Link>

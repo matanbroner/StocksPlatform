@@ -1,7 +1,12 @@
 import React, { Component } from "react";
-import "../App.css";
+import { connect } from "react-redux"
 import { Form, Grid, Message } from "semantic-ui-react";
-import ApiHandler from "../api";
+import ApiHandler from "../../api";
+import styles from "./styles.module.css";
+
+import {
+  setUser
+} from "../../store/actions/userActions"
 
 class Login extends Component {
   constructor(props) {
@@ -14,6 +19,12 @@ class Login extends Component {
       error: null,
       loading: false,
     };
+  }
+
+  componentDidMount(){
+    if(this.props.accessKey){
+      this.props.history.push("/dashboard")
+    }
   }
 
   updateForm(key, e, value = null) {
@@ -64,8 +75,13 @@ class Login extends Component {
         }
       )
         .then((res) => {
+          const profile = res.data;
+          const { accessKey, refreshKey } = profile;
+          delete profile.accessKey;
+          delete profile.refreshKey;
+          this.props.setUser(profile, accessKey, refreshKey)
+          this.props.setTokens(accessKey, refreshKey);
           this.props.history.push("/dashboard");
-          this.props.setUser(res.data);
         })
         .catch((e) => {
           this.setState({
@@ -82,14 +98,14 @@ class Login extends Component {
         <Grid.Column
           style={{ height: "100%" }}
           width={4}
-          className="login-column-1"
+          id={styles.firstcolumn}
         >
-          <div className="first-column">
+          <div id={styles.seccolumn}>
             <div>
-                <img src="/images/logo.png" alt="Banana Stocks Logo" className="login-logo"/>
+                <img src="/images/logo.png" alt="Banana Stocks Logo" id={styles.logo}/>
             </div>
 
-            <div className="LoginTitle">Log in</div>
+            <div id={styles.title}>Log in</div>
 
             {this.state.error ? (
               <Message negative>
@@ -101,23 +117,24 @@ class Login extends Component {
             <Form className="login-form">
               <Form.Input
                 size="large"
-                className="login-email"
+                id={styles.email}
                 placeholder="E-mail Address"
                 value={this.state.form.email}
                 onChange={(e) => this.updateForm("email", e)}
               />
               <Form.Input
                 size="large"
-                className="login-password"
+                id={styles.password}
+                type="password"
                 placeholder="Password"
                 value={this.state.form.password}
                 onChange={(e) => this.updateForm("password", e)}
               />
 
-              <div className="no-account">
+              <div id={styles.account}>
                 Don't have an account?
                 <div
-                  className="go-to-sign"
+                  id={styles.sign}
                   onClick={() => {
                     this.props.history.push("/signup");
                   }}
@@ -128,7 +145,7 @@ class Login extends Component {
 
               <Form.Button
                 size="large"
-                className="login-button"
+                id={styles.button}
                 content="Login"
                 color="teal"
                 onClick={() => this.submit()}
@@ -143,10 +160,10 @@ class Login extends Component {
         <Grid.Column
           width={12}
           style={{ height: "100%" }}
-          className="login-column-2"
+          id={styles.thirdcolumn}
         >
-          <div className="LoginMessage">Stock Trading Simplified</div>
-          <div className="LoginMessage2">
+          <div id={styles.message1}>Stock Trading Simplified</div>
+          <div id={styles.message2}>
             We help you get the best data on all your stock needs.
           </div>
         </Grid.Column>
@@ -155,4 +172,17 @@ class Login extends Component {
   }
 }
 
-export default Login;
+const mapStateToProps = (state) => {
+  return {
+    accessKey: state.user.accessKey
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    setUser: (profile, accessKey, refreshKey) => dispatch(setUser(profile, accessKey, refreshKey)),
+  }
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

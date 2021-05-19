@@ -34,9 +34,10 @@ def post_project():
     try:
         project_name = body.get("project_name")
         description = body.get("description")
-        if not project_name or not description:
+        tickers = body.get("tickers")
+        if not project_name or not description or not tickers:
             raise RuntimeError("Missing attributes for project creation")
-        project = create_project(project_name=project_name, description=description, user_id=g.user_id)
+        project = create_project(project_name=project_name, description=description, tickers=tickers, user_id=g.user_id)
         return json_response(status_code=200, data=project)
     except Exception as e:
         return json_response(status_code=404, error=str(e))

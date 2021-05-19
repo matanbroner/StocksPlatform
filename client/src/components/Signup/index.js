@@ -1,9 +1,8 @@
 import React, { Component } from "react";
-import "../App.css";
 import { Form, Checkbox, Grid, Container, Message } from "semantic-ui-react";
 import { Link, useHistory } from "react-router-dom";
-
-import ApiHandler from "../api";
+import styles from "./styles.module.css";
+import ApiHandler from "../../api";
 
 class Signup extends Component {
   constructor(props) {
@@ -123,19 +122,19 @@ class Signup extends Component {
 
   render() {
     return (
-      <div className="signup">
-        <Grid className="centered middle">
-          <Container className="signup-container">
+      <div id={styles.signup}>
+        <Grid>
+          <Container id={styles.container}>
             {this.state.error ? (
               <Message negative>
                 <Message.Header>Signup Error</Message.Header>
                 <p>{this.state.error}</p>
               </Message>
             ) : null}
-            <Form className="signup-form">
-              <div className="SignupTitle">Sign Up</div>
+            <Form id={styles.form}>
+              <div id={styles.title}>Sign Up</div>
 
-              <Form.Group className="signup-form">
+              <Form.Group>
                 <Form.Field>
                   <label>First Name</label>
                   <input
@@ -156,28 +155,30 @@ class Signup extends Component {
 
               <Form.Input
                 label="Username"
-                className="signup-user"
+                id={styles.user}
                 placeholder="Username"
                 value={this.state.form.username}
                 onChange={(e) => this.updateForm("username", e)}
               />
               <Form.Input
                 label="Email"
-                className="signup-email"
+                id={styles.email}
                 placeholder="E-mail Address"
                 value={this.state.form.email}
                 onChange={(e) => this.updateForm("email", e)}
               />
               <Form.Input
                 label="Password"
-                className="signup-password"
+                id={styles.password}
+                type="password"
                 placeholder="Password"
                 value={this.state.form.password}
                 onChange={(e) => this.updateForm("password", e)}
               />
               <Form.Input
                 label="Confirm Password"
-                className="signup-password-confirm"
+                id={styles.confirm}
+                type="password"
                 placeholder="Confirm Password"
                 value={this.state.form.confirmPassword}
                 onChange={(e) => this.updateForm("confirmPassword", e)}
@@ -197,7 +198,7 @@ class Signup extends Component {
 
               <Form.Button
                 color="teal"
-                className="signup-button"
+                id={styles.button}
                 content="Create Account"
                 size="large"
                 onClick={this.submit.bind(this)}
