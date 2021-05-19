@@ -20,22 +20,22 @@ const SettingsPanel = (props) => {
                         </Icon>
                     </Grid.Column>
                     <Grid.Row>
-                        <Grid.Column width={5}>
+                        <Grid.Column width={5} id={styles.account_info}>
                             <b>First Name:</b> {props.user.firstName}
                         </Grid.Column>
                         <Grid.Column width={3}>
                         </Grid.Column>
-                        <Grid.Column width={5}>
+                        <Grid.Column width={5} id={styles.account_info}>
                             <b>Last Name:</b> {props.user.lastName}
                         </Grid.Column>
                     </Grid.Row>
                     <Grid.Row>
-                        <Grid.Column width={5}>
+                        <Grid.Column width={5} id={styles.account_info}>
                             <b>Username:</b> {props.user.username}
                         </Grid.Column>
                         <Grid.Column width={3}>
                         </Grid.Column>
-                        <Grid.Column width={5}>
+                        <Grid.Column width={5} id={styles.account_info}>
                             <b>Email Address:</b> {props.user.email}
                         </Grid.Column>
                     </Grid.Row>

@@ -47,7 +47,7 @@ class Dashboard extends React.Component {
             </Grid.Column>
           </Grid.Row>
           <Grid.Row columns={2}>
-            <Grid.Column stretched width={4}>
+            <Grid.Column stretched width={3}>
               <Navbar />
             </Grid.Column>
             <Grid.Column stretched width={12}>
