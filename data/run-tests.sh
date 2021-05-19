@@ -4,4 +4,4 @@
 # a. Alias the unrecognized term with the python3 version of it (ie. pip3 -> pip)
 # b. Set Python3 as your default and modify the script
 
-DB_USER=stocks_admin DB_PASSWORD=stocks_admin DB_HOST=localhost DB_NAME=stocks_db python3 ./data/nlp_test.py
+POSTGRES_USER=stocks_admin POSTGRES_PASSWORD=stocks_admin POSTGRES_HOST=localhost POSTGRES_DB=stocks_db python3 ./data/nlp_test.py
