@@ -100,7 +100,12 @@ class Home extends Component {
                       <br></br>
                       <br></br>
                       <br></br>
-                      <Button size='huge' color='teal'>Check Out Our Reviews</Button>
+                      <Modal
+                        trigger={<Button size='huge' color='teal'>Check Out Our Reviews</Button>}
+                        header='BananaStocks Reviews'
+                        content='Reviews Feature Coming Soon!'
+                        actions={[{ key: 'done', content: 'Done', positive: true }]}
+                      />
                     </Grid.Column>
                   </Grid.Row>
                 </Grid>
