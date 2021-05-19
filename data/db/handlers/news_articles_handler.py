@@ -1,77 +1,88 @@
 from db import create_session
-from db.models import NewsArticle
+from db.models import Stock, NewsArticles, NewsSources
 from sqlalchemy import func
-from datetime import date
+from date import date
 
 
-def get_news_article_by_id(id: str):
+def get_ticker_id(ticker: str):
     """
-    Get news article by primary key
-    @param id: UUID
-    @return: JSON
+    Returns primary key id based on ticker
+    @params: str
+    @return: int
     """
-    with create_session() as session:
-        article = session.get(NewsArticle, id)
-        return article.serialize if article else None
+    with create_session as session:
+        try:
+            query = session.query(Stock.id).filer(ticker == Stock.ticker)
+            return query
+        except Exception:
+            return None
+
+
+def add_news_article(source: str, title: str, ticker: str, avg_sentiment: float, published_date: datetime.date):
+    """
+    Adds news article 
+    @params str for soucre, date published in date format, an avarge sentiment and a main token
+    @returns - no return 
+    """
+    with create_session as session:
+        try:
+
+            news_article = NewsArticles()
+            news_article.stockid = get_ticker_id(ticker)
+            news_article.title = title
+            news_article.avgsentiment = avg_sentiment
+            news_article.datepublished = published_date
+            session.add(news_article)
+            session.commit()
+
+        except Exception as e:
+            return e
+
+
+def getSentimentByStock(stock_id: str):
+    """
+    Returns an Avarge sentiment of a stock based on news articles
+    @params: ticker of stick which is a str
+    @returns : numeric() value
+    """
+    with create_session as session:
+        try:
+
+            query = session.query(func.avg(NewsArticles.avgsentiment).label(
+                'average')).filter(NewsArticles.stockid == stock_id)
+            return query
+        except Exception:
+            return None
 
 
 def get_all_news_articles():
-    """
-    Get all news articles
-    @return: JSON
-    """
-    with create_session() as session:
-        articles = session.query(NewsArticle).all()
-        return [article.serialize for article in articles]
 
-
-def create_news_article(source_id: str, stock_id: str, avg_sentiment: float, published_date: date = None):
-    """
-    Create a new news article
-    @param source_id: primary key of associated news source
-    @param ticker_id: primary key of associated ticker
-    @param avg_sentiment
-    @param published_date
-    @return: JSON (new news article)
-    """
     with create_session as session:
         try:
-            article = NewsArticle(
-                source_id=source_id,
-                stock_id=stock_id,
-                avg_sentiment=avg_sentiment,
-                published_date=published_date
-            )
-            session.add(article)
-            session.commit()
-            return article.serialize
-        except Exception as e:
-            raise e
+
+            articles = session.query(NewsArticles).all()
+            return [articles.serialize for a in articles]
 
 
-def delete_news_article_by_id(id: str):
-    """
-    Delete a news article using a primary key ID
-    @param id: UUID
-    """
-    with create_session() as session:
-        article = get_news_article_by_id(id=id)
-        if not article:
-            raise RuntimeError(f"Cannot delete nonexistent article with ID {id}")
-        article.delete()
-        session.commit()
+def get_articles_by_source(source: str):
 
-
-def get_average_sentiment_by_ticker(ticker_id: str):
-    """
-    Returns an average sentiment of a stock based on its associated news articles
-    @param ticker_id: primary key of associated ticker
-    @returns: floating point average sentiment
-    """
     with create_session as session:
         try:
-            average_query = session.query(
-                func.avg(NewsArticle.avg_sentiment).label('average')).filter(NewsArticle.stock_id == ticker_id)
-            return average_query
-        except Exception as e:
-            raise e
+            sID = session.query(NewsSources.id).filter(
+                source == NewsSources.sourcename)
+            query = session.query(NewsArticles).all().filter(
+                sID == NewsArticles.sourceid)
+        return query
+
+        except Exception:
+            return None
+
+
+def get_articles_by_stock(stock_id: str):
+    with create_session as session:
+        try:
+            data = session.query(NewsArticles).filter(
+                stock_id == NewsArticles.stockid)
+            return data
+        except Exception
+        return None
