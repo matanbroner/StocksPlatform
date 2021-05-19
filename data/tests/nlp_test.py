@@ -2,6 +2,8 @@ import unittest
 from nlp.retrieve_news import main
 import nlp.news_sources as news
 
+from db.sqlalchemy_db import init_db_connection
+
 # # TODO: remove hardcoded API key and use env variable
 API_KEY = "21f629c6a2f7fd6d165fdc9a187259a9"
 
@@ -34,4 +36,5 @@ class TestNLPPipeline(unittest.TestCase):
     #     self.assertEqual(main(API_KEY, stock_list), 1)
 
 if __name__ == '__main__':
+    init_db_connection()
     unittest.main()
