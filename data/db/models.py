@@ -178,5 +178,5 @@ def instantiate_tables():
     """
     Define all tables, should be called only once
     """
-    for table in [Stock, Project, ProjectStock]:
+    for table in [Stock, Project, ProjectStock, NewsSource, NewsArticle]:
         create_table(table)
