@@ -23,7 +23,7 @@ const SettingsPanel = (props) => {
                         <Grid.Column width={5}>
                             <b>First Name:</b> {props.user.firstName}
                         </Grid.Column>
-                        <Grid.Column width={2}>
+                        <Grid.Column width={3}>
                         </Grid.Column>
                         <Grid.Column width={5}>
                             <b>Last Name:</b> {props.user.lastName}
@@ -33,7 +33,7 @@ const SettingsPanel = (props) => {
                         <Grid.Column width={5}>
                             <b>Username:</b> {props.user.username}
                         </Grid.Column>
-                        <Grid.Column width={2}>
+                        <Grid.Column width={3}>
                         </Grid.Column>
                         <Grid.Column width={5}>
                             <b>Email Address:</b> {props.user.email}
@@ -71,7 +71,9 @@ const SettingsPanel = (props) => {
                             <Button color='green' onClick={handleChangePassword}>
                                 Change Password
                             </Button>
-
+                        </Table.Row>
+                        <br></br>
+                        <Table.Row>
                             <Button color='red' onClick={handleDeleteAccount}>
                                 Delete Account
                             </Button>

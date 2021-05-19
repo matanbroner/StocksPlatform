@@ -1,3 +1,9 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap");
+
 #wrapper {
-    height: 85vh
+  height: 85vh;
+}
+
+#base_panel_title {
+  font-family: "Montserrat", sans-serif;
 }
