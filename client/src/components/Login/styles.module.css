@@ -38,7 +38,7 @@
 
 #message1 {
   color: teal;
-  font-size: 70px;
+  font-size: 65px;
   padding-top: 250px;
   font-weight: bold;
   text-align: center;
@@ -46,7 +46,7 @@
 
 #message2 {
   color: black;
-  font-size: 45px;
+  font-size: 35px;
   padding-top: 200px;
   text-align: center;
   font-weight: 700;
@@ -93,11 +93,9 @@
     width: 125px;
     height: 200px;
   }
-}
 
-@media screen and (max-width: 1500px) {
   #message2 {
-    font-size: 35px;
+    font-size: 27px;
     font-weight: 700;
   }
 }

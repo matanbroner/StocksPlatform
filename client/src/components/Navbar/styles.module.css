@@ -1,3 +1,24 @@
+#nav_sidebar {
+  color: #393e46;
+}
+
+#logo {
+  height: 75px;
+  padding-left: 48px;
+}
+
+#nav_logo {
+  height: 60px;
+}
+
+#nav_icon {
+  color: teal;
+}
+
+#title {
+  color: teal;
+}
+
 #collapseBtn {
   position: absolute;
   bottom: 0;
@@ -28,10 +49,20 @@
 }
 
 #openBtn > i {
-  margin-left: -10px;
+  margin-left: -5px;
 }
 
 #title {
   color: teal;
   text-transform: uppercase;
+}
+
+#nav_icon > button:hover {
+  color: white;
+  transition: all 0.2s;
+}
+
+#title > div:hover {
+  color: white;
+  transition: all 0.2s;
 }

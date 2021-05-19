@@ -1,5 +1,4 @@
 import React, { Component, useState } from "react";
-import "../../App.css";
 import { Sidebar, Menu, Icon, Button } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 import styles from "./styles.module.css";
@@ -16,40 +15,40 @@ const Navbar = (props) => {
         vertical
         visible={isOpen}
         width="thin"
-        className="nav-sidebar"
+        id={styles.nav_sidebar}
       >
-        <Menu.Item as="div" className="nav-logo">
+        <Menu.Item as="div" id={styles.logo}>
           <img
             src="/images/logo.png"
             alt="Banana Stocks Logo"
-            className="nav-logo"
+            id={styles.nav_logo}
           />
         </Menu.Item>
 
         <Link to="/dashboard">
           <Menu.Item as="div">
-            <Icon name="home" className="nav-icon" />
+            <Icon name="home" id={styles.nav_icon} />
             <div id={styles.title}>Home</div>
           </Menu.Item>
         </Link>
 
         <Link to="/dashboard/projects">
           <Menu.Item as="div">
-            <Icon name="users" className="nav-icon" />
+            <Icon name="users" id={styles.nav_icon} />
             <div id={styles.title}>Projects</div>
           </Menu.Item>
         </Link>
 
         <Link to="/dashboard/stocks">
           <Menu.Item as="div">
-            <Icon name="chart line" className="nav-icon" />
+            <Icon name="chart line" id={styles.nav_icon} />
             <div id={styles.title}>Stock Search</div>
           </Menu.Item>
         </Link>
 
         <Link to="/dashboard/settings">
           <Menu.Item as="div">
-            <Icon name="settings" className="nav-icon" />
+            <Icon name="settings" id={styles.nav_icon} />
             <div id={styles.title}>Settings</div>
           </Menu.Item>
         </Link>

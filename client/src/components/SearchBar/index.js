@@ -25,7 +25,7 @@ const SearchBar = (props) => {
     <Search
       fluid
       icon="search"
-      placeholder={props.placeholder || "Search..."}
+      placeholder={props.placeholder || "Search a Stock..."}
       loading={props.loading}
       resultRenderer={props.renderResult}
       results={props.results}

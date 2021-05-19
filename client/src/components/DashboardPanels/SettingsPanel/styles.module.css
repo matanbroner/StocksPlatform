@@ -8,3 +8,23 @@
   font-weight: bold;
   font-size: 35px;
 }
+
+#table {
+  width: 90%;
+  padding: 10px;
+}
+
+#table_row {
+  display: flex;
+  justify-content: space-between;
+}
+
+#user_icon {
+  display: flex;
+  padding-left: 2%;
+}
+
+#title {
+  padding-left: 50%;
+  display: flex;
+}

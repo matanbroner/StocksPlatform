@@ -5,23 +5,6 @@ body {
 }
 
 /* Dashboard Styles */
-.nav-sidebar {
-  color: #393e46;
-}
-
-.nav-logo {
-  height: 60px;
-  padding-left: 38px;
-}
-
-.nav-icon {
-  color: teal;
-}
-
-.nav-title {
-  color: teal;
-}
-
 .dash-body {
   padding-top: 25px;
   padding-left: 175px;
