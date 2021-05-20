@@ -42,7 +42,7 @@ def get_all_news_articles():
         return [article.serialize for article in articles]
 
 
-def create_news_article(source_id: str, stock_id: str, avg_sentiment: float, headline: str, published_date: date = None):
+def create_news_article(source_id: str, stock_id: str, avg_sentiment: float, headline: str, url: str, published_date: date = None):
     """
     Create a new news article
     @param source_id: primary key of associated news source
@@ -56,8 +56,9 @@ def create_news_article(source_id: str, stock_id: str, avg_sentiment: float, hea
             article = NewsArticle(
                 source_id=source_id,
                 stock_id=stock_id,
-                headline=headline,
                 avg_sentiment=avg_sentiment,
+                headline=headline,
+                article_link = url,
                 date_published=published_date
             )
             session.add(article)

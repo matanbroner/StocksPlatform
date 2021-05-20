@@ -47,12 +47,13 @@ class TestNewsSources(unittest.TestCase):
         self.assertEqual(news_src.retrieve_data(), None)
 
     def test_retrieve_data(self):
-        self.assertEqual(list(self.general_news.retrieve_data().columns), ['stock', 'source', 'date', 'title', 'content'])
+        self.assertEqual(list(self.general_news.retrieve_data().columns), ['stock', 'source', 'date', 'title', 'url', 'content'])
 
 class TestNLPPipeline(unittest.TestCase):
     def setUp(self):
-        self.test_df = pd.DataFrame([['TEST_STOCK', 'TEST_SOURCE', datetime.datetime(1972, 5, 17), "This is a test headline.", "This is test content. Usually there is a lot more text.", 1.0]],
-                               columns=['stock', 'source', 'date', 'title', 'content', 'sentiment'])
+        self.test_df = pd.DataFrame(
+            [['TEST_STOCK', 'TEST_SOURCE', datetime.datetime(1972, 5, 17), "This is a test headline.", "WWW.TEST_URL.COM", "This is test content. Usually there is a lot more text.", 1.0]],
+            columns=['stock', 'source', 'date', 'title', 'url', 'content', 'sentiment'])
 
         self.stock = create_stock('TEST_STOCK')
         self.source = create_news_source('TEST_SOURCE')
@@ -67,6 +68,7 @@ class TestNLPPipeline(unittest.TestCase):
             self.stock['id'],
             self.test_df['sentiment'][0],
             self.test_df['title'][0],
+            self.test_df['url'][0],
             datetime.datetime(1972, 5, 17))
 
         filtered_df = filter_news(self.test_df)

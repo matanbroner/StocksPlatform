@@ -109,6 +109,7 @@ def save_data(df):
                 stock['id'], 
                 row['sentiment'], 
                 row['title'],
+                row['url'],
                 row['date'])
 
         except Exception as e:

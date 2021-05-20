@@ -155,8 +155,9 @@ class NewsArticle(Base):
     id = p_key_column()
     source_id = f_key_column("news_source.id")
     stock_id = f_key_column("stock.id")
-    headline = Column(Text(), nullable=False)
+    headline = Column(Text, nullable=False)
     date_published = Column(DateTime(), default=get_datettime)
+    article_link = Column(Text, nullable=False)
     avg_sentiment = Column(Float(), nullable=False)
     created_at = Column(DateTime, default=get_datettime)
     updated_at = Column(DateTime, default=get_datettime, onupdate=get_datettime)
@@ -172,6 +173,7 @@ class NewsArticle(Base):
             "source_id": self.source_id,
             "stock_id": self.stock_id,
             "headline": self.headline,
+            "article_link": self.article_link,
             "date_published": self.date_published,
             "avg_sentiment": self.avg_sentiment,
         }
