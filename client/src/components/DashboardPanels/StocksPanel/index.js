@@ -16,8 +16,8 @@ class StocksPanel extends Component {
   render() {
     return (
       <BasePanel title="Find and Analyze Stocks">
-        <div id={styles.searchWrapper}>
-          <StockSearch onSelect={this.onSearchBarSelect.bind(this)} />
+        <div>
+          <StockSearch id={styles.searchWrapper} onSelect={this.onSearchBarSelect.bind(this)} />
         </div>
       </BasePanel>
     );

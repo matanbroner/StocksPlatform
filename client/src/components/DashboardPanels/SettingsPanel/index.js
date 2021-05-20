@@ -23,7 +23,7 @@ const SettingsPanel = (props) => {
                         <Grid.Column width={5} id={styles.account_info}>
                             <b>First Name:</b> {props.user.firstName}
                         </Grid.Column>
-                        <Grid.Column width={3}>
+                        <Grid.Column width={2.5}>
                         </Grid.Column>
                         <Grid.Column width={5} id={styles.account_info}>
                             <b>Last Name:</b> {props.user.lastName}
@@ -33,7 +33,7 @@ const SettingsPanel = (props) => {
                         <Grid.Column width={5} id={styles.account_info}>
                             <b>Username:</b> {props.user.username}
                         </Grid.Column>
-                        <Grid.Column width={3}>
+                        <Grid.Column width={2.5}>
                         </Grid.Column>
                         <Grid.Column width={5} id={styles.account_info}>
                             <b>Email Address:</b> {props.user.email}

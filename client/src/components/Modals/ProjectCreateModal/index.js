@@ -29,7 +29,7 @@ const ProjectCreateModal = (props) => {
             placeholder="Describe your project"
             onChange={(e) => props.onFormUpdate("description", e)}
           />
-          <label className="stock-pick">Add Stocks</label>
+          <label className="stock-pick"><b>Add Stocks</b></label>
           <StockSearch onSelect={(v) => {
             console.log(v)
             props.onStockUpdate(v.symbol)

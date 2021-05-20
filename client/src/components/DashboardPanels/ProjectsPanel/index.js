@@ -172,7 +172,7 @@ class ProjectsPanel extends Component {
             <Apex />
             <br></br>
             <Button
-              className="project-button"
+              id={styles.button}
               color="teal"
               onClick={() => this.updateModalState(true)}
             >
