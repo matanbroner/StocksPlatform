@@ -23,7 +23,7 @@ from db.handlers.news_source_handler import (
 from db.handlers.news_articles_handler import (
     create_news_article,
     get_news_article_by_id,
-    get_news_article_by_source_id_and_headline,
+    get_news_article_by_stock_id_and_source_id_and_headline,
     delete_news_article_by_id
 )
 
@@ -150,7 +150,7 @@ class TestNLPPipeline(unittest.TestCase):
         articles = save_data(self.test_df)
 
         self.assertEqual(len(articles), 0)
-        self.assertIsNone(get_news_article_by_source_id_and_headline(self.source['id'], self.test_df['title'][0]))
+        self.assertIsNone(get_news_article_by_stock_id_and_source_id_and_headline(self.stock['id'], self.source['id'], self.test_df['title'][0]))
 
     def test_save_data_no_headline(self):
         self.test_df['title'] = None
