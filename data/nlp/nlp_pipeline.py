@@ -44,7 +44,6 @@ def filter_news(news_df):
     @param news_df: DataFrame with news articles
     @return: filtered news DataFrame
     """
-
     for i, row in news_df.iterrows():
         source = get_news_source_by_name(row['source'])
         if source is None:
@@ -87,11 +86,12 @@ def save_data(df):
     Saves data from DataFrame to database.
     Note: Be wary of race conditions when saving.
     @param df: DataFrame with necessary data, don't necessarily need to store all columns
-    @return: None
+    @return: List of UUIDs of articles created
     """
     lock.acquire()
     #print("Lock acquired by", df['stock'][0])
 
+    article_ids = []
     for i, row in df.iterrows():
         try:
             source = get_news_source_by_name(row['source'])
@@ -112,12 +112,15 @@ def save_data(df):
                 row['url'],
                 row['date'])
 
+            article_ids.append(article['id'])
+
         except Exception as e:
-            print("Error while saving data for", df['stock'][0] + ":", e)
+            #print("Error while saving data for", df['stock'][0] + ":", e)
+            continue
 
     #print("Lock being released by", df['stock'][0])
     lock.release()
-    return article
+    return article_ids
 
 def pipeline_manager(nlp_df):
     """

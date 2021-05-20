@@ -10,17 +10,20 @@ from db.sqlalchemy_db import init_db_connection
 
 from db.handlers.stock_handler import (
     create_stock,
+    get_stock_by_ticker,
     delete_stock_by_id
 )
 
 from db.handlers.news_source_handler import (
     create_news_source,
+    get_news_source_by_name,
     delete_news_source_by_id
 )
 
 from db.handlers.news_articles_handler import (
-    get_news_article_by_id,
     create_news_article,
+    get_news_article_by_id,
+    get_news_article_by_source_id_and_headline,
     delete_news_article_by_id
 )
 
@@ -32,7 +35,7 @@ from nlp.nlp_pipeline import (
 )
 
 # # TODO: remove hardcoded API key and use env variable
-API_KEY = "0cc8ff319abbabcab8e06288e3c67c3c"
+API_KEY = '0cc8ff319abbabcab8e06288e3c67c3c'
 
 class TestNewsSources(unittest.TestCase):
     def setUp(self):
@@ -52,11 +55,20 @@ class TestNewsSources(unittest.TestCase):
 class TestNLPPipeline(unittest.TestCase):
     def setUp(self):
         self.test_df = pd.DataFrame(
-            [['TEST_STOCK', 'TEST_SOURCE', datetime.datetime(1972, 5, 17), "This is a test headline.", "WWW.TEST_URL.COM", "This is test content. Usually there is a lot more text.", 1.0]],
+            [['TEST_STOCK', 'TEST_SOURCE', datetime.datetime(1972, 5, 17), 'This is a test headline.', 'WWW.TEST_URL.COM', 'This is test content. Usually there is a lot more text.', 1.0]],
             columns=['stock', 'source', 'date', 'title', 'url', 'content', 'sentiment'])
 
-        self.stock = create_stock('TEST_STOCK')
-        self.source = create_news_source('TEST_SOURCE')
+        try:
+            self.stock = create_stock('TEST_STOCK')
+        except Exception:
+            # previous test interrupted early so it wasn't deleted from database
+            self.stock = get_stock_by_ticker('TEST_STOCK')
+            
+        try:
+            self.source = create_news_source('TEST_SOURCE')
+        except Exception:
+            # previous test interrupted early so it wasn't deleted from database
+            self.source = get_news_source_by_name('TEST_SOURCE')
 
     def tearDown(self):
         delete_stock_by_id(self.stock['id'])
@@ -84,20 +96,51 @@ class TestNLPPipeline(unittest.TestCase):
 
         self.assertGreaterEqual(len(self.test_df['title'][0]), len(text_list[0]))
 
+    def test_pre_process_empty_headline(self):
+        docs = pre_process([''])
+        text_list = []
+        for doc in docs:
+            text_list.append(' '.join([token.text for token in doc]))
+
+        self.assertGreaterEqual(len(self.test_df['title'][0]), len(text_list[0]))
+
     def test_determine_sentiment(self):
-        headlines = ["This should be positive", 
-        "This should be neutral.", 
-        "This should be negative."]
+        headlines = ['This should be positive', 
+        'This should be neutral.', 
+        'This should be negative.']
         docs = pre_process(headlines)
         sentiment_list = determine_sentiment(docs)
+
         self.assertGreater(sentiment_list[0], 0)
         self.assertEqual(sentiment_list[1], 0)
         self.assertLess(sentiment_list[2], 0)
 
+    def test_determine_sentiment_empty_headline(self):
+        headlines = ['']
+        docs = pre_process(headlines)
+        sentiment_list = determine_sentiment(docs)
+        self.assertEqual(sentiment_list[0], 0)
+
     def test_save_data(self):
-        article = save_data(self.test_df)
-        self.assertIsNotNone(get_news_article_by_id(article['id']))
-        delete_news_article_by_id(article['id'])
+        article_ids = save_data(self.test_df)
+        
+        self.assertEqual(len(article_ids), 1)
+        self.assertIsNotNone(get_news_article_by_id(article_ids[0]))
+
+        delete_news_article_by_id(article_ids[0])
+
+    def test_save_data_no_url(self):
+        self.test_df['url'] = None
+        articles = save_data(self.test_df)
+
+        self.assertEqual(len(articles), 0)
+        self.assertIsNone(get_news_article_by_source_id_and_headline(self.source['id'], self.test_df['title'][0]))
+
+    def test_save_data_no_headline(self):
+        self.test_df['title'] = None
+        articles = save_data(self.test_df)
+
+        self.assertEqual(len(articles), 0)
 
     def test_full_pipeline(self, stock_list=['AAPL', 'TSLA', 'GME', 'AMZN', 'BB', 'DIS', 'MSFT', 'TWTR', 'SNAP', 'NFLX', 'SBUX']):
         self.assertEqual(main(API_KEY, stock_list), 1)
