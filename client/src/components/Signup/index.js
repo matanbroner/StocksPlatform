@@ -122,92 +122,104 @@ class Signup extends Component {
 
   render() {
     return (
-      <div id={styles.signup}>
-        <Grid>
-          <Container id={styles.container}>
-            {this.state.error ? (
-              <Message negative>
-                <Message.Header>Signup Error</Message.Header>
-                <p>{this.state.error}</p>
-              </Message>
-            ) : null}
-            <Form id={styles.form}>
-              <div id={styles.title}>Sign Up</div>
+      <div id={styles.signup_body}>
+          <div id={styles.signup}>
+          <Grid>
+            <Container id={styles.container}>
+              {this.state.error ? (
+                <Message negative>
+                  <Message.Header>Signup Error</Message.Header>
+                  <p>{this.state.error}</p>
+                </Message>
+              ) : null}
+              <Form id={styles.form}>
+                <div id={styles.title}>Create Account</div>
 
-              <Form.Group>
+                <Form.Group>
+                  <Form.Field>
+                    <label id={styles.firstname}>First Name</label>
+                    <input
+                      placeholder="First Name"
+                      value={this.state.form.firstName}
+                      onChange={(e) => this.updateForm("firstName", e)}
+                    />
+                  </Form.Field>
+                  <Form.Field>
+                    <label id={styles.lastname}>Last Name</label>
+                    <input
+                      placeholder="Last Name"
+                      value={this.state.form.lastName}
+                      onChange={(e) => this.updateForm("lastName", e)}
+                    />
+                  </Form.Field>
+                </Form.Group>
+
                 <Form.Field>
-                  <label>First Name</label>
+                  <label id={styles.username}>Username</label>
                   <input
-                    placeholder="First Name"
-                    value={this.state.form.firstName}
-                    onChange={(e) => this.updateForm("firstName", e)}
+                    id={styles.user}
+                    placeholder="Username"
+                    value={this.state.form.username}
+                    onChange={(e) => this.updateForm("username", e)}
                   />
                 </Form.Field>
                 <Form.Field>
-                  <label>Last Name</label>
+                  <label id={styles.address}>Email</label>
                   <input
-                    placeholder="Last Name"
-                    value={this.state.form.lastName}
-                    onChange={(e) => this.updateForm("lastName", e)}
+                    id={styles.email}
+                    placeholder="E-mail Address"
+                    value={this.state.form.email}
+                    onChange={(e) => this.updateForm("email", e)}
                   />
                 </Form.Field>
-              </Form.Group>
-
-              <Form.Input
-                label="Username"
-                id={styles.user}
-                placeholder="Username"
-                value={this.state.form.username}
-                onChange={(e) => this.updateForm("username", e)}
-              />
-              <Form.Input
-                label="Email"
-                id={styles.email}
-                placeholder="E-mail Address"
-                value={this.state.form.email}
-                onChange={(e) => this.updateForm("email", e)}
-              />
-              <Form.Input
-                label="Password"
-                id={styles.password}
-                type="password"
-                placeholder="Password"
-                value={this.state.form.password}
-                onChange={(e) => this.updateForm("password", e)}
-              />
-              <Form.Input
-                label="Confirm Password"
-                id={styles.confirm}
-                type="password"
-                placeholder="Confirm Password"
-                value={this.state.form.confirmPassword}
-                onChange={(e) => this.updateForm("confirmPassword", e)}
-              />
-              <Form.Field>
-                <Checkbox
-                  label="I agree to the Terms and Conditions"
-                  onChange={(e) =>
-                    this.updateForm(
-                      "agreeTerms",
-                      e,
-                      !this.state.form.agreeTerms
-                    )
-                  }
-                ></Checkbox>
-              </Form.Field>
-
-              <Form.Button
-                color="teal"
-                id={styles.button}
-                content="Create Account"
-                size="large"
-                onClick={this.submit.bind(this)}
-                disabled={!this.formIsComplete()}
-                loading={this.state.loading}
-              />
-            </Form>
-          </Container>
-        </Grid>
+                <Form.Field>
+                  <label id={styles.password_label}>Password</label>
+                  <input
+                    id={styles.password}
+                    type="password"
+                    placeholder="Password"
+                    value={this.state.form.password}
+                    onChange={(e) => this.updateForm("password", e)}
+                  />
+                </Form.Field>
+                <Form.Field>
+                  <label id={styles.password_confirm}>Confirm Password</label>
+                  <input
+                    id={styles.confirm}
+                    type="password"
+                    placeholder="Confirm Password"
+                    value={this.state.form.confirmPassword}
+                    onChange={(e) => this.updateForm("confirmPassword", e)}
+                  />
+                </Form.Field>
+                <Form.Field>
+                  <Checkbox
+                    label="I agree to the Terms and Conditions"
+                    id={styles.checkbox}
+                    onChange={(e) =>
+                      this.updateForm(
+                        "agreeTerms",
+                        e,
+                        !this.state.form.agreeTerms
+                      )
+                    }
+                  ></Checkbox>
+                </Form.Field>
+                
+                <Grid.Column id={styles.button} textAlign='center'>
+                  <Form.Button
+                    color="teal"
+                    content="Create Account"
+                    size="large"
+                    onClick={this.submit.bind(this)}
+                    disabled={!this.formIsComplete()}
+                    loading={this.state.loading}
+                  />
+                </Grid.Column>
+              </Form>
+            </Container>
+          </Grid>
+        </div>
       </div>
     );
   }
