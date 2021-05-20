@@ -88,6 +88,22 @@ class TestNLPPipeline(unittest.TestCase):
 
         delete_news_article_by_id(article['id'])
 
+    def test_filter_news_same_article_different_stock(self):
+        article = create_news_article(
+            self.source['id'],
+            self.stock['id'],
+            self.test_df['sentiment'][0],
+            self.test_df['title'][0],
+            self.test_df['url'][0],
+            datetime.datetime(1972, 5, 17))
+
+        self.test_df['stock'] = 'DIFFERENT_TEST_STOCK'
+
+        filtered_df = filter_news(self.test_df)
+        self.assertFalse(filtered_df.empty)
+
+        delete_news_article_by_id(article['id'])
+
     def test_pre_process(self):
         docs = pre_process(iter(self.test_df['title']))
         text_list = []

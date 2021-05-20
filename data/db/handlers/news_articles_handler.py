@@ -32,6 +32,22 @@ def get_news_article_by_source_id_and_headline(source_id: str, headline: str):
         return article.serialize if article else None
 
 
+def get_news_article_by_stock_id_and_source_id_and_headline(stock_id: str, source_id: str, headline: str):
+    """
+    Get news article by its foreign key source id and headline
+    @param stock_id: id of stock foreign key
+    @param source_id: id of source foreign key
+    @param headline: ex. "Apple releases new iPhone"
+    @return: JSON or raise RuntimeException if not found
+    """
+    with create_session() as session:
+        article = session.query(NewsArticle).filter(
+            NewsArticle.stock_id == stock_id,
+            NewsArticle.source_id == source_id, 
+            NewsArticle.headline.like(headline)).first()
+        return article.serialize if article else None
+
+
 def get_all_news_articles():
     """
     Get all news articles

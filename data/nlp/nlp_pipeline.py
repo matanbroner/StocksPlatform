@@ -16,7 +16,7 @@ from db.handlers.news_source_handler import (
 )
 
 from db.handlers.news_articles_handler import (
-    get_news_article_by_source_id_and_headline,
+    get_news_article_by_stock_id_and_source_id_and_headline,
     create_news_article
 )
 
@@ -45,15 +45,24 @@ def filter_news(news_df):
     @return: filtered news DataFrame
     """
     for i, row in news_df.iterrows():
+        # if stock doesn't exist in database, news article is unique
+        stock = get_stock_by_ticker(row['stock'])
+        if stock is None:
+            continue
+
+        # if source doesn't exist in database, news article is unique
         source = get_news_source_by_name(row['source'])
         if source is None:
             continue
 
-        article = get_news_article_by_source_id_and_headline(
+        # find article in database
+        article = get_news_article_by_stock_id_and_source_id_and_headline(
+            stock['id'],
             source['id'], 
             row['title']
             )
 
+        # if article exists, delete from DataFrame
         if article is not None:
             #print("Dropping news article...")
             news_df = news_df.drop(i)
