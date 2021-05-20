@@ -39,6 +39,9 @@ const StockSearch = (props) => {
   return (
     <div id={styles.wrapper}>
       <SearchBar
+        fluid
+        input={{ width: "90%" }}
+        id={styles.search_bar}
         loading={loading}
         results={results}
         renderResult={renderSearchResult}

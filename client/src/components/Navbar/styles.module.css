@@ -5,29 +5,33 @@
 }
 
 #collapseBtn > button {
-    background: none;
-    color: teal;
-    font-size: 22px;
+  background: none;
+  color: teal;
+  font-size: 22px;
 }
 
-#collapseBtn > button:hover{
-    color: white;
-    transition: all 0.2s;
+#collapseBtn > button:hover {
+  color: white;
+  transition: all 0.2s;
 }
 
 #openBtn {
-    height: 60px;
-    width: 30px;
-    border-bottom-right-radius: 60px;
-    border-top-right-radius: 60px;
-    color: teal;
-    font-size: 22px;
-    position: absolute;
-    left: 0;
-    transition: left 1s linear;
+  height: 60px;
+  width: 30px;
+  border-bottom-right-radius: 60px;
+  border-top-right-radius: 60px;
+  color: teal;
+  font-size: 22px;
+  position: absolute;
+  left: 0;
+  transition: left 1s linear;
 }
 
-
 #openBtn > i {
-    margin-left: -10px;
+  margin-left: -10px;
+}
+
+#title {
+  color: teal;
+  text-transform: uppercase;
 }

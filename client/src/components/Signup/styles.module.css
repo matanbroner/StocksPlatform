@@ -1,3 +1,9 @@
+/* #signup_body {
+  background-color: #232931;
+  padding-bottom: 130px;
+  color: #eeeeee;
+} */
+
 /* SignUp Styles */
 #container {
   border-radius: 15px;
@@ -13,9 +19,19 @@
 #title {
   text-align: center;
   padding-top: 40px;
-  font-size: 37px;
-  padding-bottom: 40px;
+  font-size: 50px;
+  padding-bottom: 60px;
   font-weight: 600;
+}
+
+#firstname,
+#lastname,
+#username,
+#address,
+#password_label,
+#password_confirm,
+#checkbox {
+  font-size: 15px;
 }
 
 #form {
@@ -40,6 +56,7 @@
 }
 
 #button {
-  margin-top: 20px;
-  text-align: center;
+  padding-top: 20px;
+  display: flex;
+  justify-content: center;
 }
