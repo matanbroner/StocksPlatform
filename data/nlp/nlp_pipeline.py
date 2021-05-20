@@ -2,6 +2,7 @@ import spacy
 from spacy.language import Language
 from spacy.tokens.doc import Doc
 
+from nlp.retrieve_news import lock
 from nlp.sentiment_algorithms import sentiment_value
 
 import db.handlers.stock_handler 
@@ -25,6 +26,29 @@ def text_clean_pipe(doc):
     token_list = [token.text for token in doc if not token.is_punct | token.is_stop]
 
     return Doc(doc.vocab, words=token_list)
+
+def filter_news(news_df):
+    """
+    Filters out news that is already in the database so repeats are not processed.
+    @param news_df: DataFrame with news articles
+    @return: filtered news DataFrame
+    """
+
+    for i, row in news_df.iterrows():
+        source = db.handlers.news_source_handler.get_news_source_by_name(row['source'])
+        if source is None:
+            continue
+
+        article = db.handlers.news_articles_handler.get_news_article_by_source_id_and_headline(
+            source['id'], 
+            row['title']
+            )
+
+        if article is not None:
+            #print("Dropping news article...")
+            news_df = news_df.drop(i)
+
+    return news_df
 
 def pre_process(texts):
     """
@@ -54,27 +78,55 @@ def save_data(df):
     @param df: DataFrame with necessary data, don't necessarily need to store all columns
     @return: None
     """
-    try:
-        for i, row in df.iterrows():
-            print(db.handlers.stock_handler.get_stock_by_ticker(row['stock']))
-            print(db.handlers.news_source_handler.get_news_source_by_name(row['source']))
-            # create_news_sources(source)
-            # create_news_article(source, ticker, avg_sentiment, date_published)
-    except Exception as e:
-        print(e)
+    lock.acquire()
+    print("Lock acquired by", df['stock'][0])
+
+    for i, row in df.iterrows():
+        try:
+            source = db.handlers.news_source_handler.get_news_source_by_name(row['source'])
+            if source is None:
+                print(row['source'], "doesn't exist. Creating now.")
+                source = db.handlers.news_source_handler.create_news_source(row['source'])
+
+            stock = db.handlers.stock_handler.get_stock_by_ticker(row['stock'])
+            if stock is None:
+                print(row['stock'], "doesn't exist. Creating now.")
+                stock = db.handlers.stock_handler.create_stock(row['stock'])
+                
+            db.handlers.news_articles_handler.create_news_article(
+                source['id'], 
+                stock['id'], 
+                row['sentiment'], 
+                row['title'],
+                row['date'])
+        except Exception as e:
+            print("Error while saving data for", df['stock'][0] + ":", e)
+
+    print("Lock being released by", df['stock'][0])
+    lock.release()
 
 def pipeline_manager(nlp_df):
     """
     Manages all stages of pipeline.
     """
-    # pre-processing stage
-    nlp_df['doc'] = pre_process(iter(nlp_df['title']))
-    
-    # sentiment value calculation stage
-    nlp_df['sentiment'] = determine_sentiment(nlp_df['doc'])
 
-    # save to database stage
-    save_data(nlp_df)
+    # filter out repeated news articles
+    print("Filtering news articles for", nlp_df['stock'][0] + "...")
+    nlp_df = filter_news(nlp_df)
+
+    # only send to rest of pipeline if there is still data to be processed after filtering
+    if not nlp_df.empty:
+        # pre-processing stage
+        print("Pre-processing", nlp_df['stock'][0] + "...")
+        nlp_df['doc'] = pre_process(iter(nlp_df['title']))
+        
+        # sentiment value calculation stage
+        print("Calculating sentiment for", nlp_df['stock'][0] + "...")
+        nlp_df['sentiment'] = determine_sentiment(nlp_df['doc'])
+
+        # save to database stage
+        print("Saving data for", nlp_df['stock'][0] + "...")
+        save_data(nlp_df)
 
     #print(nlp_df.head(5))
     #print("Exiting pipeline...")

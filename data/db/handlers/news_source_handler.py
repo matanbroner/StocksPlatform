@@ -36,7 +36,7 @@ def get_all_news_sources():
 
 def create_news_source(source_name: str):
     """
-    Create a new stock based on an associated ticker
+    Create a new news source based on associated name
     @param source_name: ex. "reddit"
     @return: JSON (new news source) or raise RuntimeError if already exists
     """

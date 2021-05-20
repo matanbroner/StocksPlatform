@@ -15,6 +15,19 @@ def get_news_article_by_id(id: str):
         return article.serialize if article else None
 
 
+def get_news_article_by_source_id_and_headline(source_id: str, headline: str):
+    """
+    Get news article by its foreign key source id and headline
+    @param source_id: id of source foreign key
+    @param headline: ex. "Apple releases new iPhone"
+    @return: JSON or raise RuntimeException if not found
+    """
+    with create_session() as session:
+        article = session.query(NewsArticle).filter(
+            NewsArticle.source_id == source_id, NewsArticle.headline.like(headline)).first()
+        return article.serialize if article else None
+
+
 def get_all_news_articles():
     """
     Get all news articles
@@ -25,7 +38,7 @@ def get_all_news_articles():
         return [article.serialize for article in articles]
 
 
-def create_news_article(source_id: str, stock_id: str, avg_sentiment: float, published_date: date = None):
+def create_news_article(source_id: str, stock_id: str, avg_sentiment: float, headline: str, published_date: date = None):
     """
     Create a new news article
     @param source_id: primary key of associated news source
@@ -34,13 +47,14 @@ def create_news_article(source_id: str, stock_id: str, avg_sentiment: float, pub
     @param published_date
     @return: JSON (new news article)
     """
-    with create_session as session:
+    with create_session() as session:
         try:
             article = NewsArticle(
                 source_id=source_id,
                 stock_id=stock_id,
+                headline=headline,
                 avg_sentiment=avg_sentiment,
-                published_date=published_date
+                date_published=published_date
             )
             session.add(article)
             session.commit()

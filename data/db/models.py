@@ -1,3 +1,4 @@
+from sqlalchemy.sql.sqltypes import Text
 from db.sqlalchemy_db import create_table, get_engine
 from sqlalchemy import (
     Column,
@@ -5,6 +6,7 @@ from sqlalchemy import (
     Float,
     Boolean,
     String,
+    Text,
     DateTime,
     ForeignKey,
     UniqueConstraint,
@@ -153,6 +155,7 @@ class NewsArticle(Base):
     id = p_key_column()
     source_id = f_key_column("news_source.id")
     stock_id = f_key_column("stock.id")
+    headline = Column(Text(), nullable=False)
     date_published = Column(DateTime(), default=get_datettime)
     avg_sentiment = Column(Float(), nullable=False)
     created_at = Column(DateTime, default=get_datettime)
@@ -166,11 +169,11 @@ class NewsArticle(Base):
         """
         return {
             "id": self.id,
-            "ticker": self.sourceid,
-            "stock_id": self.stockid,
-            "date_published": self.datepublished,
-            "avg_sentiment": self.avgsentiment,
-            "main_token": self.maintoken,
+            "source_id": self.source_id,
+            "stock_id": self.stock_id,
+            "headline": self.headline,
+            "date_published": self.date_published,
+            "avg_sentiment": self.avg_sentiment,
         }
 
 
