@@ -52,7 +52,7 @@ def main(fmp_key, stock_list):
                 print('%s news retrieval generated an exception: %s' % (stock, e))
             else:
                 if data is not None:
-                    print("Sending", stock, "news data to pipeline...")
+                    #print("Sending", stock, "news data to pipeline...")
                     to_pipeline(data)
     
     return 1

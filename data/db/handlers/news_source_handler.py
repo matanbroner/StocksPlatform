@@ -2,7 +2,7 @@ from db import create_session
 from db.models import NewsSource
 
 
-def get_news_source_by_id(id: str):
+def get_news_source_by_id(id: str, serialize=True):
     """
     Get news source by primary key
     @param id: UUID
@@ -10,7 +10,11 @@ def get_news_source_by_id(id: str):
     """
     with create_session() as session:
         source = session.get(NewsSource, id)
-        return source.serialize if source else None
+        if source == None:
+            return None
+        elif serialize:
+            source = source.serialize
+        return source
 
 
 def get_news_source_by_name(source_name: str):
@@ -62,8 +66,8 @@ def delete_news_source_by_id(id: str):
     @param id: UUID
     """
     with create_session() as session:
-        source = get_news_source_by_id(id=id)
+        source = get_news_source_by_id(id=id, serialize=False)
         if not source:
             raise RuntimeError(f"Cannot delete nonexistent news source with ID {id}")
-        source.delete()
+        session.delete(source)
         session.commit()

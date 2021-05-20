@@ -4,7 +4,7 @@ from sqlalchemy import func
 from datetime import date
 
 
-def get_news_article_by_id(id: str):
+def get_news_article_by_id(id: str, serialize=True):
     """
     Get news article by primary key
     @param id: UUID
@@ -12,7 +12,11 @@ def get_news_article_by_id(id: str):
     """
     with create_session() as session:
         article = session.get(NewsArticle, id)
-        return article.serialize if article else None
+        if article == None:
+            return None
+        elif serialize:
+            article = article.serialize
+        return article
 
 
 def get_news_article_by_source_id_and_headline(source_id: str, headline: str):
@@ -69,10 +73,10 @@ def delete_news_article_by_id(id: str):
     @param id: UUID
     """
     with create_session() as session:
-        article = get_news_article_by_id(id=id)
+        article = get_news_article_by_id(id=id, serialize=False)
         if not article:
             raise RuntimeError(f"Cannot delete nonexistent article with ID {id}")
-        article.delete()
+        session.delete(article)
         session.commit()
 
 
@@ -82,7 +86,7 @@ def get_average_sentiment_by_ticker(ticker_id: str):
     @param ticker_id: primary key of associated ticker
     @returns: floating point average sentiment
     """
-    with create_session as session:
+    with create_session() as session:
         try:
             average_query = session.query(
                 func.avg(NewsArticle.avg_sentiment).label('average')).filter(NewsArticle.stock_id == ticker_id)
