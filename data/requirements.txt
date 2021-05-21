@@ -9,3 +9,4 @@ sqlalchemy
 uuid
 pandas
 spacy
+nltk
