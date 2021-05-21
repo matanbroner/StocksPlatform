@@ -6,8 +6,24 @@
   justify-content: center;
 }
 
+#signupWrapper{
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
 #signup {
   padding-top: 170px;
+  background: #e0e0e0;
+  padding: 25px;
+  border-radius: 2px;
+  box-shadow: 0 -3em 3em rgba(0, 0, 0, 0.1), 0 0 0 2px rgb(255, 255, 255),
+    0.3em 0.3em 1em rgba(0, 0, 0, 0.3);
+  width: 30%;
+  margin: auto;
+  z-index: 10;
 }
 
 #title {
@@ -39,7 +55,12 @@
   width: 375px;
 }
 
+#buttonWrapper{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
 #button {
   margin-top: 20px;
-  text-align: center;
 }

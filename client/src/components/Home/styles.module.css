@@ -14,10 +14,11 @@
   width: 70px;
 }
 
-#Buttons {
+#buttons {
   display: flex;
   padding-top: 20px;
   padding-right: 30px;
+  z-index: 2;
 }
 
 #Signup {
