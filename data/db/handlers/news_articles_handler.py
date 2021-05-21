@@ -49,7 +49,7 @@ def get_news_article_by_id(id: str, serialize=True):
 def get_news_article_by_ticker_and_source_and_headline(ticker: str, source_name: str, headline: str):
     """
     Get news article by its foreign key source id and headline
-    @param ticket: id of stock foreign key
+    @param ticker: id of stock foreign key
     @param source_name: id of source foreign key
     @param headline: ex. "Apple releases new iPhone"
     @return: JSON or raise RuntimeException if not found
@@ -72,7 +72,7 @@ def get_news_article_by_ticker_and_source_and_headline(ticker: str, source_name:
             raise e
 
 
-def get_all_news_articles_by_source(source_name: str, days_ago: int = None):
+def get_all_news_articles_by_source(source_name: str, time_frame: int = None):
     """
     Returns all news articles associated with a given source
     @param source_name: name of source
@@ -85,8 +85,8 @@ def get_all_news_articles_by_source(source_name: str, days_ago: int = None):
             except:
                 return None
                 
-            if days_ago is not None:
-                date_limit = datetime(datetime.today().year, datetime.today().month, datetime.today().day) - timedelta(days=days_ago)
+            if time_frame is not None:
+                date_limit = datetime(datetime.today().year, datetime.today().month, datetime.today().day) - timedelta(days=int(time_frame))
 
                 articles = session.query(NewsArticle).filter(
                     NewsArticle.source_id == source_id,
@@ -118,7 +118,7 @@ def get_all_news_articles_by_stock_id(stock_id: str):
             raise e
 
 
-def get_all_news_articles_by_ticker(ticker: str, days_ago: int = None):
+def get_all_news_articles_by_ticker(ticker: str, time_frame: int = None):
     """
     Returns all news articles associated with a stock id foreign key
     @param stock_id: ex. TSLA
@@ -131,8 +131,8 @@ def get_all_news_articles_by_ticker(ticker: str, days_ago: int = None):
             except:
                 return None
 
-            if days_ago is not None:
-                date_limit = datetime(datetime.today().year, datetime.today().month, datetime.today().day) - timedelta(days=days_ago)
+            if time_frame is not None:
+                date_limit = datetime(datetime.today().year, datetime.today().month, datetime.today().day) - timedelta(days=int(time_frame))
 
                 articles = session.query(NewsArticle).filter(
                     NewsArticle.stock_id == stock_id,
@@ -148,35 +148,67 @@ def get_all_news_articles_by_ticker(ticker: str, days_ago: int = None):
             raise e
 
 
-def get_all_news_articles(days_ago: int = None):
+def get_all_news_articles_by_ticker_and_source(ticker: str, source_name: str, time_frame: int = None):
+    """
+    Get news article by its foreign key source id and headline
+    @param ticker: id of stock foreign key
+    @param source_name: id of source foreign key
+    @param headline: ex. "Apple releases new iPhone"
+    @return: JSON or raise RuntimeException if not found
+    """
+    with create_session() as session:
+        try:
+            try:
+                stock_id = get_stock_by_ticker(ticker)['id']
+                source_id = get_news_source_by_name(source_name)['id']
+            except:
+                return None
+
+            if time_frame is not None:
+                date_limit = datetime(datetime.today().year, datetime.today().month, datetime.today().day) - timedelta(days=int(time_frame))
+
+                articles = session.query(NewsArticle).filter(
+                    NewsArticle.stock_id == stock_id,
+                    NewsArticle.source_id == source_id,
+                    NewsArticle.date_published >= date_limit)
+            else:
+                articles = session.query(NewsArticle).filter(
+                    NewsArticle.stock_id == stock_id,
+                    NewsArticle.source_id == source_id)
+
+            return [article.serialize for article in articles]
+        except Exception as e:
+            raise e
+
+def get_all_news_articles(time_frame: int = None):
     """
     Get all news articles
     @return: JSON
     """
     with create_session() as session:
-        if days_ago is not None:
-                date_limit = datetime(datetime.today().year, datetime.today().month, datetime.today().day) - timedelta(days=days_ago)
+        if time_frame is not None:
+            date_limit = datetime(datetime.today().year, datetime.today().month, datetime.today().day) - timedelta(days=int(time_frame))
 
-                articles = session.query(NewsArticle).filter(
-                    NewsArticle.date_published >= date_limit
-                    )
+            articles = session.query(NewsArticle).filter(
+                NewsArticle.date_published >= date_limit
+                )
         else:
             articles = session.query(NewsArticle).all()
 
         return [article.serialize for article in articles]
 
 
-def get_sentiment_for_stock_id(stock_id: str, days_ago: int = None):
+def get_sentiment_for_stock_id(stock_id: str, time_frame: int = None):
     """
     Returns average sentiment of a stock over a given timeframe
     @param stock_id: id of stock foreign key
-    @param days_ago: how many days ago to calculate sentiment
+    @param time_frame: how many days ago to calculate sentiment
     @return: floating point average sentiment
     """
     with create_session() as session:
         try:
-            if days_ago is not None:
-                date_limit = datetime(datetime.today().year, datetime.today().month, datetime.today().day) - timedelta(days=days_ago)
+            if time_frame is not None:
+                date_limit = datetime(datetime.today().year, datetime.today().month, datetime.today().day) - timedelta(days=int(time_frame))
 
                 articles = session.query(NewsArticle).filter(
                     NewsArticle.stock_id == stock_id,
@@ -193,11 +225,11 @@ def get_sentiment_for_stock_id(stock_id: str, days_ago: int = None):
             raise e
 
 
-def get_sentiment_for_ticker(ticker: str, days_ago: int = None):
+def get_sentiment_for_ticker(ticker: str, time_frame: int = None):
     """
     Returns an average sentiment of a stock over a given timeframe
     @param ticker: ex. TSLA
-    @param days_ago: how many days ago to calculate sentiment
+    @param time_frame: how many days ago to calculate sentiment
     @return: floating point average sentiment or None if stock not found
     """
     with create_session() as session:
@@ -207,8 +239,8 @@ def get_sentiment_for_ticker(ticker: str, days_ago: int = None):
             except:
                 return None
 
-            if days_ago is not None:
-                date_limit = datetime(datetime.today().year, datetime.today().month, datetime.today().day) - timedelta(days=days_ago)
+            if time_frame is not None:
+                date_limit = datetime(datetime.today().year, datetime.today().month, datetime.today().day) - timedelta(days=int(time_frame))
 
                 articles = session.query(NewsArticle).filter(
                     NewsArticle.stock_id == stock_id,
