@@ -1,3 +1,4 @@
+from data.db.handlers.news_articles_handler import get_articles_by_stock
 from flask import request, Blueprint
 from db import create_session
 from db.handlers.news_articles_handler import (
@@ -5,7 +6,8 @@ from db.handlers.news_articles_handler import (
     get_all_news_articles,
     get_ticker_id,
     getSentimentByStock,
-    get_articles_by_source
+    get_articles_by_source,
+    get_articles_by_stock
 )
 from db.handlers.news_source_handler import get_news_sources
 
@@ -14,11 +16,22 @@ from api import json_response
 router = Blueprint('stock_router', __name__)
 
 
-@router.route('/newsarticles', methods=['GET'])
+@router.route('/newsarticles/<stock_id>', methods=['GET'])
 def get_news_articles(stock_id: str):
     """
-    Gets all news articles associated with a specific stock
+    Gets all news articles associated with a specific stock id
     """
+    try:
+        data = get_articles_by_stock(stock_id)
+        if not data:
+            raise RuntimeError(
+                f"No article associated with the specific stock")
+        return json_response(status_code=200, data=data)
+    except Exception as e:
+        return json_response(
+            status_code=404,
+            error=str(e)
+        )
 
 
 @router.route('/ticker/sentiment', method=['GET'])
@@ -26,6 +39,16 @@ def get_stock_sentiment(stock_id: str):
     """
     returns true if sentiment is positive and False if sentiment is negative
     """
+    try:
+        data = getSentimentByStock(stock_id)
+        if not data:
+            return RuntimeError(f'Average sentiment for specific stock id is not available')
+        return json_response(status_code=200, data=data)
+    except Exception as e:
+        return json_response(
+            status_code=404,
+            error=str(e)
+        )
 
 
 @router.route('/newsarticles/<source>', methods=['GET'])
@@ -40,12 +63,7 @@ def get_news_articles_by_source(source: str):
 
     try:
         if source:
-            """
-            querry :
-            Select *
-            From NewsArtielces na
-            Where ns.source = source
-            """
+
             data = get_articles_by_source(source)
             if not data:
                 raise RuntimeError(
@@ -55,7 +73,7 @@ def get_news_articles_by_source(source: str):
             data = get_all_news_articles()
         return json_response(status_code=200, data=data)
 
-    except:
+    except Exception as e:
         return json_response(
             status_code=404,
             error=str(e)
