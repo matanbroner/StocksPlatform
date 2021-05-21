@@ -1,14 +1,14 @@
 from db import create_session
 from db.models import Stock, NewsArticle, NewsSource
 from sqlalchemy import func
-import datetime
+from datetime import datetime, date, timedelta
 from statistics import mean
 
 from db.handlers.stock_handler import get_stock_by_ticker
 from db.handlers.news_source_handler import get_news_source_by_name
 
 
-def create_news_article(source_id: str, stock_id: str, avg_sentiment: float, headline: str, url: str, published_date: datetime.date = None):
+def create_news_article(source_id: str, stock_id: str, avg_sentiment: float, headline: str, url: str, published_date: date = None):
     """
     Adds news article 
     @params str for soucre, date published in date format, an avarge sentiment and a main token
@@ -67,7 +67,7 @@ def get_news_article_by_ticker_and_source_and_headline(ticker: str, source_name:
                 NewsArticle.source_id == source_id,
                 NewsArticle.headline.like(headline)).first()
 
-            return article.serialize
+            return article.serialize if article is not None else None
         except Exception as e:
             raise e
 
@@ -86,7 +86,7 @@ def get_all_news_articles_by_source(source_name: str, days_ago: int = None):
                 return None
                 
             if days_ago is not None:
-                date_limit = datetime(datetime.today().year, datetime.today().month, datetime.today().day) - datetime.timedelta(days=days_ago)
+                date_limit = datetime(datetime.today().year, datetime.today().month, datetime.today().day) - timedelta(days=days_ago)
 
                 articles = session.query(NewsArticle).filter(
                     NewsArticle.source_id == source_id,
@@ -132,7 +132,7 @@ def get_all_news_articles_by_ticker(ticker: str, days_ago: int = None):
                 return None
 
             if days_ago is not None:
-                date_limit = datetime(datetime.today().year, datetime.today().month, datetime.today().day) - datetime.timedelta(days=days_ago)
+                date_limit = datetime(datetime.today().year, datetime.today().month, datetime.today().day) - timedelta(days=days_ago)
 
                 articles = session.query(NewsArticle).filter(
                     NewsArticle.stock_id == stock_id,
@@ -155,7 +155,7 @@ def get_all_news_articles(days_ago: int = None):
     """
     with create_session() as session:
         if days_ago is not None:
-                date_limit = datetime(datetime.today().year, datetime.today().month, datetime.today().day) - datetime.timedelta(days=days_ago)
+                date_limit = datetime(datetime.today().year, datetime.today().month, datetime.today().day) - timedelta(days=days_ago)
 
                 articles = session.query(NewsArticle).filter(
                     NewsArticle.date_published >= date_limit
@@ -176,7 +176,7 @@ def get_sentiment_for_stock_id(stock_id: str, days_ago: int = None):
     with create_session() as session:
         try:
             if days_ago is not None:
-                date_limit = datetime(datetime.today().year, datetime.today().month, datetime.today().day) - datetime.timedelta(days=days_ago)
+                date_limit = datetime(datetime.today().year, datetime.today().month, datetime.today().day) - timedelta(days=days_ago)
 
                 articles = session.query(NewsArticle).filter(
                     NewsArticle.stock_id == stock_id,
@@ -208,12 +208,13 @@ def get_sentiment_for_ticker(ticker: str, days_ago: int = None):
                 return None
 
             if days_ago is not None:
-                date_limit = datetime(datetime.today().year, datetime.today().month, datetime.today().day) - datetime.timedelta(days=days_ago)
+                date_limit = datetime(datetime.today().year, datetime.today().month, datetime.today().day) - timedelta(days=days_ago)
 
                 articles = session.query(NewsArticle).filter(
                     NewsArticle.stock_id == stock_id,
                     NewsArticle.date_published >= date_limit
                 )
+    
             else:
                 articles = session.query(NewsArticle).filter(
                     NewsArticle.stock_id == stock_id

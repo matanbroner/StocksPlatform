@@ -1,4 +1,3 @@
-from data.db.handlers.news_articles_handler import get_articles_by_stock
 from flask import request, Blueprint
 from db import create_session
 
@@ -35,7 +34,7 @@ def get_news_articles_by_ticker(ticker: str):
         )
 
 
-@router.route('/newsarticles/<ticker>/<time_frame>', methods=['GET'])
+@router.route('/newsarticles/<ticker>/<int:time_frame>', methods=['GET'])
 def get_news_articles_by_ticker_in_time_frame(ticker: str, time_frame: int):
     """
     Gets all news articles associated with a specific stock ticker.
@@ -47,12 +46,60 @@ def get_news_articles_by_ticker_in_time_frame(ticker: str, time_frame: int):
     @return: json
     """
     try:
-        articles = get_all_news_articles_by_ticker(ticker)
+        articles = get_all_news_articles_by_ticker(ticker, time_frame)
         if articles is None:
             raise RuntimeError(
                 f"No articles associated with {ticker} and the given time frame {time_frame} days.")
 
         return json_response(status_code=200, data=articles)
+    except Exception as e:
+        return json_response(
+            status_code=404,
+            error=str(e)
+        )
+
+
+@router.route('/newsarticles/<source>', methods=['GET'])
+def get_news_articles_by_source(source: str):
+    """
+    GET request for news articles by Source
+    @param source: source name
+    @return: JSON response with all news articles associated with source
+    """
+    try:
+        articles = get_all_news_articles_by_source(source)
+        if articles is None:
+            raise RuntimeError(
+                f"No articles exist associated with the source {source}")
+
+        return json_response(status_code=200, data=articles)
+
+    except Exception as e:
+        return json_response(
+            status_code=404,
+            error=str(e)
+        )
+
+
+@router.route('/newsarticles/<source>/<int:time_frame>', methods=['GET'])
+def get_news_articles_by_source_in_time_frame(source: str, time_frame: int):
+    """
+    GET request for news articles by Source
+    @param source: source name
+    @param time_frame: time frame in days
+        ex. 1 week, time_frame = 7
+            1 month, time_frame = 31
+            1 year, time_frame = 365
+    @return: JSON response with all news articles associated with source
+    """
+    try:
+        articles = get_all_news_articles_by_source(source, time_frame)
+        if articles is None:
+            raise RuntimeError(
+                f"No articles exist associated with the source {source} and given time frame {time_frame} days.")
+
+        return json_response(status_code=200, data=articles)
+
     except Exception as e:
         return json_response(
             status_code=404,
@@ -80,7 +127,7 @@ def get_stock_sentiment(ticker: str):
         )
 
 
-@router.route('/<ticker>/sentiment/<time_frame>', method=['GET'])
+@router.route('/<ticker>/sentiment/<int:time_frame>', method=['GET'])
 def get_stock_sentiment_in_time_frame(ticker: str, time_frame: int):
     """
     Get average sentiment of stock.
@@ -97,53 +144,6 @@ def get_stock_sentiment_in_time_frame(ticker: str, time_frame: int):
             return RuntimeError(f'Average sentiment for {ticker} and time frame {time_frame} is not available.')
 
         return json_response(status_code=200, data=sentiment)
-    except Exception as e:
-        return json_response(
-            status_code=404,
-            error=str(e)
-        )
-
-
-@router.route('/newsarticles/<source>', methods=['GET'])
-def get_news_articles_by_source(source: str):
-    """
-    GET request for news articles by Source
-    @param source: source name
-    @return: JSON response with all news articles associated with source
-    """
-    try:
-        articles = get_all_news_articles_by_source(source)
-        if articles is None:
-            raise RuntimeError(f"No articles exist associated with the source {source}")
-
-        return json_response(status_code=200, data=articles)
-
-    except Exception as e:
-        return json_response(
-            status_code=404,
-            error=str(e)
-        )
-
-
-@router.route('/newsarticles/<source>/<time_frame>', methods=['GET'])
-def get_news_articles_by_source_in_time_frame(source: str, time_frame: int):
-    """
-    GET request for news articles by Source
-    @param source: source name
-    @param time_frame: time frame in days
-        ex. 1 week, time_frame = 7
-            1 month, time_frame = 31
-            1 year, time_frame = 365
-    @return: JSON response with all news articles associated with source
-    """
-    try:
-        articles = get_all_news_articles_by_source(source)
-        if articles is None:
-            raise RuntimeError(
-                f"No articles exist associated with the source {source} and given time frame {time_frame} days.")
-
-        return json_response(status_code=200, data=articles)
-
     except Exception as e:
         return json_response(
             status_code=404,
