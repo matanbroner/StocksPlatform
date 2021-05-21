@@ -1,8 +1,8 @@
 import React from "react";
-import { Button, Loader } from "semantic-ui-react"
+import { Button, Loader } from "semantic-ui-react";
 import styles from "./styles.module.css";
 import ApiHandler from "../../api";
-import ScrollingDigits from "../ScrollingDigits"
+import AnimatedNumber from "animated-number-react";
 
 import {
   LineChart,
@@ -22,10 +22,6 @@ class StockMetrics extends React.PureComponent {
       activePrice: {
         interval: null,
         value: null,
-        style: {
-          color: "black",
-          fontWeight: "normal"
-        },
       },
       interval: "1h",
       loading: false,
@@ -89,27 +85,33 @@ class StockMetrics extends React.PureComponent {
     );
   }
 
-  intervalButtons(){
-    const intervals = ["1m", "5m", "15m", "30m", "1h", "4h"]
+  intervalButtons() {
+    const intervals = ["1m", "5m", "15m", "30m", "1h", "4h"];
     const changeInterval = (interval) => {
-      this.setState({
-        interval
-      }, () => {
-        this.fetchPriceData()
-      })
-    }
-    return(
-      <div id={styles.intervalButtons}>
+      this.setState(
         {
-          intervals.map((interval) => {
-            const active = this.state.interval === interval;
-            return(
-              <Button onClick={() => changeInterval(interval)} color={active ? "teal" : null}>{interval}</Button>
-            )
-          })
-        } 
+          interval,
+        },
+        () => {
+          this.fetchPriceData();
+        }
+      );
+    };
+    return (
+      <div id={styles.intervalButtons}>
+        {intervals.map((interval) => {
+          const active = this.state.interval === interval;
+          return (
+            <Button
+              onClick={() => changeInterval(interval)}
+              color={active ? "teal" : null}
+            >
+              {interval}
+            </Button>
+          );
+        })}
       </div>
-    )
+    );
   }
 
   setCurrentPriceInterval() {
@@ -131,10 +133,6 @@ class StockMetrics extends React.PureComponent {
               {
                 activePrice: {
                   ...this.state.activePrice,
-                  style: {
-                    fontWeight: "bold",
-                    color: "teal"
-                  },
                 },
               },
               () => {
@@ -143,13 +141,9 @@ class StockMetrics extends React.PureComponent {
                     activePrice: {
                       ...this.state.activePrice,
                       value: data[0].price,
-                      style: {
-                        fontWeight: "normal",
-                        color: "black"
-                      },
                     },
                   });
-                }, 300)
+                }, 300);
               }
             );
           } catch (e) {
@@ -161,28 +155,27 @@ class StockMetrics extends React.PureComponent {
   }
 
   render() {
-    if(this.state.loading){
-      return(
+    if (this.state.loading) {
+      return (
         <div id={styles.loaderWrapper}>
-          <Loader size="big" active inline='centered'/>
+          <Loader size="big" active inline="centered" />
         </div>
-      )
+      );
     }
     return (
       <div id={styles.wrapper}>
         <span id={styles.header}>{this.props.ticker}</span>
-        <p
-          id={styles.activePrice}
-          style={{
-            ...this.state.activePrice.style,
-            transition: "all 0.1s ease",
-          }}
-        >
-          <ScrollingDigits sum={100.122}/>
-          {this.state.activePrice.value
-            ? `$${this.state.activePrice.value}`
-            : null}
-        </p>
+        {this.state.activePrice.value ? (
+          <p>
+            <AnimatedNumber
+              value={`$${this.state.activePrice.value}`}
+              duration={300}
+              formatValue={(value) => value.toFixed(2)}
+              className={styles.activePrice}
+            />
+          </p>
+        ) : null}
+
         <div id={styles.charts}>
           {this.state.data.length ? this.closePriceChart() : null}
         </div>

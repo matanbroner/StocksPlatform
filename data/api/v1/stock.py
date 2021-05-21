@@ -131,3 +131,12 @@ def get_stock_price(ticker: str):
         return json_response(status_code=200, data=data)
     except Exception as e:
         return json_response(status_code=400, error=str(e))
+
+@router.route("/rating/<ticker>", methods=["GET"])
+def get_stock_rating(ticker: str):
+    try:
+        api = FinancialModelingPrepApi()
+        data = api.get_rating(ticker=ticker)
+        return json_response(status_code=200, data=data)
+    except Exception as e:
+        return json_response(status_code=400, error=str(e))
