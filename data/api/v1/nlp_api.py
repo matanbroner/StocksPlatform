@@ -13,9 +13,7 @@ from db.handlers.news_source_handler import get_all_news_sources
 
 from api import json_response
 
-
 router = Blueprint('nlp_router', __name__)
-
 
 @router.route('/newsarticles/<ticker>', methods=['GET'])
 def get_news_articles_by_ticker(ticker: str):
