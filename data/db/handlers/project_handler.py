@@ -100,7 +100,7 @@ def delete_project_by_id(id: str):
         project = get_project_by_id(id=id, serialize=False)
         if not project:
             raise RuntimeError(f"Cannot delete nonexistent project with ID {id}")
-        project.delete()
+        session.delete(project)
         session.commit()
 
 

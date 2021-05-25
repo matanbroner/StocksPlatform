@@ -1,3 +1,4 @@
+from sqlalchemy.sql.sqltypes import Text
 from db.sqlalchemy_db import create_table, get_engine
 from sqlalchemy import (
     Column,
@@ -5,6 +6,7 @@ from sqlalchemy import (
     Float,
     Boolean,
     String,
+    Text,
     DateTime,
     ForeignKey,
     UniqueConstraint,
@@ -57,7 +59,8 @@ class Stock(Base):
     id = p_key_column()
     ticker = Column(String, unique=True, index=True, nullable=False)
     created_at = Column(DateTime, default=get_datettime)
-    updated_at = Column(DateTime, default=get_datettime, onupdate=get_datettime)
+    updated_at = Column(DateTime, default=get_datettime,
+                        onupdate=get_datettime)
 
     @validates("ticker")
     def convert_upper(self, key, value):
@@ -91,7 +94,8 @@ class Project(Base):
     description = Column(String)
     is_active = Column(Boolean, default=True)
     created_at = Column(DateTime, default=get_datettime)
-    updated_at = Column(DateTime, default=get_datettime, onupdate=get_datettime)
+    updated_at = Column(DateTime, default=get_datettime,
+                        onupdate=get_datettime)
 
     # user_id = f_key_column(column_attribute="Users.id")
     # TODO: this is a dummy column until I can figure out how to autopopulate a Users table here
@@ -124,7 +128,8 @@ class ProjectStock(Base):
     project_id = f_key_column(column_attribute="project.id")
     stock_id = f_key_column(column_attribute="stock.id")
     created_at = Column(DateTime, default=get_datettime)
-    updated_at = Column(DateTime, default=get_datettime, onupdate=get_datettime)
+    updated_at = Column(DateTime, default=get_datettime,
+                        onupdate=get_datettime)
 
 
 class NewsSource(Base):
@@ -133,7 +138,8 @@ class NewsSource(Base):
     id = p_key_column()
     source_name = Column(String(50), nullable=False, unique=True)
     created_at = Column(DateTime, default=get_datettime)
-    updated_at = Column(DateTime, default=get_datettime, onupdate=get_datettime)
+    updated_at = Column(DateTime, default=get_datettime,
+                        onupdate=get_datettime)
 
     @property
     def serialize(self):
@@ -153,10 +159,13 @@ class NewsArticle(Base):
     id = p_key_column()
     source_id = f_key_column("news_source.id")
     stock_id = f_key_column("stock.id")
+    headline = Column(Text, nullable=False)
     date_published = Column(DateTime(), default=get_datettime)
+    article_link = Column(Text, nullable=False)
     avg_sentiment = Column(Float(), nullable=False)
     created_at = Column(DateTime, default=get_datettime)
-    updated_at = Column(DateTime, default=get_datettime, onupdate=get_datettime)
+    updated_at = Column(DateTime, default=get_datettime,
+                        onupdate=get_datettime)
 
     @property
     def serialize(self):
@@ -166,11 +175,12 @@ class NewsArticle(Base):
         """
         return {
             "id": self.id,
-            "ticker": self.sourceid,
-            "stock_id": self.stockid,
-            "date_published": self.datepublished,
-            "avg_sentiment": self.avgsentiment,
-            "main_token": self.maintoken,
+            "source_id": self.source_id,
+            "stock_id": self.stock_id,
+            "headline": self.headline,
+            "article_link": self.article_link,
+            "date_published": self.date_published,
+            "avg_sentiment": self.avg_sentiment,
         }
 
 
@@ -178,5 +188,5 @@ def instantiate_tables():
     """
     Define all tables, should be called only once
     """
-    for table in [Stock, Project, ProjectStock]:
+    for table in [Stock, Project, ProjectStock, NewsSource, NewsArticle]:
         create_table(table)
