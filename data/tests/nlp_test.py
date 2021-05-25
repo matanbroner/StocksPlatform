@@ -52,7 +52,7 @@ class TestNewsSources(unittest.TestCase):
     def test_retrieve_data(self):
         self.assertEqual(list(self.general_news.retrieve_data().columns), ['stock', 'source', 'date', 'title', 'url', 'content'])
 
-class TestNLPPipeline(unittest.TestCase):
+class TestNlpPipeline(unittest.TestCase):
     def setUp(self):
         self.test_df = pd.DataFrame(
             [['TEST_STOCK', 'TEST_SOURCE', datetime.datetime(1972, 5, 17), 'This is a test headline.', 'WWW.TEST_URL.COM', 'This is test content. Usually there is a lot more text.', 1.0]],
