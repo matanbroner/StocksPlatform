@@ -20,7 +20,11 @@ class Home extends Component {
     return (
       <Header size="large">
         <div id={styles.HomeMessage}>
-          Here to support all your stock portfolio needs.
+          BananaStocks
+        </div>
+        <br></br>
+        <div id={styles.HomeMessage2}>
+          Here to support all your stock portfolio needs
         </div>
       </Header>
     );

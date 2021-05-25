@@ -46,9 +46,10 @@
 
 #message2 {
   color: black;
-  font-size: 50px;
+  font-size: 45px;
   padding-top: 200px;
   text-align: center;
+  font-weight: 700;
 }
 
 #firstcolumn {
@@ -76,4 +77,27 @@
   color: teal;
   padding-left: 4px;
   cursor: pointer;
+}
+
+@media screen and (max-width: 1315px) {
+  #account,
+  #sign {
+    font-size: 12px;
+  }
+
+  #message1 {
+    font-size: 50px;
+  }
+
+  #Logo {
+    width: 125px;
+    height: 200px;
+  }
+}
+
+@media screen and (max-width: 1500px) {
+  #message2 {
+    font-size: 35px;
+    font-weight: 700;
+  }
 }

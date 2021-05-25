@@ -27,11 +27,47 @@
 
 #HomeBackground {
   background-color: #232931;
-  height: 1000px;
+  height: 900px;
 }
 
 #HomeMessage {
   color: white;
-  padding-top: 400px;
-  font-size: 50px;
+  padding-top: 300px;
+  font-size: 75px;
+  display: flex;
+  justify-content: center;
+  text-transform: uppercase;
+  color: teal;
+}
+
+#HomeMessage2 {
+  color: white;
+  font-size: 40px;
+  display: flex;
+  justify-content: center;
+  text-transform: capitalize;
+}
+
+#home_image {
+  height: 350px;
+}
+
+#company_about {
+  margin-top: 450px;
+}
+
+#divider {
+  font-size: 35px;
+}
+
+@media screen and (max-width: 1350px) {
+  #HomeMessage {
+    font-size: 60px;
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  #HomeMessage {
+    font-size: 55px;
+  }
 }
