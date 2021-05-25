@@ -8,3 +8,5 @@ requests
 sqlalchemy
 uuid
 pandas
+spacy
+nltk

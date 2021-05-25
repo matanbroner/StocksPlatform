@@ -1,4 +1,4 @@
-from statistics import mean
+from statistics import StatisticsError, mean
 from nltk.sentiment import SentimentIntensityAnalyzer
 import nltk
 from nltk.tag import pos_tag
@@ -42,11 +42,15 @@ def sentiment_value(txt):
         sia = SentimentIntensityAnalyzer()
         for sentence in nltk.sent_tokenize(txt):
             scores.append(sia.polarity_scores(sentence).get("compound"))
+
+        score = mean(scores)
+    except StatisticsError:
+        return 0
     except Exception as e:
         print('Exception', e)
         return None
 
-    return mean(scores)
+    return score
 
 def headline_sentiment(txt: str) -> bool:
     return sentiment_value(clean_sentence(txt))
