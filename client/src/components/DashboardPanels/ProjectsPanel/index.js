@@ -166,11 +166,11 @@ class ProjectsPanel extends Component {
           this.renderLoader()
         ) : (
           <React.Fragment>
-            <h2>ReCharts Chart</h2>
+            {/* <h2>ReCharts Chart</h2>
             <Charts />
             <h2>ApexChart Chart</h2>
             <Apex />
-            <br></br>
+            <br></br> */}
             <Button
               id={styles.button}
               color="teal"

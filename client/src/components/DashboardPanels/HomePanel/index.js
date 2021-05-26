@@ -3,6 +3,7 @@ import BasePanel from "../BasePanel";
 import { Card, Icon, Image } from "semantic-ui-react";
 import userDefaultImage from '../../../assets/images/user_default.png'
 import { dateStringToEnglish } from "../../../util"
+import Apex from "../Charts/apex";
 
 const HomePanel = (props) => {
   function renderProfileCard() {
@@ -29,6 +30,10 @@ const HomePanel = (props) => {
       <BasePanel title={`Welcome back ${props.user.firstName}!`}>
         <div>
             {renderProfileCard()}
+        </div>
+        <br></br>
+        <div>
+            <Apex />
         </div>
       </BasePanel>
     );

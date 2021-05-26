@@ -39,7 +39,7 @@ class ApexChart extends Component {
             size: 0,
           },
           title: {
-            text: 'Stock Price Movement',
+            text: 'Project Activity',
             align: 'left'
           },
           yaxis: {
