@@ -28,11 +28,12 @@ class GeneralNewsData:
             source
             date
             title
+            url
             content
         @param json_data: FMP stock news json response
         @return: DataFrame described above
         """
-        df = pd.DataFrame(json_data, columns=['site', 'publishedDate', 'title', 'text'])
+        df = pd.DataFrame(json_data, columns=['site', 'publishedDate', 'title', 'url', 'text'])
         df['publishedDate'] = pd.to_datetime(df['publishedDate'], infer_datetime_format=True).dt.date
         df.insert(0, 'stock', value=self.stock)
         return df.rename(columns={'site': 'source', 'publishedDate': 'date', 'text': 'content'})
@@ -47,7 +48,7 @@ class GeneralNewsData:
     def retrieve_data(self):
         """
         Retrieves data using FMPApi
-        @return: DataFrame with columns source, date, content
+        @return: DataFrame with columns stock, source, date, title, url, content
         """
 
         json_response = self.api.get_news([self.stock])

@@ -2,7 +2,7 @@ from db import create_session
 from db.models import Stock
 
 
-def get_stock_by_id(id: str):
+def get_stock_by_id(id: str, serialize=True):
     """
     Get stock by primary key
     @param id: UUID
@@ -10,7 +10,11 @@ def get_stock_by_id(id: str):
     """
     with create_session() as session:
         stock = session.get(Stock, id)
-        return stock.serialize if stock else None
+        if stock == None:
+            return None
+        elif serialize:
+            stock = stock.serialize
+        return stock
 
 
 def get_stock_by_ticker(ticker: str):
@@ -64,8 +68,8 @@ def delete_stock_by_id(id: str):
     @param id: UUID
     """
     with create_session() as session:
-        stock = get_stock_by_id(id=id)
+        stock = get_stock_by_id(id=id, serialize=False)
         if not stock:
             raise RuntimeError(f"Cannot delete nonexistent stock with ID {id}")
-        stock.delete()
+        session.delete(stock)
         session.commit()

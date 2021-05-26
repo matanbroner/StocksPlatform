@@ -1,64 +1,69 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import styles from "./styles.module.css";
-import { Header, Button } from 'semantic-ui-react';
-import { Link } from 'react-router-dom';
+import { Header, Button } from "semantic-ui-react";
+import { Link } from "react-router-dom";
 
-function Logo() {
+class Home extends Component {
+  renderLogo() {
     return (
       <div id={styles.Logo}>
-        <img src="/images/logo.png" alt="Banana Stocks Logo" id={styles.logoimage}/>
+        <img
+          src="/images/logo.png"
+          alt="Banana Stocks Logo"
+          id={styles.logoimage}
+        />
       </div>
-    )
+    );
   }
-  
-  function Message() {
+
+  renderMessage() {
     return (
       <Header size="large">
         <div id={styles.HomeMessage}>
-          Here to support all your stock portfolio needs.
+          BananaStocks
+        </div>
+        <br></br>
+        <div id={styles.HomeMessage2}>
+          Here to support all your stock portfolio needs
         </div>
       </Header>
-    )
+    );
   }
-  
-  function SignUpButton() {
+
+  renderSignUpButton() {
     return (
       <div id={styles.Signup}>
-        <Button basic inverted color="green">Sign Up</Button>
+        <Button basic inverted color="green">
+          Sign Up
+        </Button>
       </div>
-    )
+    );
   }
-  
-  function LogInButton() {
+
+  renderLogInButton() {
     return (
       <div id={styles.Login}>
-        <Button basic inverted color="green">Log In</Button>
+        <Button basic inverted color="green">
+          Log In
+        </Button>
       </div>
-    )
+    );
   }
+  render() {
+    return (
+      <div id={styles.HomeBackground}>
+        <Header id={styles.Header} as="h2">
+          {this.renderLogo()}
+          {this.renderMessage()}
 
-class Home extends Component {
-    render() {
-      return (
-          <div id={styles.HomeBackground}>
-              <Header id={styles.Header} as='h2'>
-                  <Logo />
-                  <Message />
-
-                  <div id={styles.Buttons}>
-                      <Link to='/signup'>
-                          <SignUpButton />
-                      </Link>
-                      
-                      <Link to='/login'>
-                          <LogInButton />
-                      </Link>
-                  </div>
-              </Header>
+          <div id={styles.buttons}>
+            <Link to="/signup">{this.renderSignUpButton()}</Link>
+            <Link to="/login">{this.renderLogInButton()}</Link>
           </div>
-
-      )
-    }
+        </Header>
+      </div>
+    );
+  }
 }
 
 export default Home;

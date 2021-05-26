@@ -29,13 +29,13 @@ const Navbar = (props) => {
         <Link to="/dashboard">
           <Menu.Item as="div">
             <Icon name="home" className="nav-icon" />
-            <div className="nav-title">Home</div>
+            <div id={styles.title}>Home</div>
           </Menu.Item>
         </Link>
 
         <Link to="/dashboard/projects">
           <Menu.Item as="div">
-            <Icon name="users" className="nav-icon" />
+            <Icon name="archive" className="nav-icon" />
             <div className="nav-title">Projects</div>
           </Menu.Item>
         </Link>
@@ -43,16 +43,17 @@ const Navbar = (props) => {
         <Link to="/dashboard/stocks">
           <Menu.Item as="div">
             <Icon name="chart line" className="nav-icon" />
-            <div className="nav-title">Stock Search</div>
+            <div id={styles.title}>Stock Search</div>
           </Menu.Item>
         </Link>
 
         <Link to="/dashboard/settings">
           <Menu.Item as="div">
             <Icon name="settings" className="nav-icon" />
-            <div className="nav-title">Settings</div>
+            <div id={styles.title}>Settings</div>
           </Menu.Item>
         </Link>
+        
         <Menu.Item id={styles.collapseBtn}>
           <Button onClick={() => setOpen(!isOpen)}>
             <Icon name="angle double left" />
