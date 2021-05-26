@@ -35,8 +35,8 @@ const Navbar = (props) => {
 
         <Link to="/dashboard/projects">
           <Menu.Item as="div">
-            <Icon name="users" className="nav-icon" />
-            <div id={styles.title}>Projects</div>
+            <Icon name="archive" className="nav-icon" />
+            <div className="nav-title">Projects</div>
           </Menu.Item>
         </Link>
 
