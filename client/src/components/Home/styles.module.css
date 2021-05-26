@@ -27,7 +27,7 @@
 
 #HomeBackground {
   background-color: #232931;
-  height: 900px;
+  height: 940px;
 }
 
 #HomeMessage {
@@ -38,14 +38,16 @@
   justify-content: center;
   text-transform: uppercase;
   color: teal;
+  padding-left: 80px;
 }
 
 #HomeMessage2 {
   color: white;
-  font-size: 40px;
+  font-size: 42px;
   display: flex;
   justify-content: center;
   text-transform: capitalize;
+  padding-left: 80px;
 }
 
 #home_image {
@@ -57,17 +59,41 @@
 }
 
 #divider {
-  font-size: 35px;
+  font-size: 40px;
+}
+
+#background {
+  background-color: #eeeeee;
 }
 
 @media screen and (max-width: 1350px) {
   #HomeMessage {
     font-size: 60px;
   }
+
+  #HomeMessage2 {
+    font-size: 30px;
+  }
+
+  #HomeBackground {
+    background-color: #232931;
+    height: 1000px;
+  }
 }
 
-@media screen and (max-width: 1000px) {
+@media screen and (max-width: 1050px) {
   #HomeMessage {
     font-size: 55px;
+  }
+
+  #HomeMessage2 {
+    display: flex;
+    justify-content: center;
+    font-size: 24px;
+  }
+
+  #HomeBackground {
+    background-color: #232931;
+    height: 1000px;
   }
 }

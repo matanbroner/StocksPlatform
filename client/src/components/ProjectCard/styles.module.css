@@ -1,9 +1,17 @@
-.wrapper{
-    cursor: pointer;
+.wrapper {
+  cursor: pointer;
 }
 
-.wrapper:hover{
-    border-bottom: none;
-    transition: 0.2s all;
-    opacity: 75%;
+.wrapper:hover {
+  border-bottom: none;
+  transition: 0.2s all;
+  opacity: 75%;
+}
+
+#ticker {
+  color: rgb(148, 9, 148);
+}
+
+#description {
+  color: rgb(31, 118, 218);
 }

@@ -17,6 +17,7 @@ const Navbar = (props) => {
         visible={isOpen}
         width="thin"
         className="nav-sidebar"
+        id={styles.sidebar}
       >
         <Menu.Item as="div" className="nav-logo">
           <img

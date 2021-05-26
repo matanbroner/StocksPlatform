@@ -1,10 +1,53 @@
+@import url("https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;700&display=swap");
+
 /* Settings Styles */
-#setting-body {
-  padding-left: 175px;
+#table {
+  width: 100%;
+  height: 90%;
+  padding: 10px;
+  border-width: 2px;
+  border-color: teal;
+  background-color: #eeeeee;
+  font-family: "Nunito Sans", sans-serif !important;
 }
 
-#setting-title {
-  color: black;
-  font-weight: bold;
-  font-size: 35px;
+#table_row {
+  display: flex;
+  justify-content: space-between;
+}
+
+#title {
+  display: flex;
+  font-family: "Nunito Sans", sans-serif !important;
+  font-weight: 600;
+  font-size: 45px;
+}
+
+#title_2 {
+  display: flex;
+  font-family: "Nunito Sans", sans-serif !important;
+  font-weight: 600;
+  font-size: 45px;
+}
+
+#account_info {
+  font-size: 20px;
+}
+
+#column {
+  padding-top: 75px;
+}
+
+#button_1 {
+  padding-top: 60px;
+  padding-left: 120px;
+}
+
+#button_2 {
+  padding-top: 60px;
+  padding-left: 120px;
+}
+
+#row {
+  padding-top: 50px;
 }

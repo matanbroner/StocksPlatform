@@ -33,5 +33,8 @@
 
 #title {
   color: teal;
-  text-transform: uppercase;
+}
+
+#sidebar {
+  color: aliceblue;
 }

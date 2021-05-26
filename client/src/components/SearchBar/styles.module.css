@@ -1,3 +1,7 @@
-.searchBar.input{
-    width: 100%;
+.searchBar.input {
+  width: 100%;
+}
+
+#search {
+  width: 700px;
 }
