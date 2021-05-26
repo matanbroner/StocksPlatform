@@ -34,6 +34,7 @@ const SearchBar = (props) => {
       onSearchChange={onSearchChange}
       value={value}
       className={styles.searchBar}
+      id={styles.search}
     />
   );
 };
