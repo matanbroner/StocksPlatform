@@ -15,7 +15,6 @@ class DeleteAccount extends Component {
   }
 
   deleteAccount() {
-    console.log(this.props);
     const email = this.props.user.email;
     ApiHandler.delete('users', `users/delete-account/${email}`, {}, {})
     .then(() => {
