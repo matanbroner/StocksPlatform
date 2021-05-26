@@ -32,9 +32,9 @@
 }
 
 #title {
-  color: teal;
+  color: rgb(17, 196, 196);
 }
 
 #sidebar {
-  color: aliceblue;
+  background-color: rgb(0, 0, 0);
 }
