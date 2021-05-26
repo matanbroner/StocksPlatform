@@ -27,7 +27,13 @@ class Dashboard extends React.Component {
         <Route path="/dashboard/projects" exact component={ProjectsPanel} />
         <Route path="/dashboard/projects/:id" component={ProjectPage} />
         <Route path="/dashboard/stocks" exact component={StocksPanel} />
-        <Route path="/dashboard/settings" exact component={SettingsPanel} />
+        <Route path="/dashboard/settings" exact component={(props) => (
+                <SettingsPanel
+                  {...props}
+                  user={this.props.user}
+                />
+        )}
+        />
       </>
     );
   }

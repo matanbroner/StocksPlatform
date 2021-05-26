@@ -169,7 +169,7 @@ class ProjectsPanel extends Component {
         loading={this.state.loading}
       >
         <Button
-          className="project-button"
+          id={styles.button}
           color="teal"
           onClick={() => this.updateModalState(true)}
         >

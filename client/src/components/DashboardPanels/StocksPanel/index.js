@@ -20,7 +20,10 @@ class StocksPanel extends Component {
 
   render() {
     return (
-      <BasePanel title="Find and Analyze Stocks">
+      <BasePanel 
+        title="Find and Analyze Stocks"
+        subtitle={`Here you can look up the stocks you want to get data on. Feel free to add them to your portfolio when you are ready. Happy hunting!`}
+      >
         <div id={styles.searchWrapper}>
           <StockSearch onSelect={this.onSearchBarSelect.bind(this)} />
         </div>
