@@ -3,6 +3,8 @@ import styles from './styles.module.css';
 import { Grid, Table, Icon, Button, Segment, Image } from "semantic-ui-react";
 import userDefaultImage from '../../../assets/images/user_default.png'
 import BasePanel from "../BasePanel";
+import ChangePassword from "../../ChangePassword";
+import DeleteAccount from "../../DeleteAccount";
 
 const SettingsPanel = (props) => {
     function renderProfile() {
@@ -26,14 +28,10 @@ const SettingsPanel = (props) => {
                         </div>
                     </Grid.Column>
                     <Grid.Column id={styles.button_1} width={3}>
-                        <Button color='teal' onClick={handleChangePassword}>
-                            Change Password
-                        </Button>
+                        <ChangePassword user={props.user}/>
                     </Grid.Column>
                     <Grid.Column id={styles.button_2} width={3}>
-                        <Button color='red' onClick={handleDeleteAccount}>
-                            Delete Account
-                        </Button>
+                        <DeleteAccount user={props.user}/>
                     </Grid.Column>
                     <Grid.Row id={styles.row}>
                         <Grid.Column>
@@ -67,18 +65,6 @@ const SettingsPanel = (props) => {
                     </Grid.Row>
                 </Grid>
             </div>
-        );
-    }
-
-    function handleChangePassword() {
-        return (
-            console.log("Change Password")
-        );
-    }
-
-    function handleDeleteAccount() {
-        return (
-            console.log("Account Deleted")
         );
     }
 

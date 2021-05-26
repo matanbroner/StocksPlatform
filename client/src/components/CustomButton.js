@@ -6,7 +6,7 @@ import "semantic-ui-css/semantic.min.css";
 const buttonColors = ['button-teal', 'button-transparent'];
 const buttonSizes = ['button--small', 'button--medium', 'button--large'];
 
-class Button extends Component {
+class CustomButton extends Component {
   constructor(props) {
     super(props);
   }
@@ -31,4 +31,4 @@ class Button extends Component {
   }
 }
 
-export default Button;
+export default CustomButton;

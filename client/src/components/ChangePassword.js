@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import "../App.css";
-import { Form, Checkbox, Grid, Container, Message } from "semantic-ui-react";
+import { Form, Checkbox, Modal, Grid, Container, Message, Button } from "semantic-ui-react";
 import ApiHandler from "../api";
-import Button from "./Button";
+import CustomButton from "./CustomButton";
 
 class ChangePassword extends Component {
   constructor(props) {
@@ -14,7 +14,8 @@ class ChangePassword extends Component {
         newPassword: ""
       },
       error: null,
-      loading: false
+      loading: false,
+      modalOpen: false
     };
   }
 
@@ -28,7 +29,8 @@ class ChangePassword extends Component {
   }
 
   validateForm() {
-    if (!this.state.form.email || !/\S+@\S+\.\S+/.test(this.state.form.email)) {
+    if (!this.state.form.email || !/\S+@\S+\.\S+/.test(this.state.form.email)
+        || this.state.form.email !== this.props.user.email) {
       this.setState({
         error: "Invalid email address",
       });
@@ -83,53 +85,82 @@ class ChangePassword extends Component {
 
   render() {
     
+    const {
+      modalOpen
+    } = this.state
+
     return (
       <div className="change-password">
-        <Grid>
-          <Container className="change-password-container">
-            {this.state.error ? (
-              <Message negative>
-                <Message.Header>Change Password Error</Message.Header>
-                <p>{this.state.error}</p>
-              </Message>
-            ) : null}
-            <Form className="change-password-form">
-              <h2>Change Password</h2>
 
-              <Form.Input
-                label="Email"
-                className="change-password-email"
-                placeholder="E-mail Address"
-                value={this.state.form.email}
-                onChange={(e) => this.updateForm("email", e)}
-              />
-              <Form.Input
-                label="Current Password"
-                className="change-password-current-password"
-                placeholder="Current Password"
-                value={this.state.form.currentPassword}
-                onChange={(e) => this.updateForm("currentPassword", e)}
-              />
-              <Form.Input
-                label="New Password"
-                className="change-password-new-password"
-                placeholder="New Password"
-                value={this.state.form.newPassword}
-                onChange={(e) => this.updateForm("newPassword", e)}
-              />
+        <Modal closeIcon onClose={() => this.setState({ modalOpen: false })} open={modalOpen}
+          trigger= { 
+            <Button onClick={() => this.setState({ modalOpen: true })} 
+              color="teal">
+                Change Password
+            </Button>
+          }
+        >
+          <Modal.Header>
+            Change Password
+          </Modal.Header>
+          <Modal.Content>
 
-              <Form.Button
-                color="teal"
-                className="change-password-button"
-                content="Change Password"
-                size="large"
-                onClick={this.submit.bind(this)}
-                disabled={!this.formIsComplete()}
-                loading={this.state.loading}
-              />
-            </Form>
-          </Container>
-        </Grid>
+          <Grid>
+            <Container className="change-password-container">
+              {this.state.error ? (
+                <Message negative>
+                  <Message.Header>Change Password Error</Message.Header>
+                  <p>{this.state.error}</p>
+                </Message>
+              ) : null}
+              <Form className="change-password-form">
+                <Form.Input
+                  label="Email"
+                  className="change-password-email"
+                  placeholder="E-mail Address"
+                  value={this.state.form.email}
+                  onChange={(e) => this.updateForm("email", e)}
+                />
+                <Form.Input
+                  label="Current Password"
+                  className="change-password-current-password"
+                  placeholder="Current Password"
+                  value={this.state.form.currentPassword}
+                  onChange={(e) => this.updateForm("currentPassword", e)}
+                />
+                <Form.Input
+                  label="New Password"
+                  className="change-password-new-password"
+                  placeholder="New Password"
+                  value={this.state.form.newPassword}
+                  onChange={(e) => this.updateForm("newPassword", e)}
+                />
+
+                <Form.Button
+                  color="teal"
+                  className="change-password-button"
+                  content="Change Password"
+                  size="large"
+                  onClick={this.submit.bind(this)}
+                  disabled={!this.formIsComplete()}
+                  loading={this.state.loading}
+                />
+              </Form>
+            </Container>
+          </Grid>
+
+          </Modal.Content>
+          <Modal.Actions>
+            <Button
+              onClick= {() => {this.setState({ modalOpen: false })}}
+              negative
+            >
+              Cancel
+            </Button>
+          </Modal.Actions>
+        </Modal>
+
+        
       </div>
     )
   }
