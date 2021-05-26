@@ -1,0 +1,55 @@
+.tabPanes{
+    height: 75%;
+}
+
+.pane{
+    height: 100%;
+}
+
+#gridContent{
+    height: 100%;
+}
+
+#paneContentRow{
+    height: 100%;
+}
+
+#panelContentColumn{
+    height: 100%;
+}
+
+.infoCard{
+    height: 100%;
+    width: 100% !important;
+}
+
+.paneContentCard{
+    overflow: scroll;
+    height: 100%;
+    width: 100% !important;
+}
+
+.articleTickerLabel{
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+#liveBlinkerWrapper{
+    color: red;
+    font-size: 15px;
+    margin: 10px auto;
+}
+
+#liveBlinkerWrapper > span {
+    margin: auto 8px;
+}
+
+.liveBlinker {
+    animation: blinker 0.8s cubic-bezier(.5, 0, 1, 1) infinite alternate;  
+}
+
+@keyframes blinker {  
+  from { opacity: 1; }
+  to { opacity: 0; }
+}

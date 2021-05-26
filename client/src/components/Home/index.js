@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import styles from "./styles.module.css";
 import { 
   Button,
@@ -14,17 +14,22 @@ import {
   Sidebar,
   Visibility,
   Modal } from 'semantic-ui-react';
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
-function Logo() {
+class Home extends Component {
+  renderLogo() {
     return (
       <div id={styles.Logo}>
-        <img src="/images/logo.png" alt="Banana Stocks Logo" id={styles.logoimage}/>
+        <img
+          src="/images/logo.png"
+          alt="Banana Stocks Logo"
+          id={styles.logoimage}
+        />
       </div>
-    )
+    );
   }
-  
-  function Message() {
+
+  renderMessage() {
     return (
       <Header size="large">
         <div id={styles.HomeMessage}>
@@ -35,28 +40,41 @@ function Logo() {
           Here to support all your stock portfolio needs
         </div>
       </Header>
-    )
-  }
-  
-  function SignUpButton() {
-    return (
-      <div id={styles.Signup}>
-        <Button basic inverted color="teal">Sign Up</Button>
-      </div>
-    )
-  }
-  
-  function LogInButton() {
-    return (
-      <div id={styles.Login}>
-        <Button basic inverted color="teal">Log In</Button>
-      </div>
-    )
+    );
   }
 
-class Home extends Component {
-    render() {
-      return (
+  renderSignUpButton() {
+    return (
+      <div id={styles.Signup}>
+        <Button basic inverted color="teal">
+          Sign Up
+        </Button>
+      </div>
+    );
+  }
+
+  renderLogInButton() {
+    return (
+      <div id={styles.Login}>
+        <Button basic inverted color="teal">
+          Log In
+        </Button>
+      </div>
+    );
+  }
+  render() {
+    return (
+      <div id={styles.HomeBackground}>
+        <Header id={styles.Header} as="h2">
+          {this.renderLogo()}
+          {this.renderMessage()}
+          <div id={styles.buttons}>
+            <Link to="/signup">{this.renderSignUpButton()}</Link>
+            <Link to="/login">{this.renderLogInButton()}</Link>
+          </div>
+        </Header>
+
+      
           <div id={styles.HomeBackground}>
               <Header id={styles.Header} as='h2'>
                   <Logo />
@@ -205,9 +223,11 @@ class Home extends Component {
                   </Grid>
                 </Container>
               </Segment>
-          </div>
-      )
-    }
+            </div>  
+          </div>  
+    );
+  }
 }
+
 
 export default Home;

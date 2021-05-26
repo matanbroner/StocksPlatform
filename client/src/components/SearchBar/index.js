@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Search } from "semantic-ui-react";
+import styles from "./styles.module.css"
 import _ from "lodash";
 import styles from "./styles.module.css";
 
@@ -34,6 +35,7 @@ const SearchBar = (props) => {
       onResultSelect={onSelectResult}
       onSearchChange={onSearchChange}
       value={value}
+      className={styles.searchBar}
     />
   );
 };

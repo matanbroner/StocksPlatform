@@ -18,7 +18,7 @@ class Signup extends Component {
         agreeTerms: false,
       },
       error: null,
-      loading: false
+      loading: false,
     };
   }
 
@@ -93,37 +93,39 @@ class Signup extends Component {
   submit() {
     if (this.validateForm()) {
       this.setState({
-          loading: true
-      })
-      const {
+        loading: true,
+      });
+      const { username, email, password, firstName, lastName } =
+        this.state.form;
+      ApiHandler.post(
+        "users",
+        "users/sign-up",
+        {},
+        {
           username,
           email,
           password,
           firstName,
-          lastName
-      } = this.state.form
-      ApiHandler.post('users', 'users/sign-up', {}, {
-        username,
-        email,
-        password,
-        firstName,
-        lastName
-      }).then(() => {
-        this.props.history.push("/login");
-      }).catch((e) => {
-          console.log(e)
+          lastName,
+        }
+      )
+        .then(() => {
+          this.props.history.push("/login");
+        })
+        .catch((e) => {
+          console.log(e);
           this.setState({
-              loading: false,
-              error: e.error
-          })
-      })
+            loading: false,
+            error: e.error,
+          });
+        });
     }
   }
 
   render() {
     return (
-      <div id={styles.signup_body}>
-          <div id={styles.signup}>
+      <div id={styles.signupWrapper}>
+        <div id={styles.signup}>
           <Grid>
             <Container id={styles.container}>
               {this.state.error ? (
@@ -137,7 +139,7 @@ class Signup extends Component {
 
                 <Form.Group>
                   <Form.Field>
-                    <label id={styles.firstname}>First Name</label>
+                    <label>First Name</label>
                     <input
                       placeholder="First Name"
                       value={this.state.form.firstName}
@@ -145,7 +147,7 @@ class Signup extends Component {
                     />
                   </Form.Field>
                   <Form.Field>
-                    <label id={styles.lastname}>Last Name</label>
+                    <label>Last Name</label>
                     <input
                       placeholder="Last Name"
                       value={this.state.form.lastName}
@@ -154,48 +156,39 @@ class Signup extends Component {
                   </Form.Field>
                 </Form.Group>
 
-                <Form.Field>
-                  <label id={styles.username}>Username</label>
-                  <input
-                    id={styles.user}
-                    placeholder="Username"
-                    value={this.state.form.username}
-                    onChange={(e) => this.updateForm("username", e)}
-                  />
-                </Form.Field>
-                <Form.Field>
-                  <label id={styles.address}>Email</label>
-                  <input
-                    id={styles.email}
-                    placeholder="E-mail Address"
-                    value={this.state.form.email}
-                    onChange={(e) => this.updateForm("email", e)}
-                  />
-                </Form.Field>
-                <Form.Field>
-                  <label id={styles.password_label}>Password</label>
-                  <input
-                    id={styles.password}
-                    type="password"
-                    placeholder="Password"
-                    value={this.state.form.password}
-                    onChange={(e) => this.updateForm("password", e)}
-                  />
-                </Form.Field>
-                <Form.Field>
-                  <label id={styles.password_confirm}>Confirm Password</label>
-                  <input
-                    id={styles.confirm}
-                    type="password"
-                    placeholder="Confirm Password"
-                    value={this.state.form.confirmPassword}
-                    onChange={(e) => this.updateForm("confirmPassword", e)}
-                  />
-                </Form.Field>
+                <Form.Input
+                  label="Username"
+                  id={styles.user}
+                  placeholder="Username"
+                  value={this.state.form.username}
+                  onChange={(e) => this.updateForm("username", e)}
+                />
+                <Form.Input
+                  label="Email"
+                  id={styles.email}
+                  placeholder="E-mail Address"
+                  value={this.state.form.email}
+                  onChange={(e) => this.updateForm("email", e)}
+                />
+                <Form.Input
+                  label="Password"
+                  id={styles.password}
+                  type="password"
+                  placeholder="Password"
+                  value={this.state.form.password}
+                  onChange={(e) => this.updateForm("password", e)}
+                />
+                <Form.Input
+                  label="Confirm Password"
+                  id={styles.confirm}
+                  type="password"
+                  placeholder="Confirm Password"
+                  value={this.state.form.confirmPassword}
+                  onChange={(e) => this.updateForm("confirmPassword", e)}
+                />
                 <Form.Field>
                   <Checkbox
                     label="I agree to the Terms and Conditions"
-                    id={styles.checkbox}
                     onChange={(e) =>
                       this.updateForm(
                         "agreeTerms",
@@ -205,17 +198,17 @@ class Signup extends Component {
                     }
                   ></Checkbox>
                 </Form.Field>
-                
-                <Grid.Column id={styles.button} textAlign='center'>
+                <div id={styles.buttonWrapper}>
                   <Form.Button
                     color="teal"
+                    id={styles.button}
                     content="Create Account"
                     size="large"
                     onClick={this.submit.bind(this)}
                     disabled={!this.formIsComplete()}
                     loading={this.state.loading}
                   />
-                </Grid.Column>
+                </div>
               </Form>
             </Container>
           </Grid>

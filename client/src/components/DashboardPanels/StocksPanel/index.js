@@ -2,15 +2,20 @@ import React, { Component } from "react";
 import styles from "./styles.module.css";
 import BasePanel from "../BasePanel";
 import StockSearch from "../../StockSearch";
+import StockMetrics from "../../StockMetrics"
 
 class StocksPanel extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      ticker: null
+    };
   }
 
   onSearchBarSelect(result) {
-    console.log(result);
+    this.setState({
+      ticker: result.symbol
+    })
   }
 
   render() {
@@ -19,6 +24,11 @@ class StocksPanel extends Component {
         <div>
           <StockSearch id={styles.searchWrapper} onSelect={this.onSearchBarSelect.bind(this)} />
         </div>
+        {
+          this.state.ticker
+          ? <StockMetrics ticker={this.state.ticker}/>
+          : null
+        }
       </BasePanel>
     );
   }

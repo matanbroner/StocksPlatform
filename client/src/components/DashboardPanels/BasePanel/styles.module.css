@@ -1,9 +1,36 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap");
 
 #wrapper {
-  height: 85vh;
+  height: fit-content;
+  height: 90vh;
+  width: 85%;
+  margin: auto;
+  background: #e0e0e0;
+  padding: 25px;
+  border-radius: 2px;
+  box-shadow: 0 -3em 3em rgba(0, 0, 0, 0.1), 0 0 0 2px rgb(255, 255, 255),
+    0.3em 0.3em 1em rgba(0, 0, 0, 0.3);
+  overflow: scroll;
 }
 
-#base_panel_title {
-  font-family: "Montserrat", sans-serif;
+#title {
+  font-size: 30px;
+}
+
+#subtitle {
+  white-space: pre-wrap;
+  font-size: 15px;
+  font-style: italic;
+  color: gray;
+  margin-bottom: 5px;
+}
+
+#loader {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#content {
+  height: 100%;
 }
