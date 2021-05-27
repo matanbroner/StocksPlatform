@@ -40,7 +40,7 @@ class DeleteAccount extends Component {
           size='tiny'
           trigger= { 
             <Button onClick={() => this.setState({ modalOpen: true })} 
-              color="teal">
+              color="red">
                 Delete Account
             </Button>
           }
