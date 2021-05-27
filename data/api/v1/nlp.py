@@ -16,7 +16,7 @@ from api import json_response
 router = Blueprint('nlp_router', __name__)
 
 @router.route('/article', methods=['GET'])
-def get_news_articles_by_ticker():
+def get_news_articles():
     """
     Gets all news articles associated with a specific stock ticker.
     @param ticker: ex. TSLA
