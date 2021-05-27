@@ -1,13 +1,11 @@
 import concurrent.futures
-from logging import error
-import time
 
 import pandas as pd
 
 from nlp.news_sources import GeneralNewsData, RedditData
 
 from multiprocessing import Lock
-lock = Lock()
+lock = Lock()   # used in pipeline
 
 from nlp.nlp_pipeline import to_pipeline
 
@@ -36,6 +34,7 @@ def main(fmp_key, stock_list):
     """
     Creates a source list and sets up subprocesses for retrieving news data.
     """
+    #print("Starting news retrieval...")
 
     sources = []
     for stock in stock_list:
@@ -56,3 +55,5 @@ def main(fmp_key, stock_list):
                     to_pipeline(data)
     
     return 1
+
+
