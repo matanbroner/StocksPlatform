@@ -4,9 +4,7 @@ import threading
 import os
 
 from nlp.retrieve_news import main as retrieve_news
-
 from db.handlers.stock_handler import get_all_stocks
-
 
 class ThreadTimer(threading.Thread):
     def __init__(self, interval, callback, *args):
@@ -34,7 +32,7 @@ class ThreadTimer(threading.Thread):
 
 
 def init_news_retrieval(fmp_key: str = None, sec_delay: int = 60):
-    fmp_key = os.getenv("FMP_KEY") or fmp_key
+    fmp_key = os.getenv("FMP_API_KEY") or fmp_key
 
     if fmp_key == None:
         raise RuntimeError(f"No API key for Financial Modeling Prep given.")
