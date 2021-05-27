@@ -170,40 +170,40 @@ userRouter.route('/logout')
 
     try {
         
-      var headerResult = await HelperModule.checkAuthorizationHeaders(req);
+      // var headerResult = await HelperModule.checkAuthorizationHeaders(req);
 
-      if(headerResult.status == 403) {
-          res.status(403).json({
-              headerResult
-          });
-      }
+      // if(headerResult.status == 403) {
+      //     res.status(403).json({
+      //         headerResult
+      //     });
+      // }
 
-      var token = headerResult.token;
+      // var token = headerResult.token;
 
-      var tokenExists = await Models.Tokens.findOne({
-        where: { token: token }
-      });
+      // var tokenExists = await Models.Tokens.findOne({
+      //   where: { token: token }
+      // });
 
-      if(tokenExists) {
-        res.status(401).json({
-                  status: 401,
-                  error:"Token is already blacklisted"
-              });
-      }
-      else {
+      // if(tokenExists) {
+      //   res.status(401).json({
+      //             status: 401,
+      //             error:"Token is already blacklisted"
+      //         });
+      // }
+      // else {
         // Just reset it even if not oauth logged in
         await oauth.clearProfile();
 
-        const tokenEntry = { token: token, valid: false }
-        Models.Tokens.create(tokenEntry)
-          .then(async (result) => {
-            console.log('profile ', await oauth.checkProfile());
+        //const tokenEntry = { token: token, valid: false }
+        //Models.Tokens.create(tokenEntry)
+       //   .then(async (result) => {
+            //console.log('profile ', await oauth.checkProfile());
 				    res.status(200).json({
               status: 200,
               data: "success"
             });
-			    }).catch((err) => console.log(err));
-		  }
+			  //  }).catch((err) => console.log(err));
+		  //}
 	
     } catch (error) {
       return res.status(400).json({
@@ -220,30 +220,30 @@ userRouter.route('/delete-account/:email')
 
   try {
         
-    var headerResult = await HelperModule.checkAuthorizationHeaders(req);
+    // var headerResult = await HelperModule.checkAuthorizationHeaders(req);
 
-    if(headerResult.status == 403) {
-        res.status(403).json({
-            headerResult
-        });
-    }
+    // if(headerResult.status == 403) {
+    //     res.status(403).json({
+    //         headerResult
+    //     });
+    // }
 
-    var token = headerResult.token;
+    // var token = headerResult.token;
 
-    if(await QueryModule.inactiveToken(token)) {
-        res.status(403).json({
-            status: 403,
-            error:"Token is invalidated or Inactive"
-        });
-    } else{
-        jwt.verify(token, process.env.JWT_KEY, async (error, decodedToken) => {
+    // if(await QueryModule.inactiveToken(token)) {
+    //     res.status(403).json({
+    //         status: 403,
+    //         error:"Token is invalidated or Inactive"
+    //     });
+    // } else{
+    //     jwt.verify(token, process.env.JWT_KEY, async (error, decodedToken) => {
             
-          if(error) {
-            res.status(403).json({
-                status: 403,
-                error: "Access Token is incorrect"
-            });
-          } else {
+    //       if(error) {
+    //         res.status(403).json({
+    //             status: 403,
+    //             error: "Access Token is incorrect"
+    //         });
+    //       } else {
             const email = req.params.email;
 
             var userDeleted = await Models.Users.destroy({
@@ -254,8 +254,8 @@ userRouter.route('/delete-account/:email')
 
             if(userDeleted) {
               
-              const tokenEntry = { token: token, valid: false }
-              await Models.Tokens.create(tokenEntry)
+              //const tokenEntry = { token: token, valid: false }
+              //await Models.Tokens.create(tokenEntry)
 
               res.status(200).json({
                   status: 200
@@ -267,9 +267,9 @@ userRouter.route('/delete-account/:email')
                   error: "Access Token is valid, email is incorrect"
                 });
             }
-          }
-        });
-      }
+          //}
+        //});
+      //}
   } catch (error) {
     return res.status(400).json({
             status: 400,
@@ -283,30 +283,30 @@ userRouter.route("/change-password")
 .post(async (req, res) => {
   try {
 
-    var headerResult = await HelperModule.checkAuthorizationHeaders(req);
+    // var headerResult = await HelperModule.checkAuthorizationHeaders(req);
 
-    if(headerResult.status == 403) {
-        res.status(403).json({
-            headerResult
-        });
-    }
+    // if(headerResult.status == 403) {
+    //     res.status(403).json({
+    //         headerResult
+    //     });
+    // }
 
-    var token = headerResult.token;
+    // var token = headerResult.token;
 
-    if(await QueryModule.inactiveToken(token)) {
-        res.status(403).json({
-            status: 403,
-            error:"Token is invalidated or Inactive"
-        });
-    } else{
-        jwt.verify(token, process.env.JWT_KEY, async (error, decodedToken) => {
+    // if(await QueryModule.inactiveToken(token)) {
+    //     res.status(403).json({
+    //         status: 403,
+    //         error:"Token is invalidated or Inactive"
+    //     });
+    // } else{
+    //     jwt.verify(token, process.env.JWT_KEY, async (error, decodedToken) => {
             
-          if(error) {
-            res.status(403).json({
-                status: 403,
-                error: "Access Token is incorrect"
-            });
-          } else {
+    //       if(error) {
+    //         res.status(403).json({
+    //             status: 403,
+    //             error: "Access Token is incorrect"
+    //         });
+    //       } else {
               var { email, currentPassword, newPassword } = req.body;
 
               var userExists = await Models.Users.findOne({
@@ -337,9 +337,9 @@ userRouter.route("/change-password")
                   error: `Incorrect Credentials: ${email}, ${currentPassword}`
                 });
               }
-          }
-        });
-      }
+          //}
+        //});
+      //}
 
   } catch (error) {
     return res.status(400).json({
