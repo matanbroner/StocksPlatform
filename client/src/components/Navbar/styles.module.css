@@ -32,6 +32,9 @@
 }
 
 #title {
-  color: teal;
-  text-transform: uppercase;
+  color: rgb(17, 196, 196);
+}
+
+#sidebar {
+  background-color: rgb(0, 0, 0);
 }

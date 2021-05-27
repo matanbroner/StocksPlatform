@@ -1,12 +1,11 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Button, Grid, Divider, Dimmer, Loader } from "semantic-ui-react";
+import { Switch, Route } from "react-router-dom";
 import ApiHandler from "../../../api";
 import BasePanel from "../BasePanel";
 import ProjectCreateModal from "../../Modals/ProjectCreateModal";
 import ProjectCard from "../../ProjectCard";
-import Charts from "../Charts/index";
-import Apex from "../Charts/apex";
 import styles from "./styles.module.css";
 
 class ProjectsPanel extends Component {
@@ -109,10 +108,6 @@ class ProjectsPanel extends Component {
       });
   }
 
-  renderLoader() {
-    return <Loader id={styles.loader} size="massive" active />;
-  }
-
   renderModal() {
     return (
       <ProjectCreateModal
@@ -144,7 +139,14 @@ class ProjectsPanel extends Component {
         <Grid.Row id={chunkIdx} columns={12}>
           {chunk.map((project) => {
             return (
-              <Grid.Column id={project.id} stackable width={4}>
+              <Grid.Column
+                onClick={() => {
+                  this.props.history.push(`/dashboard/projects/${project.id}`);
+                }}
+                id={project.id}
+                stackable
+                width={4}
+              >
                 <ProjectCard
                   projectName={project.project_name}
                   description={project.description}
@@ -161,28 +163,21 @@ class ProjectsPanel extends Component {
 
   render() {
     return (
-      <BasePanel title={`${this.props.user.firstName}'s Projects`}>
-        {this.state.loading ? (
-          this.renderLoader()
-        ) : (
-          <React.Fragment>
-            <h2>ReCharts Chart</h2>
-            <Charts />
-            <h2>ApexChart Chart</h2>
-            <Apex />
-            <br></br>
-            <Button
-              className="project-button"
-              color="teal"
-              onClick={() => this.updateModalState(true)}
-            >
-              Add Project
-            </Button>
-            <Divider hidden />
-            {this.renderProjectCards()}
-            {this.renderModal()}
-          </React.Fragment>
-        )}
+      <BasePanel
+        title={`${this.props.user.firstName}'s Projects`}
+        subtitle={`Projects are an easy way to organize your various trading strategies and portfolios.\nAttach a number of stock tickers to your project and track progress over time.`}
+        loading={this.state.loading}
+      >
+        <Button
+          id={styles.button}
+          color="teal"
+          onClick={() => this.updateModalState(true)}
+        >
+          Create a Project
+        </Button>
+        <Divider hidden />
+        {this.renderProjectCards()}
+        {this.renderModal()}
       </BasePanel>
     );
   }

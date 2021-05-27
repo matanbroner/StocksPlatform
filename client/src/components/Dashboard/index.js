@@ -11,6 +11,8 @@ import ProjectsPanel from "../DashboardPanels/ProjectsPanel";
 import StocksPanel from "../DashboardPanels/StocksPanel/index";
 import SettingsPanel from "../DashboardPanels/SettingsPanel/index";
 
+import ProjectPage from "../ProjectPage"
+
 class Dashboard extends React.Component {
   renderSubrouter() {
     return (
@@ -23,8 +25,15 @@ class Dashboard extends React.Component {
         )}
         />
         <Route path="/dashboard/projects" exact component={ProjectsPanel} />
+        <Route path="/dashboard/projects/:id" component={ProjectPage} />
         <Route path="/dashboard/stocks" exact component={StocksPanel} />
-        <Route path="/dashboard/settings" exact component={SettingsPanel} />
+        <Route path="/dashboard/settings" exact component={(props) => (
+                <SettingsPanel
+                  {...props}
+                  user={this.props.user}
+                />
+        )}
+        />
       </>
     );
   }
@@ -40,11 +49,11 @@ class Dashboard extends React.Component {
               />
             </Grid.Column>
           </Grid.Row>
-          <Grid.Row columns={2}>
-            <Grid.Column stretched width={4}>
+          <Grid.Row>
+            <Grid.Column stretched width={1}>
               <Navbar />
             </Grid.Column>
-            <Grid.Column stretched width={12}>
+            <Grid.Column stretched width={15}>
               {this.renderSubrouter()}
             </Grid.Column>
           </Grid.Row>

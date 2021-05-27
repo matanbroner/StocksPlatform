@@ -23,30 +23,30 @@ class ApiHandler {
     this.authToken = null;
   }
 
-  get(service, route, headers = {}, data = {}) {
-    return this._request("GET", service, route, headers, data);
+  get(service, route, headers = {}, data = {}, config={}) {
+    return this._request("GET", service, route, headers, data, config);
   }
 
-  post(service, route, headers = {}, data = {}) {
-    return this._request("POST", service, route, headers, data);
+  post(service, route, headers = {}, data = {}, config={}) {
+    return this._request("POST", service, route, headers, data, config);
   }
 
-  put(service, route, headers = {}, data = {}) {
-    return this._request("PUT", service, route, headers, data);
+  put(service, route, headers = {}, data = {}, config={}) {
+    return this._request("PUT", service, route, headers, data, config);
   }
 
-  delete(service, route, headers = {}, data = {}) {
-    return this._request("DELETE", service, route, headers, data);
+  delete(service, route, headers = {}, data = {}, config={}) {
+    return this._request("DELETE", service, route, headers, data, config);
   }
 
-  async _request(method, service, route, headers = {}, data = {}) {
+  async _request(method, service, route, headers = {}, data = {}, config={}) {
     if (this.mock) {
-      return this._mock_request(service, method, route, headers, data);
+      return this._mock_request(service, method, route, headers, data, config);
     }
     headers["Authorization"] = `Bearer ${this.authToken}`;
     headers["Access-Control-Allow-Origin"] = "*";
     let url = `${this.urlBase}/${service}/${route}`;
-    if(!url.includes("?")){
+    if(!url.includes("?") && !config.removeTrailingSlash){
       url += "/"; // odd issue with CORS needing a trailing slash
     }
     try {

@@ -2,6 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import "semantic-ui-css/semantic.min.css";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import Particles from "react-particles-js";
 import "./App.css";
 import Home from "./components/Home/index";
 import Login from "./components/Login/index";
@@ -87,7 +88,7 @@ class App extends React.PureComponent {
         if (e.error && e.error.includes("TokenExpiredError")) {
           this.refreshAccessKey(refreshKey);
         } else if (!OPEN_ROUTES.includes(window.location.pathname)) {
-          console.log("in here")
+          console.log("in here");
           window.location.pathname = "/login";
         }
       } else {
@@ -100,6 +101,30 @@ class App extends React.PureComponent {
   render() {
     return (
       <div className="App">
+        <Particles
+          className="particleCanvas"
+          params={{
+            particles: {
+              color: {
+                value: "#008080"
+              },
+              line_linked: {
+                color: {
+                  value: "#008080"
+                }
+              },
+              move: {
+                speed: 0.3
+              },
+              number: {
+                value: 100
+              },
+              size: {
+                value: 3
+              }
+            }
+          }}
+        />
         <Router>
           <Switch>
             <Route path="/" exact component={Home} />
@@ -118,16 +143,19 @@ class App extends React.PureComponent {
               )}
             />
             {this.state.loading ? null : (
-              <Route path="/dashboard" component={(props) => (
-                <Dashboard 
-                {...props}
-                onLogout={() => {
-                  localStorage.removeItem(ACCESS_KEY)
-                  localStorage.removeItem(REFRESH_KEY)
-                  ApiHandler.revokeToken()
-                }}
-                />
-              )} />
+              <Route
+                path="/dashboard"
+                component={(props) => (
+                  <Dashboard
+                    {...props}
+                    onLogout={() => {
+                      localStorage.removeItem(ACCESS_KEY);
+                      localStorage.removeItem(REFRESH_KEY);
+                      ApiHandler.revokeToken();
+                    }}
+                  />
+                )}
+              />
             )}
           </Switch>
         </Router>
