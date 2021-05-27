@@ -32,12 +32,12 @@ class ThreadTimer(threading.Thread):
             self.callback(*self.args, self.stock_set)
 
 
-def init_news_retrieval(fmp_key: str = None):
+def init_news_retrieval(fmp_key: str = None, sec_delay: int = 60):
     fmp_key = os.getenv("FMP_KEY") or fmp_key
 
     if fmp_key == None:
         raise RuntimeError(f"No API key for Financial Modeling Prep given.")
 
-    t = ThreadTimer(2, retrieve_news, fmp_key)
+    t = ThreadTimer(sec_delay, retrieve_news, fmp_key)
     t.start()
 
