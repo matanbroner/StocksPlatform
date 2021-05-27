@@ -69,6 +69,7 @@ const SettingsPanel = (props) => {
     }
 
         return (
+            // Testing
             <BasePanel
             title="Platform Settings">
                 <Table id={styles.table}>
