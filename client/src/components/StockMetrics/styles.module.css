@@ -5,12 +5,14 @@
 #header {
   font-size: 35px;
   font-weight: 400;
+  padding-left: 100px;
 }
 
 .activePrice {
   font-size: 20px;
   font-weight: 400;
   margin: 10px auto;
+  padding-left: 100px;
 }
 
 #charts {
@@ -26,9 +28,10 @@
 }
 
 #linechart {
-  width: 400px;
-  height: 200px;
+  width: 1200px;
+  height: 425px;
 }
 
 #intervalButtons {
+  padding-left: 75px;
 }
