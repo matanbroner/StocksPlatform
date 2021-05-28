@@ -4,6 +4,7 @@ import { withRouter } from "react-router";
 import styles from "./styles.module.css";
 import { Link } from 'react-router-dom';
 import { Menu, Button, Icon } from 'semantic-ui-react';
+import ApiHandler from "../../api";
 
 import {
     removeUser
@@ -12,9 +13,20 @@ import {
 class Topbar extends Component {
 
     logout(){
-        this.props.removeUser();
-        this.props.onLogout();
-        this.props.history.push("/login")
+        ApiHandler.post(
+            "users",
+            "users/logout",
+            {},
+            {}
+          ).then((res) => {
+                this.props.removeUser();
+                this.props.onLogout();
+                this.props.history.push("/login")
+            })
+            .catch((e) => {
+              console.log(e);
+            });
+        
     }
     render() {
         return (

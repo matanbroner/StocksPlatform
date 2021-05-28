@@ -1,3 +1,6 @@
+const jwt = require("jsonwebtoken");
+const QueryModule = require("./query");
+const moment = require('moment');
 /*
  * Receives the request argument passed into an API endpoint.
  * Evaluates if there is a header, 'authorization', and that
@@ -16,6 +19,14 @@ const checkAuthorizationHeaders = async (req) => {
         return {
             status: 403,
             error: "Invalid authorization header"
+        };
+    }
+    var token = header[1];
+
+    if(await QueryModule.inactiveToken(token)) {
+        return {
+            status: 403,
+            error:"Token is invalidated or Inactive"
         };
     }
     return {
@@ -37,7 +48,40 @@ const checkSignupRequest = async (req) => {
     return true;
 }
 
+const createAccessToken = async (payload) => {
+    var accessToken = jwt.sign(
+        {
+          payload
+        },
+        process.env.JWT_KEY,
+        {
+          expiresIn: process.env.JWT_EXPIRES
+        }
+    );
+    return accessToken;
+}
+
+const createRefreshToken = async (payload) => {
+    var refreshToken = jwt.sign(
+        {
+          payload
+        },
+        process.env.REFRESH_SECRET,
+        {
+          expiresIn: process.env.REFRESH_EXPIRES
+        }
+    );
+    return refreshToken;
+}
+
+const getUTC = async () => {
+  return moment().format('YYYY-MM-DD HH:mm:ss');
+}
+
 module.exports = {
   checkAuthorizationHeaders,
   checkSignupRequest,
+  createAccessToken,
+  createRefreshToken,
+  getUTC
 }
