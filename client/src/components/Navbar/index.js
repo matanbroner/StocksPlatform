@@ -17,6 +17,7 @@ const Navbar = (props) => {
         visible={isOpen}
         width="thin"
         className="nav-sidebar"
+        id={styles.sidebar}
       >
         <Menu.Item as="div" className="nav-logo">
           <img
@@ -35,7 +36,7 @@ const Navbar = (props) => {
 
         <Link to="/dashboard/projects">
           <Menu.Item as="div">
-            <Icon name="users" className="nav-icon" />
+            <Icon name="archive" className="nav-icon" />
             <div id={styles.title}>Projects</div>
           </Menu.Item>
         </Link>

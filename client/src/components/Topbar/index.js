@@ -36,7 +36,7 @@ class Topbar extends Component {
                         <Input icon='search' placeholder='Search...' />
                     </Menu.Item> */}
 
-                    <Menu.Item className='profile-icon'>
+                    <Menu.Item className={styles.profileName}>
                         <Icon name='user' />
                         <div>
                             <b>{this.props.user.username}</b>
