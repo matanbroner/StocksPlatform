@@ -112,8 +112,28 @@ userRouter
       } else {
         if (await PasswordModule.compare(password, user.password)) {
 		      const { id, username, email } = user;
-			    var accessToken = await HelperModule.createAccessToken({id, username, email});
-          var refreshToken = await HelperModule.createRefreshToken({id, username, email});
+			    var accessToken = jwt.sign(
+            {
+              id,
+              username,
+              email,
+            },
+            process.env.JWT_KEY,
+            {
+              expiresIn: process.env.JWT_EXPIRES
+            }
+          );
+          var refreshToken = jwt.sign(
+            {
+              id,
+              username,
+              email,
+            },
+            process.env.REFRESH_SECRET,
+            {
+              expiresIn: process.env.REFRESH_EXPIRES
+            }
+          );
 
           delete user.password;
           res.status(200).json({
