@@ -34,6 +34,7 @@ passport.use(new GoogleStrategy({
         ],
       },
     });
+    console.log('user exists', userExists)
 
     var createdAt = await HelperModule.getUTC();
 
