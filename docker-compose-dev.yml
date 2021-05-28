@@ -35,8 +35,10 @@ services:
       - JWT_EXPIRES_HOUR=1
       - REFRESH_SECRET=stocks_refresh_jwt
       - REFRESH_EXPIRES=30h
-      - CLIENT_ID=297422208742-5pt82cje5dvp2701a60ngllvd2cul08g.apps.googleusercontent.com
-      - CLIENT_SECRET=GBN4_GuUKpsPGgUlesgPctVp
+      - GOOGLE_CLIENT_ID=297422208742-5pt82cje5dvp2701a60ngllvd2cul08g.apps.googleusercontent.com
+      - GOOGLE_CLIENT_SECRET=GBN4_GuUKpsPGgUlesgPctVp
+      - FACEBOOK_CLIENT_ID=2892497347641862
+      - FACEBOOK_CLIENT_SECRET=f93af30a2ff9b82e39f688a9e082a2c9
       - POSTGRES_USER=stocks_admin
       - POSTGRES_PASSWORD=stocks_admin
       - POSTGRES_HOST=postgres

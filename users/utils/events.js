@@ -1,9 +1,9 @@
 const QueryModule = require('./query');
 
-const intervalSeconds = 5000000
-
-function removeInvalidTokens() {
+async function removeInvalidTokens() {
     await QueryModule.removeInvalidTokens();
 }
 
-setInterval(removeInvalidTokens, intervalSeconds);
+module.exports = {
+    removeInvalidTokens
+}

@@ -8,7 +8,9 @@ const userRouter = express.Router();
 
 const PasswordModule = require("../utils/passwords");
 const HelperModule = require("../utils/helper");
+const QueryModule = require("../utils/query");
 
+const oauth = require("./oauth");
 userRouter.use(express.json());
 dotenv.config();
 
@@ -96,6 +98,7 @@ userRouter
       var { email, password } = req.body;
 
       var user = await Models.Users.findOne({
+        attributes: ["id", "firstName", "lastName", "username", "email", "password"],
         where: {
           email,
         },
@@ -189,12 +192,16 @@ userRouter.route('/logout')
               });
       }
       else {
+        // Just reset it even if not oauth logged in
+        await oauth.clearProfile();
+
         const tokenEntry = { token: token, valid: false }
         Models.Tokens.create(tokenEntry)
-          .then((result) => {
+          .then(async (result) => {
+            console.log('profile ', await oauth.checkProfile());
 				    res.status(200).json({
               status: 200,
-              data:"success"
+              data: "success"
             });
 			    }).catch((err) => console.log(err));
 		  }
@@ -206,6 +213,141 @@ userRouter.route('/logout')
           });
     }
 
+});
+
+// Use delete without passing any data in body to be RESTful (not that it matters)
+userRouter.route('/delete-account/:email')
+.delete(async (req, res) => {
+
+  try {
+        
+    var headerResult = await HelperModule.checkAuthorizationHeaders(req);
+
+    if(headerResult.status == 403) {
+        res.status(403).json({
+            headerResult
+        });
+    }
+
+    var token = headerResult.token;
+
+    if(await QueryModule.inactiveToken(token)) {
+        res.status(403).json({
+            status: 403,
+            error:"Token is invalidated or Inactive"
+        });
+    } else{
+        jwt.verify(token, process.env.JWT_KEY, async (error, decodedToken) => {
+            
+          if(error) {
+            res.status(403).json({
+                status: 403,
+                error: "Access Token is incorrect"
+            });
+          } else {
+            const email = req.params.email;
+
+            var userDeleted = await Models.Users.destroy({
+              where: {
+                email
+              },
+            });
+
+            if(userDeleted) {
+              
+              const tokenEntry = { token: token, valid: false }
+              await Models.Tokens.create(tokenEntry)
+
+              res.status(200).json({
+                  status: 200
+              });
+              
+            } else {
+                res.status(403).json({
+                  status: 403,
+                  error: "Access Token is valid, email is incorrect"
+                });
+            }
+          }
+        });
+      }
+  } catch (error) {
+    return res.status(400).json({
+            status: 400,
+            error:"Request has failed"
+        });
+  }
+
+});
+
+userRouter.route("/change-password")
+.post(async (req, res) => {
+  try {
+
+    var headerResult = await HelperModule.checkAuthorizationHeaders(req);
+
+    if(headerResult.status == 403) {
+        res.status(403).json({
+            headerResult
+        });
+    }
+
+    var token = headerResult.token;
+
+    if(await QueryModule.inactiveToken(token)) {
+        res.status(403).json({
+            status: 403,
+            error:"Token is invalidated or Inactive"
+        });
+    } else{
+        jwt.verify(token, process.env.JWT_KEY, async (error, decodedToken) => {
+            
+          if(error) {
+            res.status(403).json({
+                status: 403,
+                error: "Access Token is incorrect"
+            });
+          } else {
+              var { email, currentPassword, newPassword } = req.body;
+
+              var userExists = await Models.Users.findOne({
+                where: {
+                  email
+                },
+              });
+
+              if(userExists && await PasswordModule.compare(currentPassword, userExists.password)) {
+                
+                var encryptedPassword = await PasswordModule.encrypt(newPassword);
+
+                await Models.Users.update(
+                  {password: encryptedPassword},
+                  {where: { email }}
+                ).then((result) => {
+                  res.status(200).json({
+                    status: 200,
+                    data: "Password changed successfully"
+                  });
+                }).catch((err) => {
+                  console.log(err);
+                });
+
+              } else {
+                res.status(403).json({
+                  status: 403,
+                  error: `Incorrect Credentials: ${email}, ${currentPassword}`
+                });
+              }
+          }
+        });
+      }
+
+  } catch (error) {
+    return res.status(400).json({
+            status: 400,
+            error:"Request has failed"
+        });
+  }
 });
 
 module.exports = userRouter;

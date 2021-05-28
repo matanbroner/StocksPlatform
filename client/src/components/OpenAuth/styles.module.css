@@ -1,0 +1,21 @@
+#oauthElement {
+  padding-bottom: 15px;
+}
+  
+#oauthIcon {
+  margin-top: 5px;
+}
+
+#oauthButton {
+  font-size: 20px;
+  border-radius: 4px;
+  text-decoration: none;
+  background-color: teal;
+  color: #ffffff;
+  padding: 0px 2px 2px 10px;
+  border-top: 1px solid teal;
+  border-right: 1px solid teal;
+  border-bottom: 1px solid teal;
+  border-left: 1px solid teal;
+  height: 50px;
+}
