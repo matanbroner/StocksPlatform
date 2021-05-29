@@ -69,10 +69,11 @@ class StockMetrics extends React.PureComponent {
     });
     return (
       <LineChart
-        width={730}
-        height={250}
+        width={1000}
+        height={425}
         data={data}
         margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+        id={styles.linechart}
       >
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="name" />
