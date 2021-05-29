@@ -96,8 +96,8 @@ class Home extends Component {
                   </p>
                 </Grid.Column>
                 <Grid.Column floated='right' width={8}>
-                  {/* <Image id={styles.home_image} bordered rounded size='huge' src='/images/home-photo.jpg' /> */}
-                  <iframe src="https://giphy.com/embed/RtOXrOEjQ78VywITBN" id={styles.giphy} allowFullScreen></iframe>
+                  <Image id={styles.home_image} bordered rounded size='huge' src='/images/home-photo.jpg' />
+                  {/* <iframe src="https://giphy.com/embed/RtOXrOEjQ78VywITBN" id={styles.giphy} allowFullScreen></iframe> */}
                 </Grid.Column>
               </Grid.Row>
               <Grid.Row>
