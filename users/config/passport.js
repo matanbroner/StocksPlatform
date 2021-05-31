@@ -49,10 +49,8 @@ passport.use(new GoogleStrategy({
     var jwtAccessToken = jwt.sign(
       {
         email,
-        username,
         firstName,
         lastName,
-        local: false,
         createdAt
       },
       process.env.JWT_KEY,
@@ -64,10 +62,8 @@ passport.use(new GoogleStrategy({
     var jwtRefreshToken = jwt.sign(
       {
         email,
-        username,
         firstName,
         lastName,
-        local: false,
         createdAt
       },
       process.env.REFRESH_SECRET,
@@ -157,10 +153,8 @@ passport.use(new FacebookStrategy({
     var jwtAccessToken = jwt.sign(
       {
         email,
-        username,
         firstName,
         lastName,
-        local: false,
         createdAt
       },
       process.env.JWT_KEY,
@@ -172,10 +166,8 @@ passport.use(new FacebookStrategy({
     var jwtRefreshToken = jwt.sign(
       {
         email,
-        username,
         firstName,
         lastName,
-        local: false,
         createdAt
       },
       process.env.REFRESH_SECRET,

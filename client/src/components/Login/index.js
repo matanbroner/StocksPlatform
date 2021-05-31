@@ -38,6 +38,8 @@ class Login extends Component {
           const { accessKey, refreshKey } = profile.data;
           delete profile.data.accessKey;
           delete profile.data.refreshKey;
+          console.log('accessKey', accessKey)
+          console.log('refreshKey', refreshKey)
           this.props.setUser(profile.data, accessKey, refreshKey)
           this.props.setTokens(accessKey, refreshKey);
           this.props.history.push("/dashboard");
