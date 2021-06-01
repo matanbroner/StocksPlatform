@@ -2,6 +2,7 @@ import os
 from flask import Flask
 from flask_cors import CORS
 from db import init_db_connection, instantiate_tables
+from nlp import init_news_retrieval
 from api.v1 import init_router
 
 # keep debug mode on while not in production
@@ -20,6 +21,7 @@ def health_check():
 def init_app():
     init_db_connection()
     instantiate_tables()
+    init_news_retrieval()
     init_router(app)
 
 

@@ -9,7 +9,14 @@ from db.handlers.news_articles_handler import (
     get_all_news_articles,
     get_sentiment_for_ticker
 )
-from db.handlers.news_source_handler import get_all_news_sources
+from db.handlers.news_source_handler import (
+    get_all_news_sources,
+    get_news_source_by_id
+)
+
+from db.handlers.stock_handler import (
+    get_stock_by_id
+)
 
 from api import json_response
 
@@ -45,7 +52,25 @@ def get_news_articles():
             articles = get_all_news_articles_by_source(source, time_frame)
 
         if articles is None:
-            raise RuntimeError(f"No articles associated with {ticker}.")
+            articles = []
+
+        sources_cache = {}
+        stock_cache = {}
+
+        for article in articles:
+            if article["source_id"] in sources_cache:
+                article["source"] = sources_cache[article["source_id"]]
+            else:
+                source = get_news_source_by_id(article["source_id"])
+                article["source"] = source["source_name"]
+                sources_cache[article["source_id"]] = source["source_name"]
+
+            if article["stock_id"] in stock_cache:
+                article["ticker"] = stock_cache[article["stock_id"]]
+            else:
+                stock = get_stock_by_id(article["stock_id"])
+                article["ticker"] = stock["ticker"]
+                stock_cache[article["stock_id"]] = stock["ticker"]
 
         return json_response(status_code=200, data=articles)
     except Exception as e:

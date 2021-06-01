@@ -1,6 +1,8 @@
 black
 flask
 flask-cors
+matplotlib
+nltk
 psycopg2
 pytest
 praw
@@ -9,4 +11,4 @@ sqlalchemy
 uuid
 pandas
 spacy
-nltk
+wordcloud

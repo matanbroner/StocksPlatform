@@ -69,7 +69,7 @@ class ProjectPage extends React.PureComponent {
         projectId: id,
         panes: [
           { menuItem: "Portfolio", render: this.renderPortfolioTab.bind(this) },
-          { menuItem: "NLP", render: this.renderNlpTab.bind(this) },
+          { menuItem: "News Feed", render: this.renderNewsFeedTab.bind(this) },
           { menuItem: "Settings", render: this.renderPortfolioTab },
         ],
       },
@@ -104,30 +104,13 @@ class ProjectPage extends React.PureComponent {
                 activeTickers: res.data.stocks.map((s) => s.ticker),
               },
               () => {
-                this.fetchTickersPriceHistory(false, true);
-
-                // TODO: remove this and add actual news fetching with timer to fetch new data
-                let articles = [];
-                let { activeTickers } = this.state;
-                for (let i = 0; i < 15; i++) {
-                  const ticker =
-                    activeTickers[
-                      Math.floor(Math.random() * activeTickers.length)
-                    ];
-                  articles.push(getArticle(ticker));
-                }
+                this.fetchTickersPriceHistory(false, false);
+                this.fetchTickerNewsFeed(false, true);
                 this.setState({
-                  articles,
-                  articleFetchInterval: setInterval(() => {
-                    let { activeTickers } = this.state;
-                    const ticker =
-                      activeTickers[
-                        Math.floor(Math.random() * activeTickers.length)
-                      ];
-                    this.setState({
-                      articles: [getArticle(ticker), ...this.state.articles],
-                    });
-                  }, 10 * 1000),
+                  articleFetchInterval: setInterval(
+                    () => this.fetchTickerNewsFeed(false, false),
+                    10 * 1000
+                  ),
                 });
               }
             );
@@ -175,6 +158,42 @@ class ProjectPage extends React.PureComponent {
       });
   }
 
+  fetchTickerNewsFeed(setLoadingTrue = false, setLoadingFalse = false) {
+    if (setLoadingTrue) {
+      this.setState({
+        loading: true,
+      });
+    }
+    const fetchNews = this.state.activeTickers.map((ticker) => {
+      // fetch one week old news at max
+      return ApiHandler.get(
+        "data",
+        `news/article?ticker=${ticker}&time_frame=7`
+      );
+    });
+    let articles = [];
+    Promise.allSettled(fetchNews)
+      .then((resps) => {
+        resps.forEach((res) => {
+          if (res.status === "fulfilled") {
+            articles = [...articles, ...res.value.data];
+          }
+        });
+        articles = articles.sort(
+          (a, b) => Date(a.date_published) - Date(b.date_published)
+        );
+        console.log(articles);
+        this.setState({ articles });
+      })
+      .finally(() => {
+        if (setLoadingFalse) {
+          this.setState({
+            loading: false,
+          });
+        }
+      });
+  }
+
   formatTickerPriceHistory() {
     return Object.entries(this.state.priceHistory).map(([ticker, history]) => {
       return {
@@ -187,6 +206,10 @@ class ProjectPage extends React.PureComponent {
         }),
       };
     });
+  }
+
+  formatNewsFeedSentiment(){
+    
   }
 
   renderTickerTabs() {
@@ -280,28 +303,42 @@ class ProjectPage extends React.PureComponent {
     return this.renderPaneContainer("Analytics", content);
   }
 
-  renderNlpTab() {
+  renderNewsFeedTab() {
     const content = (
       <React.Fragment>
         <div id={styles.liveBlinkerWrapper}>
           <Label className={styles.liveBlinker} circular color="red" empty />
           <span>Fetching live news...</span>
         </div>
-        {this.state.articles.map((article, i) => (
-          <Card
-            key={i}
-            fluid
-            color={article.avg_sentiment > 0.5 ? "green" : "red"}
-          >
-            <Card.Content>
-              <Card.Header>
-                {article.headline}
-                <Label className={styles.articleTickerLabel} content={article.ticker} />
-              </Card.Header>
-              <Card.Meta>{article.avg_sentiment} Average Sentiment</Card.Meta>
-            </Card.Content>
-          </Card>
-        ))}
+        {this.state.articles.map((article, i) => {
+          let color;
+          if (article.avg_sentiment == 0) {
+            color = "yellow";
+          } else {
+            color = article.avg_sentiment > 0 ? "green" : "red";
+          }
+          return (
+            <Card key={i} fluid color={color}>
+              <Card.Content>
+                <Card.Header>
+                  <a
+                    style={{ display: "table-cell" }}
+                    href={article.article_link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {article.headline}
+                  </a>
+                  <Label
+                    className={styles.articleTickerLabel}
+                    content={article.ticker}
+                  />
+                </Card.Header>
+                <Card.Meta>{article.avg_sentiment} Average Sentiment</Card.Meta>
+              </Card.Content>
+            </Card>
+          );
+        })}
       </React.Fragment>
     );
     return this.renderPaneContainer("News Feed", content);

@@ -34,7 +34,6 @@ def main(fmp_key, stock_list):
     """
     Creates a source list and sets up subprocesses for retrieving news data.
     """
-    print("Starting news retrieval...")
 
     sources = []
     for stock in stock_list:

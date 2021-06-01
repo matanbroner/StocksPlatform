@@ -47,7 +47,6 @@ class App extends React.PureComponent {
       this.handleReLogin(); // log in again after new token is set
     } catch (e) {
       console.log(e); // TODO: replace with toaster
-      window.location.pathname = "/login"; // cannot get new key, have user log in
     }
   }
 
@@ -88,7 +87,6 @@ class App extends React.PureComponent {
         if (e.error && e.error.includes("TokenExpiredError")) {
           this.refreshAccessKey(refreshKey);
         } else if (!OPEN_ROUTES.includes(window.location.pathname)) {
-          console.log("in here");
           window.location.pathname = "/login";
         }
       } else {

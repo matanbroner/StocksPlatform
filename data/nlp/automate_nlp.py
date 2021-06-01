@@ -34,7 +34,7 @@ class ThreadTimer(threading.Thread):
 
 
 def init_news_retrieval(fmp_key: str = None, sec_delay: int = 60):
-    fmp_key = os.getenv("FMP_KEY") or fmp_key
+    fmp_key = os.getenv('FMP_API_KEY')
 
     if fmp_key == None:
         raise RuntimeError(f"No API key for Financial Modeling Prep given.")
