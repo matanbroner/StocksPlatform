@@ -15,8 +15,25 @@ class ChangePassword extends Component {
       },
       error: null,
       loading: false,
-      modalOpen: false
+      modalOpen: false,
+      oauthUser: false
     };
+  }
+
+  componentDidMount(){
+    ApiHandler.get(
+      "users",
+      "oauth/profile",
+      {},
+      {}
+    )
+      .then((res) => {
+        this.setState({ oauthUser: true })
+      })
+      .catch((e) => {
+        this.setState({ oauthUser: false })
+        console.log(e);
+      });
   }
 
   updateForm(key, e, value = null) {
@@ -71,6 +88,10 @@ class ChangePassword extends Component {
               error: e.error
           })
       })
+
+      this.state.form.email = '';
+      this.state.form.currentPassword = '';
+      this.state.form.newPassword = '';
     }
   }
 
@@ -95,7 +116,8 @@ class ChangePassword extends Component {
         <Modal closeIcon onClose={() => this.setState({ modalOpen: false })} open={modalOpen}
           trigger= { 
             <Button onClick={() => this.setState({ modalOpen: true })} 
-              color="teal">
+              color="teal"
+              disabled={this.state.oauthUser}>
                 Change Password
             </Button>
           }
