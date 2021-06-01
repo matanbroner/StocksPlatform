@@ -3,15 +3,27 @@ const jwt = require("jsonwebtoken");
 const Models = require("../models");
 
 const QueryModule = require("../utils/query");
+const oauth = require("./oauth");
 
 const jwtRouter = express.Router();
 jwtRouter.use(express.json());
 
 const getUserFromDecodedToken = async (decodedToken) => {
-  const { id } = decodedToken;
-  const user = await Models.Users.findByPk(id, {
-    raw: true,
-  });
+  var user = null;
+  if(!oauth.checkProfile) {
+    const { id } = decodedToken;
+    user = await Models.Users.findByPk(id, {
+      raw: true,
+    });
+  } else {
+    const { email } = decodedToken;
+    user = await Models.Users.findOne({
+      where: {
+        email
+      },
+    });
+    console.log(user)
+  }
   return user;
 };
 

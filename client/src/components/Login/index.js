@@ -3,6 +3,7 @@ import { connect } from "react-redux"
 import { Form, Grid, Message } from "semantic-ui-react";
 import ApiHandler from "../../api";
 import styles from "./styles.module.css";
+import OpenAuth from "../OpenAuth";
 
 import {
   setUser
@@ -25,6 +26,26 @@ class Login extends Component {
     if(this.props.accessKey){
       this.props.history.push("/dashboard")
     }
+    ApiHandler.get(
+      "users",
+      "oauth/profile",
+      {},
+      {}
+    )
+      .then((res) => {
+        if(res.status === 200) {
+          const profile = res.data;
+          const { accessKey, refreshKey } = profile.data;
+          delete profile.data.accessKey;
+          delete profile.data.refreshKey;
+          this.props.setUser(profile.data, accessKey, refreshKey)
+          this.props.setTokens(accessKey, refreshKey);
+          this.props.history.push("/dashboard");
+        }
+      })
+      .catch((e) => {
+        console.log(e);
+      });
   }
 
   updateForm(key, e, value = null) {
@@ -154,6 +175,10 @@ class Login extends Component {
               />
               {/* </Link> */}
             </Form>
+            <div className="oauth" style={{ paddingTop:"40px" }}>
+              <OpenAuth provider='google'/>
+              <OpenAuth provider='facebook'/>
+            </div>
           </div>
         </Grid.Column>
 
