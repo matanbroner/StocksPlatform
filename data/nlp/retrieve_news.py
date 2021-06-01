@@ -5,7 +5,7 @@ import pandas as pd
 from nlp.news_sources import GeneralNewsData, RedditData
 
 from multiprocessing import Lock
-lock = Lock()
+lock = Lock()   # used in pipeline
 
 from nlp.nlp_pipeline import to_pipeline
 

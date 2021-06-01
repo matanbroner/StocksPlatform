@@ -66,6 +66,11 @@
   background-color: #eeeeee;
 }
 
+#giphy {
+  width: 670px;
+  height: 354px;
+}
+
 @media screen and (max-width: 1350px) {
   #HomeMessage {
     font-size: 60px;
@@ -95,5 +100,10 @@
   #HomeBackground {
     background-color: #232931;
     height: 1000px;
+  }
+
+  #giphy {
+    width: 400px;
+    height: 212px;
   }
 }

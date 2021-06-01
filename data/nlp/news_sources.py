@@ -50,7 +50,6 @@ class GeneralNewsData:
         Retrieves data using FMPApi
         @return: DataFrame with columns stock, source, date, title, url, content
         """
-
         json_response = self.api.get_news([self.stock])
         
         if len(json_response) == 0:

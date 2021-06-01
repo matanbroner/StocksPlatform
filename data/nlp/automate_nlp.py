@@ -4,9 +4,7 @@ import threading
 import os
 
 from nlp.retrieve_news import main as retrieve_news
-
 from db.handlers.stock_handler import get_all_stocks
-
 
 class ThreadTimer(threading.Thread):
     def __init__(self, interval, callback, *args):

@@ -83,20 +83,21 @@ class Home extends Component {
                   <Header as='h3' style={{ fontSize: '2.3em' }}>
                     We Help Stock Buyers of All Interests
                   </Header>
-                  <p style={{ fontSize: '1.5em' }}>
+                  <p style={{ fontSize: '1.5em', color: 'black' }}>
                     We can help all stock buyers, whether experienced or just beginning.
                     We are simply here to help and bring the data and usability people need.
                   </p>
                   <Header as='h3' style={{ fontSize: '2.3em' }}>
                     We Always Keep You Up to Date
                   </Header>
-                  <p style={{ fontSize: '1.5em' }}>
+                  <p style={{ fontSize: '1.5em', color: 'black' }}>
                     Yes that's right, you will never be behind on the latest stock news.
                     No more being late to the latest stock trends!
                   </p>
                 </Grid.Column>
                 <Grid.Column floated='right' width={8}>
                   <Image id={styles.home_image} bordered rounded size='huge' src='/images/home-photo.jpg' />
+                  {/* <iframe src="https://giphy.com/embed/RtOXrOEjQ78VywITBN" id={styles.giphy} allowFullScreen></iframe> */}
                 </Grid.Column>
               </Grid.Row>
               <Grid.Row>
@@ -122,13 +123,13 @@ class Home extends Component {
                   <Header as='h3' style={{ fontSize: '2.3em' }}>
                     "Has the best Stock Metrics"
                   </Header>
-                  <p style={{ fontSize: '1.5em' }}>- Recorded from 10,000 surveyed users</p>
+                  <p style={{ fontSize: '1.5em', color: 'black' }}>- Recorded from 10,000 surveyed users</p>
                 </Grid.Column>
                 <Grid.Column style={{ paddingBottom: '5em', paddingTop: '5em' }}>
                   <Header as='h3' style={{ fontSize: '2.3em' }}>
                     "BananaStocks has helped me successfully earn hundreds of dollars!"
                   </Header>
-                  <p style={{ fontSize: '1.5em' }}>
+                  <p style={{ fontSize: '1.5em', color: 'black' }}>
                     - John Smith
                   </p>
                 </Grid.Column>
@@ -150,7 +151,7 @@ class Home extends Component {
               <Header as='h3' style={{ fontSize: '2.1em' }}>
                 How BananaStocks Began
               </Header>
-              <p style={{ fontSize: '1.4em' }}>
+              <p style={{ fontSize: '1.4em', color: 'black' }}>
                 On April 5th, 2021, BananaStocks was first created by five students from the University
                 of California, Santa Cruz with a desire to simply the user's experiences
                 in discovering the best stocks to buy!
@@ -159,7 +160,7 @@ class Home extends Component {
               <Header as='h3' style={{ fontSize: '2.1em' }}>
                 How We Picked Our Name
               </Header>
-              <p style={{ fontSize: '1.4em' }}>
+              <p style={{ fontSize: '1.4em', color: 'black' }}>
                 Interestingly enough, this was only suppose to be a temporary name that 
                 was supposed be changed later. But since so many users loved the name BananaStocks,
                 we kept it the same all these years! 

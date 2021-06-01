@@ -1,29 +1,37 @@
-#wrapper{
-    margin: 30px auto;
+#wrapper {
+  margin: 30px auto;
 }
 
 #header {
-    font-size: 35px;
-    font-weight: 400;
+  font-size: 35px;
+  font-weight: 400;
+  padding-left: 200px;
 }
 
 .activePrice {
-    font-size: 20px;
-    font-weight: 400;
-    margin: 10px auto;
+  font-size: 20px;
+  font-weight: 400;
+  margin: 10px auto;
+  padding-left: 200px;
 }
 
 #charts {
-    margin: 25px 0;
+  margin: 25px 0;
 }
 
 #loaderWrapper {
-    margin: auto;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    height: 50vh;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 50vh;
+}
+
+#linechart {
+  width: 1400px;
+  height: 425px;
 }
 
 #intervalButtons {
+  padding-left: 200px;
 }
