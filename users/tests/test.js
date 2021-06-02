@@ -9,7 +9,7 @@ chai.use(chaiHttp);
 const jwt = require("jsonwebtoken");
 const HelperModule = require("../utils/helper");
 
-var units = ["a", "b", "c", "d"]
+var units = ["aaaaa", "bbbbb", "ccccc", "ddddd"]
 var users = []
 units.forEach((unit) => {
     users.push({
@@ -22,7 +22,7 @@ units.forEach((unit) => {
     })
 });
 
-var fakeUnits = ["aa", "bb", "cc", "dd"]
+var fakeUnits = ["zzzzz", "yyyyy", "xxxxx", "wwwww"]
 var fakeUsers = []
 fakeUnits.forEach((unit) => {
     fakeUsers.push({
@@ -77,7 +77,7 @@ describe('Login', function() {
     it('should successfully retrieve user data and tokens', async function() {
         for(var i = 0; i < users.length; i++) {
             const res = await chai.request(server)
-                .post('/users/login')
+                .post('/users/logout')
                 .send(users[i]);
 
             expect(res.status).to.equal(200);
@@ -116,6 +116,18 @@ describe('Login', function() {
 
             expect(res.status).to.equal(200);
             
+        }
+    });
+
+    it('should log these users out', async function() {
+        for(var i = 0; i < users.length; i++) {
+            const res = await chai.request(server)
+                .post('/users/logout')
+                .set('authorization', 'Bearer ' + accessTokens[i])
+                .send(users[i]);
+
+            expect(res.status).to.equal(200);
+            expect(res.body.data).to.equal("success")
         }
     });
 });
