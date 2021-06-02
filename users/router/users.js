@@ -27,7 +27,7 @@ userRouter
       if(!(await HelperModule.checkSignupRequest(req))) {
         res.status(401).json({
           status: 401,
-          error: "Missing field component(s)"
+          error: "Missing field component(s) or Incorrect fields"
         });
       }
 
