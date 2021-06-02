@@ -154,7 +154,7 @@ class ProjectPage extends React.PureComponent {
           }
         });
         articles = articles.sort(
-          (a, b) => Date(a.date_published) - Date(b.date_published)
+          (a, b) => Date.parse(a.date_published) - Date.parse(b.date_published)
         );
         console.log(articles);
         this.setState({ articles });
