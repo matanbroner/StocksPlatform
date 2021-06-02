@@ -10,6 +10,7 @@ const PasswordModule = require("../utils/passwords");
 const HelperModule = require("../utils/helper");
 const QueryModule = require("../utils/query");
 
+const oauth = require("./oauth");
 userRouter.use(express.json());
 dotenv.config();
 
@@ -190,10 +191,13 @@ userRouter.route('/logout')
               });
       }
       else {
+        // Just reset it even if not oauth logged in
+        await oauth.clearProfile();
 
         const tokenEntry = { token: token, valid: false }
         Models.Tokens.create(tokenEntry)
           .then(async (result) => {
+            console.log('profile ', await oauth.checkProfile());
 				    res.status(200).json({
               status: 200,
               data: "success"
