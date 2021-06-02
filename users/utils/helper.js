@@ -45,6 +45,14 @@ const checkSignupRequest = async (req) => {
             return false;
         }
     }
+    if(req.body.password.length < 5) {
+        return false;
+    } else if (req.body.username.length < 3 ||
+        req.body.username.length > 15) {
+        return false;
+    } else if (!(/\S+@\S+\.\S+/.test(req.body.email))) {
+        return false;
+    }
     return true;
 }
 

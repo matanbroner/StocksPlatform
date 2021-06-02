@@ -27,7 +27,7 @@ userRouter
       if(!(await HelperModule.checkSignupRequest(req))) {
         res.status(401).json({
           status: 401,
-          error: "Missing field component(s)"
+          error: "Missing field component(s) or Incorrect fields"
         });
       }
 
@@ -40,9 +40,8 @@ userRouter
       var userExists = await Models.Users.findOne({
         where: {
           [Op.or]: [
-            {
-              email: newEmail,
-            }
+            { username: newUsername },
+				    { email: newEmail }
           ],
         },
       });
@@ -50,7 +49,7 @@ userRouter
       if (userExists) {
         res.status(401).json({
           status: 401,
-          error: "User with the username or email exists",
+          error: "User with email or username exists",
         });
       } else {
         const newUser = {
