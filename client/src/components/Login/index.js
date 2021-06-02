@@ -1,13 +1,11 @@
 import React, { Component } from "react";
-import { connect } from "react-redux"
-import { Form, Grid, Message } from "semantic-ui-react";
+import { connect } from "react-redux";
+import { Form, Grid, Message, Divider } from "semantic-ui-react";
 import ApiHandler from "../../api";
 import styles from "./styles.module.css";
 import OpenAuth from "../OpenAuth";
 
-import {
-  setUser
-} from "../../store/actions/userActions"
+import { setUser } from "../../store/actions/userActions";
 
 class Login extends Component {
   constructor(props) {
@@ -22,23 +20,18 @@ class Login extends Component {
     };
   }
 
-  componentDidMount(){
-    if(this.props.accessKey){
-      this.props.history.push("/dashboard")
+  componentDidMount() {
+    if (this.props.accessKey) {
+      this.props.history.push("/dashboard");
     }
-    ApiHandler.get(
-      "users",
-      "oauth/profile",
-      {},
-      {}
-    )
+    ApiHandler.get("users", "oauth/profile", {}, {})
       .then((res) => {
-        if(res.status === 200) {
+        if (res.status === 200) {
           const profile = res.data;
           const { accessKey, refreshKey } = profile.data;
           delete profile.data.accessKey;
           delete profile.data.refreshKey;
-          this.props.setUser(profile.data, accessKey, refreshKey)
+          this.props.setUser(profile.data, accessKey, refreshKey);
           this.props.setTokens(accessKey, refreshKey);
           this.props.history.push("/dashboard");
         }
@@ -100,7 +93,7 @@ class Login extends Component {
           const { accessKey, refreshKey } = profile;
           delete profile.accessKey;
           delete profile.refreshKey;
-          this.props.setUser(profile, accessKey, refreshKey)
+          this.props.setUser(profile, accessKey, refreshKey);
           this.props.setTokens(accessKey, refreshKey);
           this.props.history.push("/dashboard");
         })
@@ -123,7 +116,11 @@ class Login extends Component {
         >
           <div id={styles.seccolumn}>
             <div>
-                <img src="/images/logo.png" alt="Banana Stocks Logo" id={styles.logo}/>
+              <img
+                src="/images/logo.png"
+                alt="Banana Stocks Logo"
+                id={styles.logo}
+              />
             </div>
 
             <div id={styles.title}>Log in</div>
@@ -132,7 +129,7 @@ class Login extends Component {
               <Message negative>
                 <Message.Header>Login Error</Message.Header>
                 <p>{this.state.error}</p>
-            </Message>
+              </Message>
             ) : null}
 
             <Form className="login-form">
@@ -175,9 +172,10 @@ class Login extends Component {
               />
               {/* </Link> */}
             </Form>
-            <div className="oauth" style={{ paddingTop:"40px" }}>
-              <OpenAuth provider='google'/>
-              <OpenAuth provider='facebook'/>
+            <Divider id={styles.divider} horizontal>Or</Divider>
+            <div className={styles.oauth} style={{ marginTop: "40px" }}>
+              <OpenAuth provider="google" />
+              <OpenAuth provider="facebook" />
             </div>
           </div>
         </Grid.Column>
@@ -199,15 +197,15 @@ class Login extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    accessKey: state.user.accessKey
-  }
-}
+    accessKey: state.user.accessKey,
+  };
+};
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    setUser: (profile, accessKey, refreshKey) => dispatch(setUser(profile, accessKey, refreshKey)),
-  }
-}
-
+    setUser: (profile, accessKey, refreshKey) =>
+      dispatch(setUser(profile, accessKey, refreshKey)),
+  };
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

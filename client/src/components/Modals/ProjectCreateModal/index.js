@@ -10,7 +10,7 @@ const ProjectCreateModal = (props) => {
       <Modal.Content>
         <Modal.Description>
           <p>
-            Initialize your project with an optional description and stocks to
+            Initialize your project with a description and stocks to
             track.
           </p>
           <br></br>
@@ -31,7 +31,6 @@ const ProjectCreateModal = (props) => {
           />
           <label className="stock-pick">Add Stocks</label>
           <StockSearch onSelect={(v) => {
-            console.log(v)
             props.onStockUpdate(v.symbol)
           }} />
         </Form>
@@ -39,7 +38,7 @@ const ProjectCreateModal = (props) => {
           {props.stocks.map((s) => (
             <Label className={styles.chosenTicker} key={s}>
               {s}
-              <Icon name="delete" />
+              <Icon onClick={() => props.onStockUpdate(s, true)} name="delete" />
             </Label>
           ))}
         </div>

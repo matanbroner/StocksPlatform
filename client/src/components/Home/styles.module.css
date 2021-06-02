@@ -51,7 +51,8 @@
 }
 
 #home_image {
-  height: 350px;
+  height: auto;
+  width: 1500px;
 }
 
 #company_about {

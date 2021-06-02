@@ -20,7 +20,10 @@ const SearchBar = (props) => {
     props.onChange(value);
   }
 
-  const onSelectResult = (e, { result }) => props.onSelect(result)
+  const onSelectResult = (e, { result }) => {
+    props.onSelect(result)
+    setValue("")
+  }
 
   return (
     <Search

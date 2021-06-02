@@ -101,3 +101,11 @@
     font-weight: 700;
   }
 }
+
+#oauth {
+  width: 100%;
+}
+
+#divider{
+  color: white;
+}

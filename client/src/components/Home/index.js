@@ -16,6 +16,7 @@ import {
   Visibility,
   Modal } from 'semantic-ui-react';
 import { Link } from "react-router-dom";
+import homepageScreenshot from "../../assets/images/homepage_screenshot.png"
 
 class Home extends Component {
   renderLogo() {
@@ -96,7 +97,7 @@ class Home extends Component {
                   </p>
                 </Grid.Column>
                 <Grid.Column floated='right' width={8}>
-                  <Image id={styles.home_image} bordered rounded size='huge' src='/images/home-photo.jpg' />
+                  <Image id={styles.home_image} bordered rounded size='huge' src={homepageScreenshot} />
                   {/* <iframe src="https://giphy.com/embed/RtOXrOEjQ78VywITBN" id={styles.giphy} allowFullScreen></iframe> */}
                 </Grid.Column>
               </Grid.Row>

@@ -54,3 +54,13 @@ def put_project(project_id: str):
         return json_response(status_code=200, data=updated)
     except Exception as e:
         return json_response(status_code=404, error=str(e))
+
+
+@router.route("/<project_id>", methods=["DELETE"])
+@auth_middleware
+def delete_project(project_id: str):
+    try:
+        delete_project_by_id(id=project_id)
+        return json_response(status_code=200, data={})
+    except Exception as e:
+        return json_response(status_code=404, error=str(e))

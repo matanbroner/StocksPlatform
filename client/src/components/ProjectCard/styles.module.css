@@ -1,15 +1,19 @@
-.wrapper {
+.title {
   cursor: pointer;
 }
 
-.wrapper:hover {
-  border-bottom: none;
+.title:hover {
   transition: 0.2s all;
   opacity: 75%;
 }
 
+.delete:hover {
+  transition: 0.2s all;
+  background-color: #E66255 !important;
+}
+
 #ticker {
-  color: rgb(148, 9, 148);
+  color: #21ba45;
 }
 
 #description {

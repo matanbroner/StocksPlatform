@@ -15,7 +15,7 @@ const SettingsPanel = (props) => {
                         <Image 
                             id={styles.profile}
                             src={userDefaultImage}
-                            size='medium' circular 
+                            size='small' circular 
                         />
                     </Grid.Column>
                     <Grid.Column id={styles.column} width={2}>
