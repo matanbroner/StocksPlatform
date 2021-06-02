@@ -39,20 +39,14 @@ fakeUnits.forEach((unit) => {
 
 describe('Signup', function() {
     
-    it('should successfully insert users into database', async function(done){
+    it('should successfully insert users into database', async function(){
 
         for(var i = 0; i < users.length; i++) {
             const res = await chai.request(server)
                 .post('/users/sign-up')
                 .send(users[i])
-                .catch(() => {
-                    console.error('Error');
-                })
 
             expect(res.status).to.equal(200);
-            if(i == 4) {
-                done();
-            }
         }
     });
     
@@ -73,9 +67,11 @@ describe('Signup', function() {
   });
 
 
-describe('Login', function() {
+describe('Login and Logout', function() {
+
     var accessTokens = [];
     var refreshTokens = [];
+
     it('should successfully retrieve user data and tokens', async function() {
         for(var i = 0; i < users.length; i++) {
             const res = await chai.request(server)
@@ -87,6 +83,7 @@ describe('Login', function() {
             expect(res.body.data).to.have.property('refreshKey');
             accessTokens.push(res.body.data.accessKey);
             refreshTokens.push(res.body.data.refreshKey);
+
         }
     });
 
@@ -121,15 +118,166 @@ describe('Login', function() {
         }
     });
 
-    it('should log these users out', async function() {
+    // it('should log these users out', async function() {
+    //     for(var i = 0; i < users.length; i++) {
+    //         const res = await chai.request(server)
+    //             .post('/users/logout')
+    //             .set('authorization', 'Bearer ' + accessTokens[i])
+    //             .send(users[i]);
+
+    //         expect(res.status).to.equal(200);
+    //         expect(res.body.data).to.equal("success")
+    //     }
+    // });
+
+    // it('should verify that the tokens are invalid', async function() {
+    //     var numKeys = accessTokens.length;
+    //     for(var index = 0; index < numKeys; index++) {
+
+    //         const res = await chai.request(server)
+    //             .post('/tokens/verify')
+    //             .set('authorization', 'Bearer ' + accessTokens[index])
+    //             .send({"refreshToken": refreshTokens[index]})
+
+    //         expect(res.status).to.equal(403);
+    //         expect(res.body.headerResult.error).to.equal("Token is invalidated or Inactive")
+            
+    //     }
+    // });
+
+    accessTokens = [];
+    refreshTokens = [];
+
+    it('should successfully relog the user back in', async function() {
         for(var i = 0; i < users.length; i++) {
             const res = await chai.request(server)
-                .post('/users/logout')
-                .set('authorization', 'Bearer ' + accessTokens[i])
+                .post('/users/login')
                 .send(users[i]);
 
             expect(res.status).to.equal(200);
-            expect(res.body.data).to.equal("success")
+            accessTokens.push(res.body.data.accessKey);
+            refreshTokens.push(res.body.data.refreshKey);
+
         }
     });
+
+    it('should successfully delete user accounts', async function() {
+        for(var i = 0; i < users.length; i++) {
+            console.log(server + `/users/delete-account/${users[i].email}`)
+            const res = await chai.request(server)
+                .delete(`/users/delete-account/${users[i].email}`)
+                .set('authorization', 'Bearer ' + accessTokens[i])
+
+            expect(res.status).to.equal(200);
+        }
+    });
+
+    it('should verify that the tokens are invalid', async function() {
+        var numKeys = accessTokens.length;
+        for(var index = 0; index < numKeys; index++) {
+
+            const res = await chai.request(server)
+                .post('/tokens/verify')
+                .set('authorization', 'Bearer ' + accessTokens[index])
+                .send({"refreshToken": refreshTokens[index]})
+
+            expect(res.status).to.equal(403);
+            expect(res.body.headerResult.error).to.equal("Token is invalidated or Inactive")
+            
+        }
+    });
+
 });
+
+describe('Invalid field Logins', function() {
+
+    var badUser = {
+        firstName: "JustTest",
+        lastName: "FooBar",
+        username: "Mr.Tester",
+        email: "MrTester@yahoo.com",
+        password: "mypass123",
+        local: true
+    }
+
+    it('should fail for invalid emails', async function() {
+        delete badUser.email;
+        var res = await chai.request(server)
+            .post('/users/sign-up')
+            .send(badUser);
+
+        expect(res.status).to.equal(401);
+        expect(res.body.error).to.equal("Missing field component(s) or Incorrect fields");
+    });
+});
+
+describe("Delete Created Accounts", async function () {
+
+    it('should successfully insert users into database', async function(){
+
+        for(var i = 0; i < fakeUsers.length; i++) {
+            const res = await chai.request(server)
+                .post('/users/sign-up')
+                .send(fakeUsers[i])
+
+            expect(res.status).to.equal(200);
+        }
+    });
+
+    var accessToken = [];
+    var refreshToken = [];
+
+    it('should successfully retrieve user data and tokens', async function() {
+        for(var i = 0; i < fakeUsers.length; i++) {
+            const res = await chai.request(server)
+                .post('/users/login')
+                .send(fakeUsers[i]);
+
+            expect(res.status).to.equal(200);
+            expect(res.body.data).to.have.property('accessKey');
+            expect(res.body.data).to.have.property('refreshKey');
+            accessToken.push(res.body.data.accessKey);
+            refreshToken.push(res.body.data.refreshKey);
+        }
+    });
+
+    it('should successfully delete user accounts', async function() {
+        for(var i = 0; i < fakeUsers.length; i++) {
+            console.log(server + `/users/delete-account/${fakeUsers[i].email}`)
+            const res = await chai.request(server)
+                .delete(`/users/delete-account/${fakeUsers[i].email}`)
+                .set('authorization', 'Bearer ' + accessToken[i])
+
+            expect(res.status).to.equal(200);
+        }
+    });
+
+    it('should fail when deleted users try to login in again', async function() {
+        for(var i = 0; i < fakeUsers.length; i++) {
+            const res = await chai.request(server)
+                .post('/users/login')
+                .send(fakeUsers[i]);
+
+            expect(res.status).to.equal(401);
+            expect(res.body.error).to.equal("Invalid credentials");
+        }
+    });
+
+    it('tokens should be invalid when deleting an account', async function() {
+        var numKeys = accessToken.length;
+        for(var index = 0; index < numKeys; index++) {
+
+            const res = await chai.request(server)
+                .post('/tokens/verify')
+                .set('authorization', 'Bearer ' + accessToken[index])
+                .send({"refreshToken": refreshToken[index]})
+
+            expect(res.status).to.equal(403);
+            expect(res.body.headerResult.error).to.equal("Token is invalidated or Inactive")
+            
+        }
+    });
+
+});
+
+
