@@ -1,5 +1,5 @@
-var server = require("../main");
-
+//var server = require("../main");
+var server = "http://localhost:5001";
 var chai = require("chai");
 var chaiHttp = require("chai-http");
 var expect = chai.expect;
@@ -39,22 +39,24 @@ fakeUnits.forEach((unit) => {
 
 describe('Signup', function() {
     
-    it('should successfully insert users into database', function(done){
+    it('should successfully insert users into database', async function(done){
 
         for(var i = 0; i < users.length; i++) {
-            chai.request(server)
-            .post('/users/sign-up')
-            .send(users[i])
-            .end((error, res) => {
-                expect(res.status).to.equal(200);
-                if(i == 4) {
-                    done();
-                }
-            });
+            const res = await chai.request(server)
+                .post('/users/sign-up')
+                .send(users[i])
+                .catch(() => {
+                    console.error('Error');
+                })
+
+            expect(res.status).to.equal(200);
+            if(i == 4) {
+                done();
+            }
         }
     });
     
-    /*
+    
     it('should fail, same users are already in database', function(){
 
         for(var i = 0; i < users.length; i++) {
@@ -67,7 +69,7 @@ describe('Signup', function() {
             });
         }
     });
-    */
+    
   });
 
 
