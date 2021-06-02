@@ -9,7 +9,7 @@ const OpenAuth = (props) => {
   };
 
   const providerLink = () => {
-    return `http://localhost:5001/oauth/${props.provider}/login`;
+    return `http://${process.env.REACT_APP_DOMAIN}/api/users/oauth/${props.provider}/login`;
   };
 
   const icon = () => {
