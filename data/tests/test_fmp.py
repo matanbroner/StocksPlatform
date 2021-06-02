@@ -35,7 +35,7 @@ class TestFinancialModelingPrepApi(unittest.TestCase):
     def test_get_all_statements(self):
         search_appl = self.api.get_all_statements(ticker="APPL")
         self.assertIsInstance(search_appl, object)
-        self.assertEquals(len(search_appl.keys()), 3)
+        self.assertEqual(len(search_appl.keys()), 3)
         for key in ["income", "cash-flow", "balance-sheet"]:
             self.assertIn(key, search_appl)
 

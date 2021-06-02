@@ -13,6 +13,7 @@ from flask import Flask
 
 class NlpRestApiTest(unittest.TestCase):
     def setUp(self):
+        init_db_connection()
         self.stock = 'AMZN'
         self.source = 'Benzinga'
         self.time_frame = 1
@@ -70,5 +71,4 @@ if __name__ == "__main__":
     app = Flask(__name__)
 
     with app.app_context():
-        init_db_connection()
         unittest.main()

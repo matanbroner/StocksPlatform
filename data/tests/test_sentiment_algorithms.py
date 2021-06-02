@@ -2,7 +2,7 @@
 import urllib.parse
 import http.client
 import json
-from nlp.sentiment_algorithms import SentimentAlgorithms
+from nlp.sentiment_algorithms import headline_sentiment
 import unittest
 
 negative_news_test = 'Amazon is considering firing about one tenth of its employes.\n With the impact of Covid-19 Amazon has taken extreme measures to keep up with the pandemic'
@@ -28,16 +28,16 @@ data = json.loads(res.read().decode('utf-8'))
 class TestSentimentAlgorithms(unittest.TestCase):
 
     def test_positive_headline(self):
-        value = SentimentAlgorithms.headline_sentiment(positive_news_test)
+        value = headline_sentiment(positive_news_test)
         self.assertGreater(value, 0.0)
 
     def test_negative_headline(self):
-        value = SentimentAlgorithms.headline_sentiment(negative_news_test)
+        value = headline_sentiment(negative_news_test)
         self.assertLessEqual(value, 0.0)
 
     def test_various_headlines(self):
         for news in data['data']:
-            value = SentimentAlgorithms.headline_sentiment(news['title'])
+            value = headline_sentiment(news['title'])
             self.assertIsNotNone(value)
 
 

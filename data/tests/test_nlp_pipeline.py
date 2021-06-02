@@ -35,7 +35,7 @@ from nlp.nlp_pipeline import (
 )
 
 # # TODO: remove hardcoded API key and use env variable
-API_KEY = '0cc8ff319abbabcab8e06288e3c67c3c'
+API_KEY = 'e2d9d13e5b7ac7976216133f32d7f775'
 
 class TestNewsSources(unittest.TestCase):
     def setUp(self):
@@ -54,6 +54,7 @@ class TestNewsSources(unittest.TestCase):
 
 class TestNlpPipeline(unittest.TestCase):
     def setUp(self):
+        init_db_connection()
         self.test_df = pd.DataFrame(
             [['TEST_STOCK', 'TEST_SOURCE', datetime.datetime(1972, 5, 17), 'This is a test headline.', 'WWW.TEST_URL.COM', 'This is test content. Usually there is a lot more text.', 1.0]],
             columns=['stock', 'source', 'date', 'title', 'url', 'content', 'sentiment'])
@@ -176,5 +177,4 @@ class TestNlpPipeline(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    init_db_connection()
     unittest.main()
