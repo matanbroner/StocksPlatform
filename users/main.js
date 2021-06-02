@@ -15,14 +15,12 @@ dotenv.config();
 
 
 app.use(cors());
-app.use('/users', userRouter);
 app.use('/jwt', jwtRouter);
 
 app.use(passport.initialize());
-app.use(cors());
 app.use('/users', userRouter);
 app.use('/tokens', tokenRouter);
-app.use('/oauth', oauthRouter);
+app.use('/oauth', oauthRouter.oauthRouter);
 
 dotenv.config();
 
