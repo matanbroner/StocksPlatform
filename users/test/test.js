@@ -34,7 +34,7 @@ fakeUnits.forEach((unit) => {
         local: true
     })
 });
-/*
+
 // Note: Don't use end() in a chai request. It does not work well with asynchronous tests
 
 describe('Signup', function() {
@@ -54,7 +54,7 @@ describe('Signup', function() {
         }
     });
     
-    
+    /*
     it('should fail, same users are already in database', function(){
 
         for(var i = 0; i < users.length; i++) {
@@ -67,7 +67,7 @@ describe('Signup', function() {
             });
         }
     });
-    
+    */
   });
 
 
@@ -119,9 +119,3 @@ describe('Login', function() {
         }
     });
 });
-
-/*
-describe('Logout', function() {
-
-});
-*/
