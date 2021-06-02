@@ -41,3 +41,16 @@ def post_project():
         return json_response(status_code=200, data=project)
     except Exception as e:
         return json_response(status_code=404, error=str(e))
+
+
+@router.route("/<project_id>", methods=["PUT"])
+@auth_middleware
+def put_project(project_id: str):
+    try:
+        body = request.json
+        if not body:
+            raise RuntimeError("Missing JSON body for project update")
+        updated = update_project_by_id(id=project_id, args=body)
+        return json_response(status_code=200, data=updated)
+    except Exception as e:
+        return json_response(status_code=404, error=str(e))

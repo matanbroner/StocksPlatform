@@ -3,16 +3,7 @@ import { Button, Loader } from "semantic-ui-react";
 import styles from "./styles.module.css";
 import ApiHandler from "../../api";
 import AnimatedNumber from "animated-number-react";
-
-import {
-  LineChart,
-  CartesianGrid,
-  XAxis,
-  YAxis,
-  Tooltip,
-  Line,
-  Legend,
-} from "recharts";
+import ApexCandelstickChart from "../Charts/ApexCandlestickChart";
 
 class StockMetrics extends React.PureComponent {
   constructor(props) {
@@ -22,6 +13,7 @@ class StockMetrics extends React.PureComponent {
       activePrice: {
         interval: null,
         value: null,
+        compare: 0,
       },
       interval: "1h",
       loading: false,
@@ -45,10 +37,11 @@ class StockMetrics extends React.PureComponent {
       loading: true,
     });
     try {
-      const { data } = await ApiHandler.get(
+      let { data } = await ApiHandler.get(
         "data",
         `stock/price/${ticker}?interval=${this.state.interval}`
       );
+      data = data.slice(data.length - 30);
       this.setState({ data });
     } catch (e) {
       console.log(e);
@@ -59,31 +52,23 @@ class StockMetrics extends React.PureComponent {
     }
   }
 
-  closePriceChart() {
-    const data = this.state.data.map((point) => {
-      return {
-        name: point.date,
-        open: point.open,
-        close: point.close,
-      };
-    });
-    return (
-      <LineChart
-        width={1000}
-        height={425}
-        data={data}
-        margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-        id={styles.linechart}
-      >
-        <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="name" />
-        <YAxis />
-        <Tooltip />
-        <Legend />
-        <Line type="monotone" dataKey="close" stroke="green" />
-        <Line type="monotone" dataKey="open" stroke="teal" />
-      </LineChart>
-    );
+  formatPriceData() {
+    return [
+      {
+        data: this.state.data.map((point) => {
+          return {
+            x: new Date(point.date),
+            y: [point.open, point.high, point.low, point.close],
+          };
+        }),
+      },
+    ];
+  }
+
+  renderChart() {
+    return this.state.data ? (
+      <ApexCandelstickChart data={this.formatPriceData()} />
+    ) : null;
   }
 
   intervalButtons() {
@@ -137,11 +122,20 @@ class StockMetrics extends React.PureComponent {
                 },
               },
               () => {
+                let compare;
+                if (data[0].price < this.state.activePrice) {
+                  compare = -1;
+                } else if (data[0].price > this.state.activePric) {
+                  compare = 1;
+                } else {
+                  compare = 0;
+                }
                 setTimeout(() => {
                   this.setState({
                     activePrice: {
                       ...this.state.activePrice,
                       value: data[0].price,
+                      compare,
                     },
                   });
                 }, 300);
@@ -163,22 +157,35 @@ class StockMetrics extends React.PureComponent {
         </div>
       );
     }
+    let color;
+    if (this.state.activePrice.compare == 0) {
+      color = "black";
+    } else if (this.state.activePrice.compare == 1) {
+      color = "green";
+    } else {
+      color = "red";
+    }
     return (
       <div id={styles.wrapper}>
         <span id={styles.header}>{this.props.ticker}</span>
         {this.state.activePrice.value ? (
-          <p>
+          <p
+            style={{
+              color,
+            }}
+            className={styles.activePrice}
+          >
+            $
             <AnimatedNumber
-              value={`$${this.state.activePrice.value}`}
+              value={`${this.state.activePrice.value}`}
               duration={300}
               formatValue={(value) => value.toFixed(2)}
-              className={styles.activePrice}
             />
           </p>
         ) : null}
 
         <div id={styles.charts}>
-          {this.state.data.length ? this.closePriceChart() : null}
+          {this.state.data.length ? this.renderChart() : null}
         </div>
         {this.intervalButtons()}
       </div>

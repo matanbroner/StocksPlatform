@@ -112,16 +112,19 @@ def update_project_by_id(id: str, args: dict):
     @return: JSON (updated project)
     """
     with create_session() as session:
+        allowed_edit_keys = ['project_name', 'description', 'is_active']
         project = session.get(Project, id)
         if not project:
             raise RuntimeError(f"Cannot update nonexistent project with ID {id}")
-        for col, val in args:
+        for col, val in args.items():
             if not hasattr(project, col):
                 warnings.warn(f"Attempted updating invalid project column {col}")
+            elif col not in allowed_edit_keys:
+                warnings.warn(f"Attempted updating restricted project column {col}")
             else:
                 setattr(project, col, val)
         session.commit()
-        return project.serialize
+        return get_project_by_id(id=id, serialize=True)
 
 
 def add_stock_to_project(project_id: str, stock_id: str):
