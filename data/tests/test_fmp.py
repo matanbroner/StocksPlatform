@@ -25,17 +25,19 @@ class TestFinancialModelingPrepApi(unittest.TestCase):
         self.assertTrue(search_aapl_income_qtr[0]["symbol"] == "AAPL")
         self.assertTrue(len(search_aapl_income_qtr) >= 2)
 
-        # get first two quarters, verify time range is indeed a quarter
-        # take date (ex. "2020-12-26"), split by "-", and take month index (ex. "12")
-        qtr_1 = (search_aapl_income_qtr[0]["date"]).split("-")[1]
-        qtr_2 = (search_aapl_income_qtr[1]["date"]).split("-")[1]
-        # check is three month difference
-        assert int(qtr_1) - int(qtr_2) == 3
+        # logic for this part of test is wrong
+        # # get first two quarters, verify time range is indeed a quarter
+        # # take date (ex. "2020-12-26"), split by "-", and take month index (ex. "12")
+        # qtr_1 = (search_aapl_income_qtr[0]["date"]).split("-")[1]
+        # qtr_2 = (search_aapl_income_qtr[1]["date"]).split("-")[1]
+        # # check is three month difference
+        # print("Qtrs:", qtr_1, qtr_2)
+        # assert int(qtr_1) - int(qtr_2) == 3
 
     def test_get_all_statements(self):
         search_appl = self.api.get_all_statements(ticker="APPL")
         self.assertIsInstance(search_appl, object)
-        self.assertEquals(len(search_appl.keys()), 3)
+        self.assertEqual(len(search_appl.keys()), 3)
         for key in ["income", "cash-flow", "balance-sheet"]:
             self.assertIn(key, search_appl)
 
