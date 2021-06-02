@@ -77,7 +77,7 @@ describe('Login', function() {
     it('should successfully retrieve user data and tokens', async function() {
         for(var i = 0; i < users.length; i++) {
             const res = await chai.request(server)
-                .post('/users/logout')
+                .post('/users/login')
                 .send(users[i]);
 
             expect(res.status).to.equal(200);
