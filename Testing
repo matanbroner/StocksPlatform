@@ -1,0 +1,5 @@
+Acceptance Testing:
+
+NLP Backend:
+1. cd to data directory.
+2. Use run-tests.sh script
