@@ -5,6 +5,7 @@ import { Switch, Route } from "react-router-dom";
 import ApiHandler from "../../../api";
 import BasePanel from "../BasePanel";
 import ProjectCreateModal from "../../Modals/ProjectCreateModal";
+import ProjectDeleteModal from "../../Modals/ProjectDeleteModal";
 import ProjectCard from "../../ProjectCard";
 import styles from "./styles.module.css";
 
@@ -18,7 +19,9 @@ class ProjectsPanel extends Component {
         tickers: [],
       },
       projects: [],
-      modalOpen: false,
+      createModalOpen: false,
+      deleteModalOpen: false,
+      deleteModalProject: {},
       loading: false,
     };
   }
@@ -27,9 +30,9 @@ class ProjectsPanel extends Component {
     this.fetchProjects();
   }
 
-  updateModalState(isOpen) {
+  updateModalState(modalName, isOpen) {
     this.setState({
-      modalOpen: isOpen,
+      [modalName]: isOpen,
     });
   }
 
@@ -95,28 +98,73 @@ class ProjectsPanel extends Component {
       .then((res) => {
         this.setState({
           projects: [...this.state.projects, res.data],
-          modalOpen: false,
+          createModalOpen: false,
           loading: false,
         });
       })
       .catch((err) => {
         console.log(err);
         this.setState({
-          modalOpen: false,
+          createModalOpen: false,
           loading: false,
         });
       });
   }
 
-  renderModal() {
+  deleteProject() {
+    try {
+      this.setState(
+        {
+          loading: true,
+        },
+        async () => {
+          await ApiHandler.delete(
+            "data",
+            `project/${this.state.deleteModalProject.id}`,
+            {},
+            {},
+            {
+              removeTrailingSlash: true,
+            }
+          );
+          this.setState({
+            loading: false,
+            projects: this.state.projects.filter((p) => p.id !== this.state.deleteModalProject.id),
+            deleteModalOpen: false,
+            deleteModalProject: {}
+          });
+        }
+      );
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  renderCreateProjectModal() {
     return (
       <ProjectCreateModal
-        open={this.state.modalOpen}
+        open={this.state.createModalOpen}
         stocks={this.state.newProjectForm.tickers}
-        onStateChange={this.updateModalState.bind(this)}
+        onStateChange={(state) =>
+          this.updateModalState("createModalOpen", state)
+        }
         onFormUpdate={this.updateForm.bind(this)}
         onStockUpdate={this.updateStocks.bind(this)}
         onSubmit={this.submitNewProject.bind(this)}
+        loading={this.state.loading}
+      />
+    );
+  }
+
+  renderDeleteProjectModal() {
+    return (
+      <ProjectDeleteModal
+        projectName={this.state.deleteModalProject.project_name}
+        open={this.state.deleteModalOpen}
+        onStateChange={(state) =>
+          this.updateModalState("deleteModalOpen", state)
+        }
+        onDelete={this.deleteProject.bind(this)}
         loading={this.state.loading}
       />
     );
@@ -139,18 +187,20 @@ class ProjectsPanel extends Component {
         <Grid.Row id={chunkIdx} columns={12}>
           {chunk.map((project) => {
             return (
-              <Grid.Column
-                onClick={() => {
-                  this.props.history.push(`/dashboard/projects/${project.id}`);
-                }}
-                id={project.id}
-                stackable
-                width={4}
-              >
+              <Grid.Column id={project.id} stackable width={4}>
                 <ProjectCard
                   projectName={project.project_name}
                   description={project.description}
                   stocksCount={project.stocks.length}
+                  onClickOpen={() =>
+                    this.props.history.push(`/dashboard/projects/${project.id}`)
+                  }
+                  onClickDelete={() =>
+                    this.setState({
+                      deleteModalOpen: true,
+                      deleteModalProject: project,
+                    })
+                  }
                 />
               </Grid.Column>
             );
@@ -171,13 +221,14 @@ class ProjectsPanel extends Component {
         <Button
           id={styles.button}
           color="teal"
-          onClick={() => this.updateModalState(true)}
+          onClick={() => this.updateModalState("createModalOpen", true)}
         >
           Create a Project
         </Button>
         <Divider hidden />
         {this.renderProjectCards()}
-        {this.renderModal()}
+        {this.renderCreateProjectModal()}
+        {this.renderDeleteProjectModal()}
       </BasePanel>
     );
   }

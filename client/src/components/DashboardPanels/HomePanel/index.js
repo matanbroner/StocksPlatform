@@ -15,12 +15,6 @@ const HomePanel = (props) => {
             <span className="date">Joined {dateStringToEnglish(props.user.createdAt)}</span>
           </Card.Meta>
         </Card.Content>
-        <Card.Content extra>
-          <a>
-            <Icon name="chart line" />
-            [Number] Active Projects
-          </a>
-        </Card.Content>
       </Card>
     );
   }

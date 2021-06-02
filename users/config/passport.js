@@ -15,7 +15,7 @@ const HelperModule = require("../utils/helper");
 passport.use(new GoogleStrategy({
     clientID:     process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: "/oauth/google/login/callback",
+    callbackURL: "/api/users/oauth/google/login/callback",
     passReqToCallback   : true
   },
   async (request, accessToken, refreshToken, profile, callback) => {

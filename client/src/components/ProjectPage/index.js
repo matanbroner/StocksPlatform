@@ -1,47 +1,20 @@
 import React from "react";
 import styles from "./styles.module.css";
 import BasePanel from "../DashboardPanels/BasePanel";
-import ApexChart from "../Charts/Apex";
+import ApexLineChart from "../Charts/ApexLineChart";
 import IntervalPicker from "../IntervalPicker";
 import MultiPicker from "../MultiPicker";
-import { Tab, Grid, Card, Button, Label } from "semantic-ui-react";
+import {
+  Tab,
+  Grid,
+  Card,
+  Button,
+  Label,
+  Checkbox,
+  Form,
+} from "semantic-ui-react";
 
 import ApiHandler from "../../api";
-
-const baseArticles = [
-  {
-    headline: (ticker) => `Huge sales week for ${ticker}, millions sold!`,
-    avg_sentiment: 0.85,
-  },
-  {
-    headline: (ticker) => `Downturn for ${ticker} in legal battles.`,
-    avg_sentiment: 0.23,
-  },
-  {
-    headline: (ticker) =>
-      `Partnership between US Govornment and ${ticker} begins.`,
-    avg_sentiment: 0.68,
-  },
-  {
-    headline: (ticker) =>
-      `New product release by ${ticker} is very impressive.`,
-    avg_sentiment: 0.92,
-  },
-  {
-    headline: (ticker) =>
-      `CEO of ${ticker} steps down after money laundering accusations.`,
-    avg_sentiment: 0.32,
-  },
-];
-
-const getArticle = (ticker) => {
-  const article = baseArticles[Math.floor(Math.random() * baseArticles.length)];
-  return {
-    headline: article.headline(ticker),
-    avg_sentiment: article.avg_sentiment,
-    ticker,
-  };
-};
 
 class ProjectPage extends React.PureComponent {
   constructor(props) {
@@ -49,6 +22,7 @@ class ProjectPage extends React.PureComponent {
     this.state = {
       projectId: null,
       project: null,
+      editedProjectKeys: {},
       priceHistory: {},
       activeTickers: [],
       articles: [],
@@ -69,8 +43,8 @@ class ProjectPage extends React.PureComponent {
         projectId: id,
         panes: [
           { menuItem: "Portfolio", render: this.renderPortfolioTab.bind(this) },
-          { menuItem: "NLP", render: this.renderNlpTab.bind(this) },
-          { menuItem: "Settings", render: this.renderPortfolioTab },
+          { menuItem: "News Feed", render: this.renderNewsFeedTab.bind(this) },
+          { menuItem: "Settings", render: this.renderSettingsTab.bind(this) },
         ],
       },
       () => this.fetchProject()
@@ -104,30 +78,13 @@ class ProjectPage extends React.PureComponent {
                 activeTickers: res.data.stocks.map((s) => s.ticker),
               },
               () => {
-                this.fetchTickersPriceHistory(false, true);
-
-                // TODO: remove this and add actual news fetching with timer to fetch new data
-                let articles = [];
-                let { activeTickers } = this.state;
-                for (let i = 0; i < 15; i++) {
-                  const ticker =
-                    activeTickers[
-                      Math.floor(Math.random() * activeTickers.length)
-                    ];
-                  articles.push(getArticle(ticker));
-                }
+                this.fetchTickersPriceHistory(false, false);
+                this.fetchTickerNewsFeed(false, true);
                 this.setState({
-                  articles,
-                  articleFetchInterval: setInterval(() => {
-                    let { activeTickers } = this.state;
-                    const ticker =
-                      activeTickers[
-                        Math.floor(Math.random() * activeTickers.length)
-                      ];
-                    this.setState({
-                      articles: [getArticle(ticker), ...this.state.articles],
-                    });
-                  }, 10 * 1000),
+                  articleFetchInterval: setInterval(
+                    () => this.fetchTickerNewsFeed(false, false),
+                    10 * 1000
+                  ),
                 });
               }
             );
@@ -175,6 +132,64 @@ class ProjectPage extends React.PureComponent {
       });
   }
 
+  fetchTickerNewsFeed(setLoadingTrue = false, setLoadingFalse = false) {
+    if (setLoadingTrue) {
+      this.setState({
+        loading: true,
+      });
+    }
+    const fetchNews = this.state.activeTickers.map((ticker) => {
+      // fetch one week old news at max
+      return ApiHandler.get(
+        "data",
+        `news/article?ticker=${ticker}&time_frame=7`
+      );
+    });
+    let articles = [];
+    Promise.allSettled(fetchNews)
+      .then((resps) => {
+        resps.forEach((res) => {
+          if (res.status === "fulfilled") {
+            articles = [...articles, ...res.value.data];
+          }
+        });
+        articles = articles.sort(
+          (a, b) => Date.parse(a.date_published) - Date.parse(b.date_published)
+        );
+        console.log(articles);
+        this.setState({ articles });
+      })
+      .finally(() => {
+        if (setLoadingFalse) {
+          this.setState({
+            loading: false,
+          });
+        }
+      });
+  }
+
+  saveProjectSettings() {
+    this.setState(
+      {
+        loading: true,
+      },
+      async () => {
+        const res = await ApiHandler.put(
+          "data",
+          `project/${this.state.project.id}`,
+          {},
+          this.state.editedProjectKeys,
+          { removeTrailingSlash: true }
+        );
+        this.setState({
+          loading: false,
+          project: res.data,
+          editedProjectKeys: {},
+        });
+      }
+    );
+  }
+
   formatTickerPriceHistory() {
     return Object.entries(this.state.priceHistory).map(([ticker, history]) => {
       return {
@@ -186,6 +201,20 @@ class ProjectPage extends React.PureComponent {
           };
         }),
       };
+    });
+  }
+
+  formatNewsFeedSentiment() {}
+
+  editProjectSettings(key, e, value = null) {
+    if (value === null) {
+      value = e.target.value;
+    }
+    this.setState({
+      editedProjectKeys: {
+        ...this.state.editedProjectKeys,
+        [key]: value,
+      },
     });
   }
 
@@ -205,7 +234,7 @@ class ProjectPage extends React.PureComponent {
           <h5 className={styles.cardHeader}>Created Date</h5>
           <p>{this.state.project ? this.state.project.created_at : null}</p>
           <h5 className={styles.cardHeader}>Active Status</h5>
-          {this.state.project ? <Label color="green">Active</Label> : null}
+          {this.state.project ? this.renderProjectActiveLabel() : null}
           <h5 className={styles.cardHeader}>Portfolio Health</h5>
           <Label color="green">Healthy</Label>
           <h5 className={styles.cardHeader}>Associated Tickers</h5>
@@ -213,6 +242,18 @@ class ProjectPage extends React.PureComponent {
         </Card.Content>
       </Card>
     );
+  }
+
+  renderProjectActiveLabel(){
+    if(this.state.project.is_active){
+      return(
+        <Label color="green">Active</Label>
+      )
+    } else {
+      return(
+        <Label color="red">Inactive</Label>
+      )
+    }
   }
 
   renderPaneContainer(title, children) {
@@ -271,7 +312,7 @@ class ProjectPage extends React.PureComponent {
           />
         ) : null}
         <h5 className={styles.cardHeader}>Closing Prices</h5>
-        <ApexChart
+        <ApexLineChart
           series={this.formatTickerPriceHistory()}
           yLabel="Close Price"
         />
@@ -280,31 +321,96 @@ class ProjectPage extends React.PureComponent {
     return this.renderPaneContainer("Analytics", content);
   }
 
-  renderNlpTab() {
+  renderNewsFeedTab() {
     const content = (
       <React.Fragment>
         <div id={styles.liveBlinkerWrapper}>
           <Label className={styles.liveBlinker} circular color="red" empty />
           <span>Fetching live news...</span>
         </div>
-        {this.state.articles.map((article, i) => (
-          <Card
-            key={i}
-            fluid
-            color={article.avg_sentiment > 0.5 ? "green" : "red"}
-          >
-            <Card.Content>
-              <Card.Header>
-                {article.headline}
-                <Label className={styles.articleTickerLabel} content={article.ticker} />
-              </Card.Header>
-              <Card.Meta>{article.avg_sentiment} Average Sentiment</Card.Meta>
-            </Card.Content>
-          </Card>
-        ))}
+        {this.state.articles.map((article, i) => {
+          let color;
+          if (article.avg_sentiment == 0) {
+            color = "yellow";
+          } else {
+            color = article.avg_sentiment > 0 ? "green" : "red";
+          }
+          return (
+            <Card key={i} fluid color={color}>
+              <Card.Content>
+                <Card.Header>
+                  <a
+                    style={{ display: "table-cell" }}
+                    href={article.article_link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {article.headline}
+                  </a>
+                  <Label
+                    className={styles.articleTickerLabel}
+                    content={article.ticker}
+                  />
+                </Card.Header>
+                <Card.Meta>{article.avg_sentiment} Average Sentiment</Card.Meta>
+              </Card.Content>
+            </Card>
+          );
+        })}
       </React.Fragment>
     );
     return this.renderPaneContainer("News Feed", content);
+  }
+
+  renderSettingsTab() {
+    const content = (
+      <React.Fragment>
+        <Form className={styles.form}>
+          <Form.Field>
+            <label>Project Name</label>
+            <input
+              value={
+                this.state.editedProjectKeys.project_name ||
+                this.state.project.project_name
+              }
+              onChange={(e) => this.editProjectSettings("project_name", e)}
+            />
+          </Form.Field>
+          <Form.Field>
+            <label>Project Description</label>
+            <textarea
+              value={
+                this.state.editedProjectKeys.description ||
+                this.state.project.description
+              }
+              onChange={(e) => this.editProjectSettings("description", e)}
+            />
+          </Form.Field>
+          <Form.Field>
+            <Checkbox
+              toggle
+              checked={
+                "is_active" in this.state.editedProjectKeys
+                  ? this.state.editedProjectKeys.is_active
+                  : this.state.project.is_active
+              }
+              onChange={(e, d) => {
+                this.editProjectSettings("is_active", e, d.checked);
+              }}
+              label="Project Active"
+            />
+          </Form.Field>
+          <Button
+            disabled={Object.keys(this.state.editedProjectKeys).length === 0}
+            onClick={() => this.saveProjectSettings()}
+            type="submit"
+          >
+            Save Changes
+          </Button>
+        </Form>
+      </React.Fragment>
+    );
+    return this.renderPaneContainer("Project Settings", content);
   }
 
   render() {

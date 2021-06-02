@@ -10,7 +10,7 @@ dotenv.config();
 
 var profile = {}
 
-const successRedirect = 'http://localhost:3000/login';
+const successRedirect = `http://${process.env.APP_DOMAIN}/dashboard`;
 const failureRedirect = '/users/login';
 
 

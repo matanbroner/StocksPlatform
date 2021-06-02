@@ -42,6 +42,7 @@ services:
       - POSTGRES_USER=stocks_admin
       - POSTGRES_HOST=postgres
       - POSTGRES_DB=stocks_db
+      - APP_DOMAIN=banana-stocks.com
     env_file:
       - ./secrets.env
     depends_on:

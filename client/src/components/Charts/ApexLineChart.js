@@ -1,10 +1,10 @@
 import React from "react";
 import ReactApexChart from "react-apexcharts";
 
-const ApexChart = (props) => {
+const ApexLineChart = (props) => {
   const options = {
     chart: {
-      type: props.type || "line",
+      type: "line",
       stacked: false,
       height: 400,
       zoom: {
@@ -58,4 +58,4 @@ const ApexChart = (props) => {
   );
 };
 
-export default ApexChart;
+export default ApexLineChart;

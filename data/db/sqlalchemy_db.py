@@ -41,7 +41,6 @@ def generate_db_uri(
     ]:
         if uri_val == None:
             raise RuntimeError(f"Incomplete DB URI component given: '{uri_key}'")
-    print(f"{driver}://{user}:{password}@{host}:{port}/{db}", flush=True)
     return f"{driver}://{user}:{password}@{host}:{port}/{db}"
 
 

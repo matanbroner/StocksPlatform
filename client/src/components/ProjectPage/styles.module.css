@@ -53,3 +53,7 @@
   from { opacity: 1; }
   to { opacity: 0; }
 }
+
+.form{
+    margin-top: 25px;
+}

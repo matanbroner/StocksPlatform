@@ -1,6 +1,9 @@
 @import url("https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;700&display=swap");
 
 /* Settings Styles */
+#profile {
+  margin: 20px;
+}
 #table {
   width: 100%;
   height: 90%;
@@ -21,6 +24,7 @@
   font-family: "Nunito Sans", sans-serif !important;
   font-weight: 600;
   font-size: 45px;
+  margin-top: 20px;
 }
 
 #title_2 {
@@ -28,6 +32,7 @@
   font-family: "Nunito Sans", sans-serif !important;
   font-weight: 600;
   font-size: 45px;
+  margin-top: 20px;
 }
 
 #account_info {

@@ -1,18 +1,24 @@
 #wrapper {
   margin: 30px auto;
+  height: fit-content;
+  background: white;
+  padding: 25px;
+  border-radius: 10px;
+  box-shadow: 0 -3em 3em rgba(0, 0, 0, 0.1), 0 0 0 2px rgb(255, 255, 255),
+    0.3em 0.3em 1em rgba(0, 0, 0, 0.3);
+    overflow: scroll;
 }
 
 #header {
   font-size: 35px;
   font-weight: 400;
-  padding-left: 200px;
 }
 
 .activePrice {
   font-size: 20px;
   font-weight: 400;
   margin: 10px auto;
-  padding-left: 200px;
+  padding-left: 5px;
 }
 
 #charts {
